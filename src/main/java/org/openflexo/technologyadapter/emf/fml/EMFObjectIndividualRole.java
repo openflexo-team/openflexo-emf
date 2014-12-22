@@ -17,9 +17,9 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.emf.viewpoint;
+package org.openflexo.technologyadapter.emf.fml;
 
-import org.openflexo.foundation.viewpoint.IndividualRole;
+import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

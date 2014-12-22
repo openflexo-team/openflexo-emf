@@ -26,13 +26,13 @@
  * Contributors :
  *
  */
-package org.openflexo.technologyadapter.emf.viewpoint.editionaction;
+package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
+import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.AssignableAction;
+import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -59,7 +59,7 @@ public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.AssignableAction#getAssignableType()
+		 * @see org.openflexo.foundation.fml.editionaction.AssignableAction#getAssignableType()
 		 */
 		@Override
 		public Type getAssignableType() {
@@ -72,7 +72,7 @@ public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction)
 		 */
 		@Override
 		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {

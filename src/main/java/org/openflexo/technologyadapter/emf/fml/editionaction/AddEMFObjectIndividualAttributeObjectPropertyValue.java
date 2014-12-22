@@ -26,7 +26,7 @@
  * Contributors :
  *
  */
-package org.openflexo.technologyadapter.emf.viewpoint.editionaction;
+package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
@@ -35,15 +35,15 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.foundation.viewpoint.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -52,25 +52,25 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
+import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Add an Instance value to the reference of an object.
+ * Assign an Enum value to the attribute of an object.
  * 
  * @author gbesancon
  * 
  */
-@FIBPanel("Fib/AddEMFObjectIndividualReferenceObjectPropertyValuePanel.fib")
+@FIBPanel("Fib/AddEMFObjectIndividualAttributeObjectPropertyValuePanel.fib")
 @ModelEntity
-@ImplementationClass(AddEMFObjectIndividualReferenceObjectPropertyValue.AddEMFObjectIndividualReferenceObjectPropertyValueImpl.class)
+@ImplementationClass(AddEMFObjectIndividualAttributeObjectPropertyValue.AddEMFObjectIndividualAttributeObjectPropertyValueImpl.class)
 @XMLElement
-public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
-		SetEMFPropertyValue<EMFObjectIndividualReferenceObjectPropertyValue>, SetObjectPropertyValueAction {
+public interface AddEMFObjectIndividualAttributeObjectPropertyValue extends
+		SetEMFPropertyValue<EMFObjectIndividualAttributeObjectPropertyValue>, SetObjectPropertyValueAction {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";
@@ -93,9 +93,9 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 	@Setter(OBJECT_PROPERTY_URI_KEY)
 	public void _setObjectPropertyURI(String objectPropertyURI);
 
-	public static abstract class AddEMFObjectIndividualReferenceObjectPropertyValueImpl extends
-			SetEMFPropertyValueImpl<EMFObjectIndividualReferenceObjectPropertyValue> implements
-			AddEMFObjectIndividualReferenceObjectPropertyValue {
+	public static abstract class AddEMFObjectIndividualAttributeObjectPropertyValueImpl extends
+			SetEMFPropertyValueImpl<EMFObjectIndividualAttributeObjectPropertyValue> implements
+			AddEMFObjectIndividualAttributeObjectPropertyValue {
 
 		private String objectPropertyURI = null;
 		private DataBinding<?> object;
@@ -105,7 +105,7 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		 * 
 		 * @param builder
 		 */
-		public AddEMFObjectIndividualReferenceObjectPropertyValueImpl() {
+		public AddEMFObjectIndividualAttributeObjectPropertyValueImpl() {
 			super();
 		}
 
@@ -124,7 +124,7 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 
 		@Override
 		public void setProperty(IFlexoOntologyStructuralProperty aProperty) {
-			setObjectProperty((EMFReferenceObjectProperty) aProperty);
+			setObjectProperty((EMFAttributeObjectProperty) aProperty);
 		}
 
 		@Override
@@ -194,7 +194,7 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		@Override
 		public void setObject(DataBinding<?> object) {
 			if (object != null) {
-				object = new DataBinding<Object>(object.toString(), this, getObjectType(), BindingDefinitionType.GET) {
+				object = new DataBinding(object.toString(), this, getObjectType(), BindingDefinitionType.GET) {
 					@Override
 					public Type getDeclaredType() {
 						return getObjectType();
@@ -208,7 +208,7 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.AssignableAction#getAssignableType()
+		 * @see org.openflexo.foundation.fml.editionaction.AssignableAction#getAssignableType()
 		 */
 		@Override
 		public Type getAssignableType() {
@@ -221,25 +221,18 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {
-			EMFObjectIndividualReferenceObjectPropertyValue result = null;
+		public EMFObjectIndividualAttributeObjectPropertyValue performAction(FlexoBehaviourAction action) {
+			EMFObjectIndividualAttributeObjectPropertyValue result = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			EMFModel model = modelSlotInstance.getAccessedResourceData();
-			// Add Reference in EMF
-			getSubject(action).getObject().eSet(((EMFReferenceObjectProperty) getObjectProperty()).getObject(),
-					getObject(action).getObject());
-			// if (referenceObjectProperty.getObject().getUpperBound() != 1) {
-			// List<T> values = (List<T>) objectIndividual.getObject().eGet(referenceObjectProperty.getObject());
-			// values.add(value);
-			// } else {
-			// objectIndividual.getObject().eSet(referenceObjectProperty.getObject(), value);
-			// }
+			// Add Attribute in EMF
+			getSubject(action).getObject().eSet(((EMFAttributeObjectProperty) getObjectProperty()).getObject(), getObject(action));
 			// // Instanciate Wrapper
-			// result = model.getConverter().convertObjectIndividualReferenceObjectPropertyValue(model, objectIndividual.getObject(),
-			// referenceObjectProperty.getObject());
+			// result = model.getConverter().convertObjectIndividualAttributeObjectPropertyValue(model, objectIndividual.getObject(),
+			// attributeObjectProperty.getObject());
 			return result;
 		}
 

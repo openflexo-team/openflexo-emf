@@ -18,7 +18,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.emf.viewpoint.binding;
+package org.openflexo.technologyadapter.emf.fml.binding;
 
 import java.lang.reflect.Type;
 import java.util.List;

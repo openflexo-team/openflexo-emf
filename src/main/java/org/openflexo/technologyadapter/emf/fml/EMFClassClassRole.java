@@ -1,6 +1,6 @@
-package org.openflexo.technologyadapter.emf.viewpoint;
+package org.openflexo.technologyadapter.emf.fml;
 
-import org.openflexo.foundation.viewpoint.ClassRole;
+import org.openflexo.foundation.fml.ClassRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
