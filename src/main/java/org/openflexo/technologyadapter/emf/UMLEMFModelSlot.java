@@ -1,7 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2015, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015-2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,26 +36,23 @@
  * 
  */
 
+
 package org.openflexo.technologyadapter.emf;
 
-import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
@@ -66,11 +62,10 @@ import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndi
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>
- * We expect here to connect an EMF model conform to an EMFMetaModel
+ * We expect here to connect an EMF model conform to the UML MetaModel
  * 
  * @author sylvain
  * 
@@ -79,29 +74,54 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 @DeclareEditionActions({ AddEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
 @ModelEntity
-@ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
+@ImplementationClass(UMLEMFModelSlot.UMLEMFModelSlotImpl.class)
 @XMLElement
-@FML("EMFModelSlot")
-public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel> {
+@FML("UMLEMFModelSlot")
+public interface UMLEMFModelSlot extends EMFModelSlot{
 
-	@Override
-	public EMFTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class EMFModelSlotImpl extends TypeAwareModelSlotImpl<EMFModel, EMFMetaModel> implements EMFModelSlot {
+	public static abstract class UMLEMFModelSlotImpl extends EMFModelSlotImpl implements UMLEMFModelSlot {
 
-		private static final Logger logger = Logger.getLogger(EMFModelSlot.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(UMLEMFModelSlot.class.getPackage().getName());
+
+		/** whatever, URI is UML's Metamodel **/
 
 		@Override
-		public Class<EMFTechnologyAdapter> getTechnologyAdapterClass() {
-			return EMFTechnologyAdapter.class;
+		@Getter(value = META_MODEL_URI_KEY)
+		@XMLAttribute
+		public String getMetaModelURI(){
+			return EMFTechnologyAdapter.UML_MM_URI;
 		}
 
+		@Override
+		@Setter(META_MODEL_URI_KEY)
+		public void setMetaModelURI(String metaModelURI){
+			// TODO: do best here sometime.
+			logger.warning("You cannot override MetaModel URI here, I will use the default URI for UML");
+			performSuperSetter(META_MODEL_URI_KEY,EMFTechnologyAdapter.UML_MM_URI);
+		}
+		
+		@Override
+		public  FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> getMetaModelResource(){
+			return  getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+		}
+
+		@Override
+		public void setMetaModelResource(FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
+			EMFMetaModelResource umlMetamodelREsource = getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+			if (metaModelResource != umlMetamodelREsource) {
+				logger.warning("You cannot override MetaModel Resource here, I will use the default MetaModelResource for UML");
+			}
+			super.setMetaModelResource(umlMetamodelREsource);
+		}
+		
+		
 		/**
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public EMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new EMFModelSlotInstanceConfiguration(this, action);
+		public UMLEMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+			return new UMLEMFModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override
@@ -110,54 +130,6 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 				return "individual";
 			}
 			return null;
-		}
-
-		@Override
-		public String getURIForObject(
-				TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, ? extends TypeAwareModelSlot<EMFModel, EMFMetaModel>> msInstance,
-				Object o) {
-			if (o instanceof IFlexoOntologyObject) {
-				return ((IFlexoOntologyObject) o).getURI();
-			}
-			return null;
-		}
-
-		@Override
-		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, ? extends TypeAwareModelSlot<EMFModel, EMFMetaModel>> msInstance,
-				String objectURI) {
-			if (msInstance.getAccessedResourceData() != null) {
-				return msInstance.getAccessedResourceData().getObject(objectURI);
-			}
-			return null;
-		}
-
-		@Override
-		public Type getType() {
-			return EMFModel.class;
-		}
-
-		@Override
-		public String getTypeDescription() {
-			return "EMF Model";
-		};
-
-		@Override
-		public EMFTechnologyAdapter getModelSlotTechnologyAdapter() {
-			return (EMFTechnologyAdapter) super.getModelSlotTechnologyAdapter();
-		}
-
-		@Override
-		public EMFModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
-				FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewEMFModel(project, filename, modelUri, (EMFMetaModelResource) metaModelResource);
-		}
-
-		@Override
-		public EMFModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-					filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override
