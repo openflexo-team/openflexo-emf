@@ -16,7 +16,7 @@ dependencies {
   testCompile flexoFoundationTest()
   
   // Test resource center
-  testRuntime project(':emfconnector-test-rc') 
+  testRuntime project(':emf-ta-test-rc') 
 }
 tasks.withType(Test) {
 	jvmArgs += ["-Djava.awt.headless=true"]
