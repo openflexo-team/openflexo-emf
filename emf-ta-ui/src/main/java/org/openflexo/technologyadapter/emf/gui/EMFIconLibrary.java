@@ -80,7 +80,7 @@ public class EMFIconLibrary {
 	public static final ImageIconResource EMF_ATTRIBUTE_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/EAttribute.gif"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (EMFMetaModel.class.isAssignableFrom(objectClass)) {
 			return ECORE_FILE_ICON;
 		}
