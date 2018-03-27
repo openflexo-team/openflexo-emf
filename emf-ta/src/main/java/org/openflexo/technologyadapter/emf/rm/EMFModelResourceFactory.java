@@ -74,7 +74,7 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 
 		if (createEmptyContents) {
 			createEmptyContents(returned);
-			returned.save(null);
+			returned.save();
 		}
 
 		return returned;

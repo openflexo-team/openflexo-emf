@@ -115,7 +115,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 		System.out.println("Je cherche " + EMFTechnologyAdapter.ECORE_MM_URI + " : " + eCoreRes);
 		assertNotNull(eCoreRes);
 
-		EMFMetaModel eCoreMM = eCoreRes.loadResourceData(null);
+		EMFMetaModel eCoreMM = eCoreRes.loadResourceData();
 		assertNotNull(eCoreMM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : eCoreMM.getClasses()) {
@@ -137,7 +137,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 		assertNotNull(eCoreRes);
 
-		EMFMetaModel eCoreMM = eCoreRes.loadResourceData(null);
+		EMFMetaModel eCoreMM = eCoreRes.loadResourceData();
 		assertNotNull(eCoreMM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : eCoreMM.getClasses()) {

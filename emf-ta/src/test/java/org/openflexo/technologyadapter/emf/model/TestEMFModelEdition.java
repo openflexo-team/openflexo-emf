@@ -222,7 +222,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			assertNotNull(emfModelResource);
 
-			emfModelResource.save(null);
+			emfModelResource.save();
 
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
@@ -282,7 +282,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
 
-		((VirtualModelResource) newVirtualModel.getResource()).save(null);
+		((VirtualModelResource) newVirtualModel.getResource()).save();
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
@@ -338,7 +338,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			 * assertNotNull(parameterSet);
 			 */
 
-			emfModelResource.save(null);
+			emfModelResource.save();
 
 		} catch (FlexoException e) {
 			e.printStackTrace();
@@ -361,7 +361,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		AddEMFObjectIndividual addObject = (AddEMFObjectIndividual) createEditionAction1.getNewEditionAction();
 
 		try {
-			addObject.setOntologyClass(emfMetaModelResource.getResourceData(null).getClass(classURI));
+			addObject.setOntologyClass(emfMetaModelResource.getResourceData().getClass(classURI));
 			// addObject.setEMFClassURI(classURI);
 			result = addObject.execute(creationSchemeCreationAction);
 			// addObject.finalizePerformAction(creationSchemeCreationAction,

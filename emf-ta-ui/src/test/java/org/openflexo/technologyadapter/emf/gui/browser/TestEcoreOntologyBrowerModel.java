@@ -119,7 +119,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			}
 			else {
 				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
-				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+				for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 					System.out.println(" > " + r.getURI());
 				}
 			}

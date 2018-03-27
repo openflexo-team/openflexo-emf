@@ -149,7 +149,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			}
 			else {
 				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
-				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+				for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 					System.out.println(" > " + r.getURI());
 				}
 			}

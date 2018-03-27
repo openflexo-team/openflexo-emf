@@ -211,7 +211,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			assertNotNull(umlModelResource);
 
-			umlModelResource.save(null);
+			umlModelResource.save();
 
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
@@ -263,7 +263,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
 
-		((VirtualModelResource) newVirtualModel.getResource()).save(null);
+		((VirtualModelResource) newVirtualModel.getResource()).save();
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
@@ -287,7 +287,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			/* TODO some stuff TO DO HERE */
 
-			umlModelResource.save(null);
+			umlModelResource.save();
 
 		} catch (FlexoException e) {
 			e.printStackTrace();

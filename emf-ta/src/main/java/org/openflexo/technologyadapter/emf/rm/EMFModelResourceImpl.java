@@ -52,7 +52,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * Represents the resource associated to a {@link OWLOntology}
@@ -79,7 +78,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @throws FlexoException
 	 */
 	@Override
-	public EMFModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public EMFModel loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		EMFModelConverter converter = new EMFModelConverter();
 		EMFModel resourceData;
@@ -94,10 +93,10 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @throws SaveResourceException
 	 */
 	@Override
-	public void save(IProgress progress) throws SaveResourceException {
+	public void save() throws SaveResourceException {
 		EMFModel resourceData;
 		try {
-			resourceData = getResourceData(progress);
+			resourceData = getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
@@ -131,7 +130,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	@Override
 	public EMFModel getModelData() {
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			return null;
@@ -179,7 +178,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			else {
 				if (!mmResource.isLoaded()) {
 					try {
-						mmResource.loadResourceData(null);
+						mmResource.loadResourceData();
 					} catch (FileNotFoundException e) {
 						logger.warning("Cannot load EMF MetaModel");
 						return null;

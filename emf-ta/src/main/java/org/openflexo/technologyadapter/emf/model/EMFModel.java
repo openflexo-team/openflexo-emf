@@ -185,7 +185,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	}
 
 	public void save() throws SaveResourceException {
-		getResource().save(null);
+		getResource().save();
 	}
 
 	/**

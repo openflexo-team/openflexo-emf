@@ -130,7 +130,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 				.getResource("http://www.thalesgroup.com/openflexo/emf/model/city1");
 		assertNotNull(city1MMRes);
 
-		EMFMetaModel city1MM = city1MMRes.loadResourceData(null);
+		EMFMetaModel city1MM = city1MMRes.loadResourceData();
 		assertNotNull(city1MM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : city1MM.getClasses()) {
@@ -164,7 +164,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 				.getResource("http://www.thalesgroup.com/openflexo/emf/model/city2");
 		assertNotNull(city2MMRes);
 
-		EMFMetaModel city2MM = city2MMRes.loadResourceData(null);
+		EMFMetaModel city2MM = city2MMRes.loadResourceData();
 		assertNotNull(city2MM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : city2MM.getClasses()) {
@@ -201,7 +201,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 				.getResource("http://www.bolton.ac.uk/archimate");
 		assertNotNull(archiMMRes);
 
-		EMFMetaModel archiMM = archiMMRes.loadResourceData(null);
+		EMFMetaModel archiMM = archiMMRes.loadResourceData();
 		assertNotNull(archiMM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : archiMM.getClasses()) {
@@ -220,7 +220,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 				.getResource("http://www.thalesgroup.com/parameters/1.0");
 		assertNotNull(parametersMMRes);
 
-		EMFMetaModel parametersMM = parametersMMRes.loadResourceData(null);
+		EMFMetaModel parametersMM = parametersMMRes.loadResourceData();
 		assertNotNull(parametersMM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : parametersMM.getClasses()) {
@@ -239,7 +239,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 				.getResource("http://www.eclipse.org/papyrus/0.7.0/SysML");
 		assertNotNull(sysMLMMRes);
 
-		EMFMetaModel sysMLMM = sysMLMMRes.loadResourceData(null);
+		EMFMetaModel sysMLMM = sysMLMMRes.loadResourceData();
 		assertNotNull(sysMLMM);
 
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : sysMLMM.getClasses()) {

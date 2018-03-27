@@ -127,7 +127,7 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 		assertFalse(city1Res.isLoaded());
 		assertFalse(city1MMRes.isLoaded());
 
-		city1Model = city1Res.getResourceData(null);
+		city1Model = city1Res.getResourceData();
 		assertNotNull(city1Model);
 
 		assertTrue(city1Res.isLoaded());

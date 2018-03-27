@@ -120,7 +120,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			}
 			else {
 				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
-				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+				for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 					System.out.println(" > " + r.getURI());
 				}
 			}

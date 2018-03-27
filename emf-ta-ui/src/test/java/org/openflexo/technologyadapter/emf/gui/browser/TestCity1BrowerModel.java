@@ -147,7 +147,7 @@ public class TestCity1BrowerModel extends OpenflexoTestCaseWithGUI {
 			}
 			else {
 				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + city1ModelResourceRelativeURI);
-				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+				for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 					System.out.println(" > " + r.getURI());
 				}
 			}

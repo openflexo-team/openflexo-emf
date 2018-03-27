@@ -60,7 +60,6 @@ import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
-import org.openflexo.toolbox.IProgress;
 
 /**
  * IO Delegate to load a MetaModelResource from Directory in FileSystem
@@ -81,7 +80,7 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	public EMFMetaModel getMetaModelData() {
 
 		try {
-			return getResourceData(null);
+			return getResourceData();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
@@ -95,10 +94,10 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	/**
 	 * Follow the link.
 	 * 
-	 * @see org.openflexo.foundation.resource.FlexoResource#loadResourceData(org.openflexo.toolbox.IProgress)
+	 * @see org.openflexo.foundation.resource.FlexoResource#loadResourceData()
 	 */
 	@Override
-	public EMFMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
+	public EMFMetaModel loadResourceData() throws ResourceLoadingCancelledException {
 
 		EMFMetaModel result = null;
 		Class<?> ePackageClass = null;
@@ -168,10 +167,10 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	/**
 	 * Follow the link.
 	 * 
-	 * @see org.openflexo.foundation.resource.FlexoResource#save(org.openflexo.toolbox.IProgress)
+	 * @see org.openflexo.foundation.resource.FlexoResource#save()
 	 */
 	@Override
-	public void save(IProgress progress) {
+	public void save() {
 		logger.info("MetaModel is not supposed to be modified.");
 	}
 
