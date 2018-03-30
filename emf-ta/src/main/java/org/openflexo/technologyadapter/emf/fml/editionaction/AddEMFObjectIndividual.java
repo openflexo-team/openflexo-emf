@@ -61,6 +61,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
@@ -80,7 +81,8 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
 @FML("AddEMFObjectIndividual")
-public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
+public interface AddEMFObjectIndividual
+		extends AddIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual, EMFTechnologyAdapter>, EMFAction<EMFObjectIndividual> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CONTAINER_KEY = "container";
@@ -92,8 +94,8 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 	@Setter(CONTAINER_KEY)
 	public void setContainer(DataBinding<List> containerReference);
 
-	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFModel, EMFObjectIndividual>
-			implements AddEMFObjectIndividual {
+	public static abstract class AddEMFObjectIndividualImpl
+			extends AddIndividualImpl<EMFModelSlot, EMFModel, EMFObjectIndividual, EMFTechnologyAdapter> implements AddEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddEMFObjectIndividual.class.getPackage().getName());
 
@@ -220,7 +222,8 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFM
 							else {
 								logger.warning("Unexpected " + objectPropertyAssertion.getOntologyProperty() + " of "
 										+ (objectPropertyAssertion.getOntologyProperty() != null
-												? objectPropertyAssertion.getOntologyProperty().getClass() : null));
+												? objectPropertyAssertion.getOntologyProperty().getClass()
+												: null));
 							}
 						}
 					}
