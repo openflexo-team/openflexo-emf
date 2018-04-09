@@ -96,7 +96,6 @@ public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType>imple
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

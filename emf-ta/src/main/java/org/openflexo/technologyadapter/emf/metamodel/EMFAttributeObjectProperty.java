@@ -109,7 +109,6 @@ public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribu
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

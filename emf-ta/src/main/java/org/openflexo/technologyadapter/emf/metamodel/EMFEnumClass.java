@@ -105,7 +105,6 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -79,7 +79,6 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 
 	@Override
 	public String getURI() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -90,7 +89,6 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public String getDisplayableDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

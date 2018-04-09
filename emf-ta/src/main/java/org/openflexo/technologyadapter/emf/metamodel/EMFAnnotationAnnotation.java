@@ -79,7 +79,6 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 	 */
 	@Override
 	public String getDisplayableDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -99,13 +98,11 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 
 	@Override
 	public String getURI() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void setName(String name) throws Exception {
-		// TODO Auto-generated method stub
 
 	}
 }

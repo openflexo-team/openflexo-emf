@@ -86,7 +86,6 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 
 	@Override
 	public String getURI() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -97,7 +96,6 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 	 */
 	@Override
 	public String getDisplayableDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

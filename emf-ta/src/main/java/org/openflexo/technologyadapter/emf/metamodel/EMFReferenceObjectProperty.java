@@ -107,7 +107,6 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

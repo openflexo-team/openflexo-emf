@@ -109,7 +109,6 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

@@ -268,13 +268,11 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
-		// TODO Auto-generated method stub
 		return false;
 	}*/
 

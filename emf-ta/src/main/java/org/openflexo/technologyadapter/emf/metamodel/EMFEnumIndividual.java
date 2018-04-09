@@ -107,7 +107,6 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

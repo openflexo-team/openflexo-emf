@@ -215,19 +215,16 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public ListIterator<EMFObjectIndividual> listIterator() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public ListIterator<EMFObjectIndividual> listIterator(int index) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<EMFObjectIndividual> subList(int fromIndex, int toIndex) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

@@ -106,7 +106,6 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

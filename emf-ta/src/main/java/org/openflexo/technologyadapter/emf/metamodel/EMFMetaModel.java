@@ -123,7 +123,6 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public String getVersion() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -134,7 +133,6 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public String getDescription() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
