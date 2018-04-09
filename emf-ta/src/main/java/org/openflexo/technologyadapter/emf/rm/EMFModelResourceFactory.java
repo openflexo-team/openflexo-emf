@@ -59,11 +59,6 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 		return true;
 	}
 
-	@Override
-	public <I> I getConvertableArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return null;
-	}
-
 	public <I> EMFModelResource makeEMFModelResource(I serializationArtefact, EMFMetaModelResource metaModelResource,
 			FlexoResourceCenter<I> resourceCenter, String name, String uri, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {
