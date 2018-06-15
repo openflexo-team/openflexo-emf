@@ -113,7 +113,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	}
 
 	@Override
-	public String getLocalizationDirectory() {
+	protected String getLocalizationDirectory() {
 		return "FlexoLocalization/EMFTechnologyAdapter";
 	}
 
@@ -231,7 +231,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	}
 
 	@Override
-	public <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+	protected <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (resourceCenter.isDirectory(contents)) {
 			for (I c : resourceCenter.getContents(contents)) {
 				if (resourceCenter.retrieveName(c).endsWith(EMFMetaModelResourceFactory.PROPERTIES_SUFFIX)) {
