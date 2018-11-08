@@ -22,8 +22,8 @@
 		<flexodocresourcemanager.version>1.8.0</flexodocresourcemanager.version>
 		<flexocore.version>1.9.1-SNAPSHOT</flexocore.version>
 		<poi.version>3.12</poi.version>
-		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
-	    <sitedeploy.dir>/home/www/sites/openflexo-ta</sitedeploy.dir>
+		<ta.logo>https://support.openflexo.org/images/components/ta/emf_ta/EMF200x144.png</ta.logo>
+	    <sitedeploy.dir>/home/www/sites/openflexo-emf</sitedeploy.dir>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
