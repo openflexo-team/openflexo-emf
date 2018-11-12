@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificActionDefiningReceiver;
-import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.AEMFModelObjectImpl;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
