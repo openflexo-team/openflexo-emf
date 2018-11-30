@@ -38,10 +38,9 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
-import java.util.List;
-
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
+import org.openflexo.foundation.fml.editionaction.UniqueFetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
@@ -50,16 +49,16 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 /**
- * EMF technology - specific {@link FetchRequest} allowing to retrieve a selection of some {@link EMFObjectIndividual} matching some
- * conditions and a given type.<br>
+ * EMF technology - specific {@link FetchRequest} allowing to retrieve a unique {@link EMFObjectIndividual} matching some conditions and a
+ * given type.<br>
  * 
  * @author sylvain
  */
 @ModelEntity
-@ImplementationClass(SelectEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
+@ImplementationClass(SelectUniqueEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
 @XMLElement
 @FML("SelectEMFObjectIndividual")
-public interface SelectEMFObjectIndividual
-		extends AbstractSelectEMFObjectIndividual<List<EMFObjectIndividual>>, FetchRequest<EMFModelSlot, EMFModel, EMFObjectIndividual> {
+public interface SelectUniqueEMFObjectIndividual
+		extends AbstractSelectEMFObjectIndividual<EMFObjectIndividual>, UniqueFetchRequest<EMFModelSlot, EMFModel, EMFObjectIndividual> {
 
 }
