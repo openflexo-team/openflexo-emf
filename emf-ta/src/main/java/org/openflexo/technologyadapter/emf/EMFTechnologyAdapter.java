@@ -46,7 +46,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
-import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.fml.annotations.DeclareResourceFactory;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -67,7 +67,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
  */
 @DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
 		UMLEMFModelSlot.class })
-@DeclareResourceTypes({ EMFMetaModelResourceFactory.class, EMFModelResourceFactory.class })
+@DeclareResourceFactory({ EMFMetaModelResourceFactory.class, EMFModelResourceFactory.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(EMFTechnologyAdapter.class.getPackage().getName());
