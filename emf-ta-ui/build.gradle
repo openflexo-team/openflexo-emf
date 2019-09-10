@@ -14,22 +14,22 @@ dependencies {
   testRuntime project(':emf-ta-test-rc')
   
 }
-task nonuiTest(type: Test) {
-  ignoreFailures = true
-  exclude '**/TestArchimateOntologyBrowerModel.class'
-  exclude '**/TestCity1BrowerModel.class'
-  exclude '**/TestEcoreOntologyBrowerModel.class'
-  exclude '**/TestUMLOntologyBrowerModel.class'
-  jvmArgs += ["-Djava.awt.headless=true"]
-}
-
-task uiTest(type: Test,dependsOn: 'nonuiTest') {
-  ignoreFailures = true
-  include '**/TestArchimateOntologyBrowerModel.class'
-  include '**/TestCity1BrowerModel.class'
-  include '**/TestEcoreOntologyBrowerModel.class'
-  include '**/TestUMLOntologyBrowerModel.class'
-}
-
-task test(overwrite: true,dependsOn: 'uiTest') {
-}
+// task nonuiTest(type: Test) {
+//   ignoreFailures = true
+//   exclude '**/TestArchimateOntologyBrowerModel.class'
+//   exclude '**/TestCity1BrowerModel.class'
+//   exclude '**/TestEcoreOntologyBrowerModel.class'
+//   exclude '**/TestUMLOntologyBrowerModel.class'
+//   jvmArgs += ["-Djava.awt.headless=true"]
+// }
+// 
+// task uiTest(type: Test,dependsOn: 'nonuiTest') {
+//   ignoreFailures = true
+//   include '**/TestArchimateOntologyBrowerModel.class'
+//   include '**/TestCity1BrowerModel.class'
+//   include '**/TestEcoreOntologyBrowerModel.class'
+//   include '**/TestUMLOntologyBrowerModel.class'
+// }
+// 
+// task test(overwrite: true,dependsOn: 'uiTest') {
+// }
