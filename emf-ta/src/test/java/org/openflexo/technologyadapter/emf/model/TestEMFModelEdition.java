@@ -139,7 +139,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		CompilationUnitResource newViewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
-		newViewPoint = newViewPointResource.getLoadedResourceData();
+		newViewPoint = newViewPointResource.getLoadedResourceData().getVirtualModel();
 
 		// newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint",
 		// "http://openflexo.org/test/TestViewPoint",
@@ -149,8 +149,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newViewPoint.getResource()).getDirectory().exists());
 		// assertTrue(((ViewPointResource)
 		// newViewPoint.getResource()).getFile().exists());
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(newViewPoint.getResource().getDirectory() != null);
+		assertTrue(newViewPoint.getResource().getIODelegate().exists());
 	}
 
 	/**
@@ -175,8 +175,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME,
-				newViewPoint.getVirtualModelResource(), true);
-		newVirtualModel = newVMResource.getLoadedResourceData();
+				newViewPoint.getCompilationUnitResource(), true);
+		newVirtualModel = newVMResource.getLoadedResourceData().getVirtualModel();
 
 		// newVirtualModel =
 		// VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
@@ -184,8 +184,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newVirtualModel.getResource()).getDirectory().exists());
 		// assertTrue(((VirtualModelResource)
 		// newVirtualModel.getResource()).getFile().exists());
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(newViewPoint.getResource().getDirectory() != null);
+		assertTrue(newViewPoint.getResource().getIODelegate().exists());
 
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
 		useDeclarationAction.setModelSlotClass(EMFModelSlot.class);
@@ -282,9 +282,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
 
-		((CompilationUnitResource) newVirtualModel.getResource()).save();
+		newVirtualModel.getResource().save();
 
-		System.out.println("Saved: " + ((CompilationUnitResource) newVirtualModel.getResource()).getIODelegate().toString());
+		System.out.println("Saved: " + newVirtualModel.getResource().getIODelegate().toString());
 
 	}
 

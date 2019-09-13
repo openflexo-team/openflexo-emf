@@ -133,10 +133,10 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		CompilationUnitResource newViewPointResource = factory.makeTopLevelCompilationUnitResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
-		newViewPoint = newViewPointResource.getLoadedResourceData();
+		newViewPoint = newViewPointResource.getLoadedResourceData().getVirtualModel();
 
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(newViewPoint.getResource().getDirectory() != null);
+		assertTrue(newViewPoint.getResource().getIODelegate().exists());
 	}
 
 	/**
@@ -162,11 +162,11 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		CompilationUnitResourceFactory factory = fmlTechnologyAdapter.getCompilationUnitResourceFactory();
 		CompilationUnitResource newVMResource = factory.makeContainedCompilationUnitResource(VIRTUAL_MODEL_NAME,
-				newViewPoint.getVirtualModelResource(), true);
-		newVirtualModel = newVMResource.getLoadedResourceData();
+				newViewPoint.getCompilationUnitResource(), true);
+		newVirtualModel = newVMResource.getLoadedResourceData().getVirtualModel();
 
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getDirectory() != null);
-		assertTrue(((CompilationUnitResource) newViewPoint.getResource()).getIODelegate().exists());
+		assertTrue(newViewPoint.getResource().getDirectory() != null);
+		assertTrue(newViewPoint.getResource().getIODelegate().exists());
 
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
 		useDeclarationAction.setModelSlotClass(UMLEMFModelSlot.class);
@@ -263,9 +263,9 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
 
-		((CompilationUnitResource) newVirtualModel.getResource()).save();
+		newVirtualModel.getResource().save();
 
-		System.out.println("Saved: " + ((CompilationUnitResource) newVirtualModel.getResource()).getIODelegate().toString());
+		System.out.println("Saved: " + newVirtualModel.getResource().getIODelegate().toString());
 
 		/**
 		 * NamedElement e = null; Profile profile = null; profile.getAllProfileApplications(); e.getApplicableStereotypes();
