@@ -48,6 +48,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -63,6 +64,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.test.UITest;
 
 /**
  * Test Class for OntologyBrowser on an ECore Model
@@ -100,6 +102,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(1)
+	@Category(UITest.class)
 	public void TestLoadECOREModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
@@ -137,6 +140,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(3)
+	@Category(UITest.class)
 	public void TestCreateOntologyBrowser() {
 
 		long previousDate, currentDate;
@@ -254,6 +258,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(4)
+	@Category(UITest.class)
 	public void TestCreateEMFModelView() throws InterruptedException {
 		long previousDate, currentDate;
 		int latency_time = 1000;

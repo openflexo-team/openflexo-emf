@@ -18,6 +18,3 @@ dependencies {
   // Test resource center
   testRuntime project(':emf-ta-test-rc') 
 }
-tasks.withType(Test) {
-	jvmArgs += ["-Djava.awt.headless=true"]
-}
