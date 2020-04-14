@@ -76,7 +76,7 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	}
 
 	@Override
-	protected <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		registerResourceInResourceRepository(resource,

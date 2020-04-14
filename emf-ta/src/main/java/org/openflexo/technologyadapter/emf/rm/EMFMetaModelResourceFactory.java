@@ -111,7 +111,7 @@ public class EMFMetaModelResourceFactory
 	}
 
 	@Override
-	protected <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
+	public <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
 		System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
