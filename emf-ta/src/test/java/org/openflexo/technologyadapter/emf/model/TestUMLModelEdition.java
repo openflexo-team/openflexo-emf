@@ -51,6 +51,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.InvalidNameException;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -143,10 +144,11 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * Test the VirtualModel creation
 	 * 
 	 * @throws ModelDefinitionException
+	 * @throws InvalidNameException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
+	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException, InvalidNameException {
 
 		emfResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/emf-test");
 		assertNotNull(emfResourceCenter);
