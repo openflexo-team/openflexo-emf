@@ -23,7 +23,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>emfconnector</artifactId>
+			<artifactId>emf-ta</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
