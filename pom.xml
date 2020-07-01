@@ -196,11 +196,6 @@
 				<scope>test</scope>
 			</dependency>
 
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexo-ui</artifactId>
-				<version>${flexocore.version}</version>
-			</dependency>
 			<!--  <dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
