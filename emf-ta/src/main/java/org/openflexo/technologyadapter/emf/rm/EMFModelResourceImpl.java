@@ -84,6 +84,14 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 		EMFModel resourceData;
 		resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
 		setResourceData(resourceData);
+
+		/*for (IFlexoOntologyClass<EMFTechnologyAdapter> iFlexoOntologyClass : resourceData.getClasses()) {
+			System.out.println(" >> Concept " + iFlexoOntologyClass);
+		}
+		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : resourceData.getIndividuals()) {
+			System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
+		}*/
+
 		return resourceData;
 	}
 

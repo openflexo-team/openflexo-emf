@@ -128,6 +128,16 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 					result.setResource(this);
 				}
 			}
+			/*System.out.println("------------> Registering Metamodel " + result);
+			
+			System.out.println("Root concept " + result.getRootConcept());
+			for (IFlexoOntologyClass<EMFTechnologyAdapter> iFlexoOntologyClass : result.getClasses()) {
+				System.out.println(" >> Concept " + iFlexoOntologyClass);
+			}
+			for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : result.getIndividuals()) {
+				System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
+			}*/
+
 			return result;
 
 		} catch (ClassNotFoundException e) {
