@@ -330,6 +330,23 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		return result;
 	}
 
+	public IFlexoOntologyPropertyValue<EMFTechnologyAdapter> getPropertyValue(String propertyName) {
+		for (IFlexoOntologyPropertyValue<EMFTechnologyAdapter> propertyValue : getPropertyValues()) {
+			if (propertyValue.getProperty().getName().equals(propertyName)) {
+				return propertyValue;
+			}
+		}
+		return null;
+	}
+
+	public List<?> getValues(String propertyName) {
+		IFlexoOntologyPropertyValue<EMFTechnologyAdapter> propertyValue = getPropertyValue(propertyName);
+		if (propertyValue != null) {
+			return propertyValue.getValues();
+		}
+		return null;
+	}
+
 	/**
 	 * Follow the link.
 	 * 
