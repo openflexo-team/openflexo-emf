@@ -132,9 +132,14 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 			
 			System.out.println("Root concept " + result.getRootConcept());
 			for (IFlexoOntologyClass<EMFTechnologyAdapter> iFlexoOntologyClass : result.getClasses()) {
-				System.out.println(" >> Concept " + iFlexoOntologyClass);
-			}
-			for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : result.getIndividuals()) {
+				System.out.println("* Concept " + iFlexoOntologyClass);
+				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> iFlexoOntologyFeatureAssociation : iFlexoOntologyClass
+						.getStructuralFeatureAssociations()) {
+					System.out.println("   > " + iFlexoOntologyFeatureAssociation.getFeature().getName() + " : "
+							+ iFlexoOntologyFeatureAssociation.getRange());
+				}
+			}*/
+			/*for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : result.getIndividuals()) {
 				System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
 			}*/
 
