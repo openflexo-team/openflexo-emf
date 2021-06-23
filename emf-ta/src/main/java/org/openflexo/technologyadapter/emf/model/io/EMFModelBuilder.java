@@ -45,10 +45,12 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.eclipse.emf.ecore.util.FeatureMap;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeDataPropertyValue;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeDataPropertyValueAsFeatureMap;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValueAsList;
@@ -90,7 +92,15 @@ public class EMFModelBuilder {
 	 */
 	public EMFObjectIndividualAttributeDataPropertyValue buildObjectIndividualAttributeDataPropertyValue(EMFModel model, EObject eObject,
 			EAttribute eAttribute) {
-		return new EMFObjectIndividualAttributeDataPropertyValue(model, eObject, eAttribute);
+
+		Object value = eObject.eGet(eAttribute);
+		if (value instanceof FeatureMap) {
+			return new EMFObjectIndividualAttributeDataPropertyValueAsFeatureMap(model, eObject, eAttribute, (FeatureMap) value);
+		}
+		else {
+			return new EMFObjectIndividualAttributeDataPropertyValue(model, eObject, eAttribute);
+		}
+
 	}
 
 	/**
@@ -117,12 +127,21 @@ public class EMFModelBuilder {
 	public EMFObjectIndividualReferenceObjectPropertyValue buildObjectIndividualReferenceObjectPropertyValue(EMFModel model,
 			EObject eObject, EReference eReference) {
 
-		Object refList = eObject.eGet(eObject.eClass().getEStructuralFeature(eReference.getFeatureID()));
-
-		if (refList instanceof EObjectEList) {
-			return new EMFObjectIndividualReferenceObjectPropertyValueAsList(model, eObject, eReference, refList);
-		} else {
-			return new EMFObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
+		try {
+			Object refList = eObject.eGet(eObject.eClass().getEStructuralFeature(eReference.getFeatureID()));
+			if (refList instanceof EObjectEList) {
+				return new EMFObjectIndividualReferenceObjectPropertyValueAsList(model, eObject, eReference, refList);
+			}
+			else {
+				return new EMFObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
+			}
+		} catch (UnsupportedOperationException e) {
+			System.out.println("Bizarre, ca foire pour obtenir la valeur de");
+			System.out.println("Object : " + eObject);
+			System.out.println("eReference : " + eReference);
+			System.out.println("feature: " + eObject.eClass().getEStructuralFeature(eReference.getFeatureID()));
+			return null;
 		}
+
 	}
 }

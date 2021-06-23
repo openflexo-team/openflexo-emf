@@ -129,6 +129,29 @@ public class EMFModelConverter {
 			individual = builder.buildObjectIndividual(model, eObject);
 			individuals.put(eObject, individual);
 
+			/*System.out.println("OK, j'ai le eObject " + eObject);
+			System.out.println("Class : " + eObject.eClass());
+			for (EStructuralFeature eSF : eObject.eClass().getEAllStructuralFeatures()) {
+				Object value = eObject.eGet(eSF);
+				if (value != null) {
+					System.out.println(" > " + eSF.getName() + " = " + value);
+				}
+				if (eSF.getName().equals("mixed")) {
+					System.out.println("value = " + value + " of " + value.getClass());
+					if (value instanceof BasicFeatureMap) {
+						BasicFeatureMap fm = (BasicFeatureMap) value;
+						for (Entry entry : fm.basicList()) {
+							System.out.println(" >> " + entry);
+							System.out.println("feature = " + entry.getEStructuralFeature());
+							System.out.println("definie dans " + entry.getEStructuralFeature().eClass());
+							System.out.println("value = " + entry.getValue() + " of " + entry.getValue());
+						}
+			
+					}
+					System.exit(-1);
+				}
+			}*/
+
 			// Convert container
 			EStructuralFeature eContainingFeature = eObject.eContainingFeature();
 			if (eContainingFeature != null) {
