@@ -43,7 +43,10 @@ package org.openflexo.technologyadapter.emf.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
@@ -59,6 +62,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
+import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
@@ -70,6 +75,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  */
 public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		implements FlexoModel<EMFModel, EMFMetaModel>, IFlexoOntology<EMFTechnologyAdapter> {
+
+	protected static final Logger logger = Logger.getLogger(EMFModel.class.getPackage().getName());
 
 	/** Resource. */
 	protected EMFModelResource modelResource;
@@ -509,6 +516,70 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	@Override
 	public String toString() {
 		return "EMFModel:" + getURI();
+	}
+
+	/**
+	 * Return a list of individuals of supplied type
+	 * 
+	 * TODO: i think this method is really sub-optimal and requires caching strategy implementation
+	 * 
+	 * @param type
+	 * @return
+	 */
+	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals(IFlexoOntologyClass<?> type) {
+
+		// System.out.println(
+		// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
+		List<EMFObjectIndividual> selectedIndividuals = new ArrayList<>();
+		Resource resource = getEMFResource();
+		/*try {
+			resource.load(null);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		IFlexoOntologyClass<?> flexoOntologyClass = type;
+		List<EObject> selectedEMFIndividuals = new ArrayList<>();
+		if (flexoOntologyClass instanceof EMFClassClass) {
+			TreeIterator<EObject> iterator = resource.getAllContents();
+			while (iterator.hasNext()) {
+				EObject eObject = iterator.next();
+				// FIXME: following commented code was written by gilles
+				// Seems to not working
+				// Replaced by following
+				// Gilles, could you check and explain ?
+				/*selectedEMFIndividuals.addAll(EcoreUtility.getAllContents(eObject, ((EMFClassClass) flexoOntologyClass).getObject()
+						.getClass()));*/
+				EMFClassClass emfObjectIndividualType = getMetaModel().getConverter().getClasses().get(eObject.eClass());
+
+				// System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
+				// + flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
+
+				if (emfObjectIndividualType.equals(flexoOntologyClass)
+						|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
+					selectedEMFIndividuals.add(eObject);
+				}
+			}
+		}
+		else if (flexoOntologyClass instanceof EMFEnumClass) {
+			System.err.println(
+					"We shouldn't browse enum individuals of type " + ((EMFEnumClass) flexoOntologyClass).getObject().getName() + ".");
+		}
+
+		// System.out.println("selectedEMFIndividuals=" + selectedEMFIndividuals);
+
+		for (EObject eObject : selectedEMFIndividuals) {
+			EMFObjectIndividual emfObjectIndividual = getConverter().getIndividuals().get(eObject);
+			if (emfObjectIndividual != null) {
+				selectedIndividuals.add(emfObjectIndividual);
+			}
+			else {
+				logger.warning("It's weird there shoud be an existing OpenFlexo wrapper existing for EMF Object : " + eObject.toString());
+				selectedIndividuals.add(getConverter().convertObjectIndividual(this, eObject));
+			}
+		}
+
+		return selectedIndividuals;
+
 	}
 
 }
