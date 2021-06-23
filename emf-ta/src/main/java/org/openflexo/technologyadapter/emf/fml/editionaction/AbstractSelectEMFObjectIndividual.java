@@ -78,7 +78,7 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 
 			// System.out.println(
 			// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
-			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<>(0);
+			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<>();
 			Resource resource = emfModel.getEMFResource();
 			/*try {
 				resource.load(null);
