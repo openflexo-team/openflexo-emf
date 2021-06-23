@@ -55,8 +55,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObjectImpl<EObject> implements
-		IFlexoOntologyDataPropertyValue<EMFTechnologyAdapter> {
+public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObjectImpl<EObject>
+		implements IFlexoOntologyDataPropertyValue<EMFTechnologyAdapter> {
 
 	/** Attribute. */
 	protected final EAttribute attribute;
@@ -106,7 +106,7 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 	 */
 	@Override
 	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDataProperty() {
-		return ontology.getMetaModel().getConverter().convertAttributeDataProperty(ontology.getMetaModel(), attribute,null,null);
+		return ontology.getMetaModel().getConverter().convertAttributeDataProperty(ontology.getMetaModel(), attribute, null, null);
 	}
 
 	/**
@@ -130,10 +130,12 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 		if (object.eGet(attribute) != null) {
 			if (attribute.getUpperBound() == 1) {
 				result = Collections.singletonList(object.eGet(attribute));
-			} else {
+			}
+			else {
 				result = (List<Object>) object.eGet(attribute);
 			}
-		} else {
+		}
+		else {
 			result = Collections.emptyList();
 		}
 		return Collections.unmodifiableList(result);
