@@ -37,7 +37,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.emf.model;
+package org.openflexo.technologyadapter.emf.model.uml;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -73,6 +73,7 @@ import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.UMLEMFModelSlot;
+import org.openflexo.technologyadapter.emf.model.TestEMFModelEdition;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;

@@ -79,6 +79,7 @@ import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.model.uml.TestUMLModelEdition;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
