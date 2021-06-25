@@ -152,6 +152,7 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 		EMFObjectIndividual definitions = (EMFObjectIndividual) definitionsList.get(0);
 
 		System.out.println("definitions = " + definitions);
+		assertNotNull(definitions);
 		/*for (IFlexoOntologyPropertyValue<EMFTechnologyAdapter> propertyValue : definitions.getPropertyValues()) {
 			System.out.println("propertyValue: " + propertyValue.getProperty().getName() + " : " + propertyValue.getValues() + " of "
 					+ propertyValue.getValues().getClass());
@@ -168,40 +169,8 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 		assertNotNull(process);
 
 		System.out.println("ID: " + EcoreUtil.getID(process.getObject()));
+		assertEquals("Process_172zuw6", EcoreUtil.getID(process.getObject()));
 
 	}
-
-	/*
-	@Test
-	@TestOrder(6)
-	public void performSomeOtherTests() {
-	
-		for (IFlexoOntologyClass<EMFTechnologyAdapter> c : metaModel.getAccessibleClasses()) {
-			System.out.println("> class " + c.getURI());
-		}
-	
-		EMFClassClass cityClass = (EMFClassClass) metaModel.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
-		assertNotNull(cityClass);
-	
-		// assertSame(cityClass,
-		// metaModel.getDeclaredClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
-	
-		Resource resource = city1Model.getEMFResource();
-		List<EObject> selectedEMFIndividuals = new ArrayList<>();
-		TreeIterator<EObject> iterator = resource.getAllContents();
-		while (iterator.hasNext()) {
-			EObject eObject = iterator.next();
-			System.out.println("Found " + eObject);
-			EMFClassClass eObjectType = city1Model.getMetaModel().getConverter().getClasses().get(eObject.eClass());
-			if (eObjectType.equals(cityClass) || cityClass.isSuperClassOf(eObjectType)) {
-				selectedEMFIndividuals.add(eObject);
-			}
-		}
-	
-		System.out.println("selectedEMFIndividuals=" + selectedEMFIndividuals);
-	
-		assertEquals(4, selectedEMFIndividuals.size());
-	
-	}*/
 
 }
