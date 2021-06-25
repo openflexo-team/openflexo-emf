@@ -554,7 +554,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 				// System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
 				// + flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
 
-				if (emfObjectIndividualType.equals(flexoOntologyClass)
+				if (emfObjectIndividualType != null && emfObjectIndividualType.equals(flexoOntologyClass)
 						|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
 					selectedEMFIndividuals.add(eObject);
 				}
