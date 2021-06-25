@@ -48,6 +48,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -165,6 +166,8 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 		EMFObjectIndividual process = (EMFObjectIndividual) values.get(0);
 		System.out.println("process: " + process);
 		assertNotNull(process);
+
+		System.out.println("ID: " + EcoreUtil.getID(process.getObject()));
 
 	}
 
