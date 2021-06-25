@@ -254,7 +254,8 @@ public class EMFModelConverter {
 		}
 	}
 
-	public Object convertIndividualReferenceList(EMFModel model, EObject object, EMFReferenceObjectProperty property) {
+	public EMFObjectIndividualReferenceObjectPropertyValue convertIndividualReferenceList(EMFModel model, EObject object,
+			EMFReferenceObjectProperty property) {
 
 		EMFObjectIndividual individual;
 

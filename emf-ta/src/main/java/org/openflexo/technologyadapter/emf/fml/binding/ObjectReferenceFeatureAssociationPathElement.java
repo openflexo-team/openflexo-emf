@@ -56,6 +56,7 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceAssociation;
 import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValue;
 
 public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElement {
 
@@ -111,7 +112,10 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 		Object returned = null;
 
 		if (emfAnswer instanceof EObjectEList) {
-			returned = model.getConverter().convertIndividualReferenceList(model, object, objectProperty);
+			EMFObjectIndividualReferenceObjectPropertyValue referenceList = model.getConverter().convertIndividualReferenceList(model,
+					object, objectProperty);
+			System.out.println("J'obtiens " + referenceList);
+			returned = referenceList.getValues();
 		}
 		else {
 			returned = model.getConverter().convertIndividualReference(model, emfAnswer);
