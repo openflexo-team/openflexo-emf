@@ -56,7 +56,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
  * @author sylvain
  */
 @ModelEntity
-@ImplementationClass(SelectEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
+@ImplementationClass(SelectEMFObjectIndividual.AbstractSelectEMFObjectIndividualImpl.class)
 @XMLElement
 @FML("SelectEMFObjectIndividual")
 public interface SelectEMFObjectIndividual
