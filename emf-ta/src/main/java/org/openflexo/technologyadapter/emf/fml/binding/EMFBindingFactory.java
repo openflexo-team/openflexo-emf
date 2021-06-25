@@ -116,6 +116,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 			IndividualOfClass<?> parentType = (IndividualOfClass<?>) parent.getType();
 			List<SimplePathElement> returned = new ArrayList<>();
 			if (parentType.getOntologyClass() instanceof EMFClassClass) {
+				returned.add(new EMFObjectIndividualTypePathElement(parent, (EMFClassClass) parentType.getOntologyClass()));
 				for (IFlexoOntologyFeatureAssociation<?> fa : ((EMFClassClass) parentType.getOntologyClass())
 						.getStructuralFeatureAssociations()) {
 					returned.add(getSimplePathElement(fa, parent));
