@@ -66,6 +66,10 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	public static final String EMFRESOURCE_FACTORY = "resourcefactory";
 	public static final String META_MODEL_TYPE = "EMFMetaModelType";
 
+	public static enum EMFMetaModelType {
+		Standard, Profile, XText
+	}
+
 	/**
 	 * Setter of extension for model files related to this MtaModel.
 	 * 
@@ -177,9 +181,5 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 */
 	@Setter(META_MODEL_TYPE)
 	void setMetaModelType(EMFMetaModelType mmType);
-
-	public static enum EMFMetaModelType {
-		Standard, Profile, XText
-	}
 
 }
