@@ -97,6 +97,11 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 		return null;
 	}
 
+	@Override
+	public EMFMetaModel getMetaModel() {
+		return getMetaModelData();
+	}
+
 	/**
 	 * Follow the link.
 	 * 

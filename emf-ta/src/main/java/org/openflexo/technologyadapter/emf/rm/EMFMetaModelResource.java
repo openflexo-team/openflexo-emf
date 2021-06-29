@@ -70,6 +70,8 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 		Standard, Profile, XText
 	}
 
+	public EMFMetaModel getMetaModel();
+
 	/**
 	 * Setter of extension for model files related to this MtaModel.
 	 * 
