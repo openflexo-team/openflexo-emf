@@ -48,10 +48,10 @@ import org.openflexo.connie.binding.IBindingPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.SubClassOfClass;
 import org.openflexo.foundation.ontology.SubPropertyOfProperty;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
+import org.openflexo.technologyadapter.emf.EMFObjectIndividualType;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeAssociation;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
@@ -95,8 +95,8 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public boolean handleType(TechnologySpecificType<?> technologySpecificType) {
-		if ((technologySpecificType instanceof IndividualOfClass)
-				&& ((IndividualOfClass<?>) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
+		if ((technologySpecificType instanceof EMFObjectIndividualType)
+				&& ((EMFObjectIndividualType) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
 			return true;
 		}
 		if ((technologySpecificType instanceof SubClassOfClass)
@@ -112,13 +112,12 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
-		if (parent.getType() instanceof IndividualOfClass) {
-			IndividualOfClass<?> parentType = (IndividualOfClass<?>) parent.getType();
+		if (parent.getType() instanceof EMFObjectIndividualType) {
+			EMFObjectIndividualType parentType = (EMFObjectIndividualType) parent.getType();
 			List<SimplePathElement> returned = new ArrayList<>();
 			if (parentType.getOntologyClass() instanceof EMFClassClass) {
-				returned.add(new EMFObjectIndividualTypePathElement(parent, (EMFClassClass) parentType.getOntologyClass()));
-				for (IFlexoOntologyFeatureAssociation<?> fa : ((EMFClassClass) parentType.getOntologyClass())
-						.getStructuralFeatureAssociations()) {
+				returned.add(new EMFObjectIndividualTypePathElement(parent, parentType.getOntologyClass()));
+				for (IFlexoOntologyFeatureAssociation<?> fa : parentType.getOntologyClass().getStructuralFeatureAssociations()) {
 					returned.add(getSimplePathElement(fa, parent));
 				}
 			}

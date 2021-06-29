@@ -43,15 +43,19 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.connie.type.CustomType;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.controller.CustomTypeEditor;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.ObjectIndividualTypeEditor;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
+import org.openflexo.technologyadapter.emf.EMFObjectIndividualType;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
@@ -267,4 +271,15 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 		}
 		return new EmptyPanel<>(controller, perspective, object);
 	}
+
+	@Override
+	protected CustomTypeEditor<?> makeCustomTypeEditor(Class<? extends CustomType> typeClass) {
+		if (typeClass.equals(EMFObjectIndividualType.class)) {
+			// return new EMFObjectIndividualTypeEditor(getServiceManager());
+			return new ObjectIndividualTypeEditor<EMFTechnologyAdapter, EMFObjectIndividual, EMFClassClass, EMFObjectIndividualType>(
+					getServiceManager(), EMFTechnologyAdapter.class, EMFObjectIndividualType.class, EMFClassClass.class, "EMF instance");
+		}
+		return super.makeCustomTypeEditor(typeClass);
+	}
+
 }
