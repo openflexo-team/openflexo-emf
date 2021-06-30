@@ -277,7 +277,6 @@ public class EMFMetaModelConverter {
 	public EMFClassClass convertClass(EMFMetaModel metaModel, EClass aClass, EPackage mmRootEPackage) {
 
 		EMFClassClass emfClass = classes.get(aClass);
-		;
 
 		if (emfClass == null) {
 
@@ -290,7 +289,7 @@ public class EMFMetaModelConverter {
 				EPackage localPackage = aClass.getEPackage();
 				if (localPackage != null && localPackage != org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
 					if (localPackage != mmRootEPackage)
-						logger.warning("Converting an EClass from a package different that MM Root One");
+						logger.warning("Converting an EClass from a package different that MM Root One : " + aClass);
 					convertPackage(metaModel, aClass.getEPackage());
 				}
 				// convert superTypes

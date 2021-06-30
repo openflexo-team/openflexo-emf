@@ -57,6 +57,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
+import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
@@ -268,10 +269,17 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	 */
 	@Override
 	public FlexoObject findObject(String objectIdentifier, String userIdentifier, String typeIdentifier) {
-		System.out.println("Dans EMFMetaModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
-				+ " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
-		// return getFlexoObject(Long.parseLong(objectIdentifier), userIdentifier);
-		return null;
+		// System.out.println("Dans EMFMetaModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
+		// + " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
+
+		EMFMetaModel metaModel = getMetaModel();
+
+		FlexoObject returned = metaModel.getClass(objectIdentifier);
+		if (returned != null) {
+			return returned;
+		}
+		returned = metaModel.getOntologyObject(objectIdentifier);
+		return returned;
 	}
 
 	/**
@@ -284,16 +292,12 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	@Override
 	public String getObjectIdentifier(Object object) {
 
+		if (object instanceof IFlexoOntologyConcept) {
+			return ((IFlexoOntologyConcept<?>) object).getURI();
+		}
 		if (object instanceof AEMFMetaModelObjectImpl) {
 			EObject eObject = ((AEMFMetaModelObjectImpl) object).getObject();
 			return EcoreUtil.getID(eObject);
-			/*if (eObject instanceof ENamedElement) {
-				return ((ENamedElement) eObject).getName();
-			}
-			else {
-				logger.warning("Could not find id for " + object);
-				return null;
-			}*/
 		}
 		logger.warning("Unexpected object " + object);
 		return null;
