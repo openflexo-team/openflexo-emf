@@ -57,6 +57,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
@@ -92,18 +93,31 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void lookupBPMNMetaModel() {
+	public void lookupBPMNMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		bpmnMMRes = (EMFMetaModelResource) serviceManager.getResourceManager()
 				.getResource("http://www.omg.org/spec/BPMN/20100524/MODEL-XMI", EMFMetaModel.class);
 
 		assertNotNull(bpmnMMRes);
 
+		assertFalse(bpmnMMRes.isLoaded());
+		metaModel = bpmnMMRes.getResourceData();
+		assertTrue(bpmnMMRes.isLoaded());
+		assertNotNull(metaModel);
+
+		IFlexoOntologyClass<EMFTechnologyAdapter> definitionsClass = metaModel
+				.getClass("http://www.omg.org/spec/BPMN/20100524/MODEL-XMI/Definitions");
+		assertNotNull(definitionsClass);
+
+		IFlexoOntologyClass<EMFTechnologyAdapter> diagramClass = metaModel
+				.getClass("http://www.omg.org/spec/BPMN/20100524/DI-XMI/BPMNDiagram");
+		assertNotNull(diagramClass);
+
 	}
 
 	@Test
 	@TestOrder(3)
-	public void lookupCity1Model() {
+	public void loadBasicModelResource() {
 
 		basicModelRes = (EMFModelResource) serviceManager.getResourceManager()
 				.getResource("http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/BPMN/BasicExample.bpmn", EMFModel.class);
@@ -118,7 +132,6 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 	public void loadBasicModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		assertFalse(basicModelRes.isLoaded());
-		assertFalse(bpmnMMRes.isLoaded());
 
 		basicModel = basicModelRes.getResourceData();
 		assertNotNull(basicModel);
@@ -126,12 +139,9 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 		assertTrue(basicModelRes.isLoaded());
 		assertTrue(bpmnMMRes.isLoaded());
 
-		metaModel = bpmnMMRes.getLoadedResourceData();
-		assertNotNull(metaModel);
-
-		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : basicModel.getIndividuals()) {
+		/*for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : basicModel.getIndividuals()) {
 			System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
-		}
+		}*/
 	}
 
 	@Test
@@ -161,15 +171,30 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 			}
 		}*/
 
-		List<?> values = definitions.getValues("rootElements");
-		assertEquals(1, values.size());
+		List<?> rootElements = definitions.getValues("rootElements");
+		assertEquals(1, rootElements.size());
 
-		EMFObjectIndividual process = (EMFObjectIndividual) values.get(0);
+		EMFObjectIndividual process = (EMFObjectIndividual) rootElements.get(0);
 		System.out.println("process: " + process);
 		assertNotNull(process);
 
 		System.out.println("ID: " + EcoreUtil.getID(process.getObject()));
 		assertEquals("Process_172zuw6", EcoreUtil.getID(process.getObject()));
+
+		List<?> diagrams = definitions.getValues("diagrams");
+		assertEquals(1, diagrams.size());
+		EMFObjectIndividual diagram = (EMFObjectIndividual) diagrams.get(0);
+		System.out.println("diagram: " + diagram);
+		System.out.println("class: " + diagram.getTypes());
+
+		EMFClassClass bpmnDiagramClass = (EMFClassClass) diagram.getTypes().get(0);
+		System.out.println("URI: " + bpmnDiagramClass.getURI());
+
+		IFlexoOntologyClass<EMFTechnologyAdapter> diagramClass = metaModel
+				.getClass("http://www.omg.org/spec/BPMN/20100524/DI-XMI/BPMNDiagram");
+		assertNotNull(diagramClass);
+
+		assertSame(diagram.getTypes().get(0), diagramClass);
 
 	}
 
