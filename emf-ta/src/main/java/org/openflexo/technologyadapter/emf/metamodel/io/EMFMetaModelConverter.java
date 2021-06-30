@@ -360,6 +360,9 @@ public class EMFMetaModelConverter {
 			emfReferenceAssociation = builder.buildReferenceAssociation(metaModel, aReference);
 			referenceAssociations.put(aReference, emfReferenceAssociation);
 			convertReferenceObjectProperty(metaModel, aReference, containingClass, mmRootEPackage);
+			if (aReference.getEReferenceType() != null) {
+				convertClass(metaModel, aReference.getEReferenceType(), mmRootEPackage);
+			}
 		}
 		return emfReferenceAssociation;
 	}
