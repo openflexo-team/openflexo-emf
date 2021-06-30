@@ -72,8 +72,6 @@ public class EMFObjectIndividualAttributeDataPropertyValueAsFeatureMap extends E
 		super(model, eObject, eAttribute);
 		this.featureMap = featureMap;
 
-		System.out.println("ok, j'ai ma map: " + featureMap);
-
 		valuesMap = new HashMap<>();
 
 		for (int i = 0; i < featureMap.size(); i++) {
