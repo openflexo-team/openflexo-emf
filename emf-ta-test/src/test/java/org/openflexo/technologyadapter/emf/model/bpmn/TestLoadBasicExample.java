@@ -196,6 +196,35 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 
 		assertSame(diagram.getTypes().get(0), diagramClass);
 
+		EMFObjectIndividual plane = (EMFObjectIndividual) diagram.getValues("plane").get(0);
+		assertNotNull(plane);
+		System.out.println("plane: " + plane);
+
+		EMFObjectIndividual bpmnElement = (EMFObjectIndividual) plane.getValues("bpmnElement").get(0);
+		assertNotNull(bpmnElement);
+		System.out.println("bpmnElement: " + bpmnElement);
+		assertSame(bpmnElement, process);
+
+		/*EObject ePlane = plane.getObject();
+		System.out.println("ePlane=" + ePlane);
+		System.out.println("isProxy: " + ePlane.eIsProxy());
+		EStructuralFeature bpmnElementF = ePlane.eClass().getEStructuralFeature("bpmnElement");
+		System.out.println("bpmnElementF=" + bpmnElementF);
+		Object el = ePlane.eGet(bpmnElementF);
+		System.out.println("el=" + el);
+		EObject el2 = (EObject) ePlane.eGet(bpmnElementF);
+		System.out.println("el2=" + el2);
+		System.out.println("isProxy: " + el2.eIsProxy());
+		EObject resolve = EcoreUtil.resolve(el2, basicModel.getEMFResource());
+		System.out.println("resolve=" + resolve);
+		System.out.println("isProxy=" + resolve.eIsProxy());
+		
+		URI proxyURI = ((InternalEObject) el2).eProxyURI();
+		System.out.println("proxyURI=" + proxyURI);
+		EObject eObj = basicModel.getEMFResource().getEObject(proxyURI.fragment());
+		System.out.println("eObj=" + eObj);
+		System.out.println("isProxy=" + eObj.eIsProxy());*/
+
 	}
 
 }
