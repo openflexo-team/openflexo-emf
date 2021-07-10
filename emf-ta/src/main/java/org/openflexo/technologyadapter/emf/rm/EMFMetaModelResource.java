@@ -184,4 +184,11 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	@Setter(META_MODEL_TYPE)
 	void setMetaModelType(EMFMetaModelType mmType);
 
+	/**
+	 * Getter of initial model resource
+	 * 
+	 * @return
+	 */
+	<I> EMFModelResource getInitialModelResource();
+
 }

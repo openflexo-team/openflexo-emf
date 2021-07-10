@@ -60,6 +60,7 @@ import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
@@ -315,4 +316,19 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 		return "FLX";
 	}
 
+	@Override
+	public <I> EMFModelResource getInitialModelResource() {
+
+		FlexoResourceCenter<I> rc = (FlexoResourceCenter<I>) getResourceCenter();
+		System.out.println("rc=" + rc);
+		I initialModel = rc.getEntry("Initial." + getModelFileExtension(), rc.getContainer((I) getIODelegate().getSerializationArtefact()));
+		System.out.println("initialModel=" + initialModel);
+		if (rc.exists(initialModel)) {
+			System.out.println("Found initial model : " + initialModel);
+			EMFModelResource returned = rc.getResource(initialModel, EMFModelResource.class);
+			System.out.println("Return : " + returned);
+			return returned;
+		}
+		return null;
+	}
 }

@@ -62,6 +62,8 @@ import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AbstractSelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.CreateEMFModel;
+import org.openflexo.technologyadapter.emf.fml.editionaction.DuplicateEMFModel;
 import org.openflexo.technologyadapter.emf.gui.EMFIconLibrary;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelView;
@@ -207,6 +209,12 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	 */
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
+		if (CreateEMFModel.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFModel.class), IconLibrary.DUPLICATE);
+		}
+		if (DuplicateEMFModel.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFModel.class), IconLibrary.DUPLICATE);
+		}
 		if (AddEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.DUPLICATE);
 		}
