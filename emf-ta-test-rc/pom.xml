@@ -94,7 +94,7 @@
             <distributionManagement>
                 <site>
                     <id>openflexo-ta.website</id>
-                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                    <url>scp://openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
                 </site>
             </distributionManagement>
         </profile>
@@ -111,7 +111,7 @@
             <distributionManagement>
                 <site>
                     <id>openflexo-ta.website</id>
-                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                    <url>scp://openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
                 </site>
             </distributionManagement>
         </profile>
@@ -128,7 +128,7 @@
             <distributionManagement>
                 <site>
                     <id>openflexo-ta.website</id>
-                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/${project.version}/</url>
+                    <url>scp://openflexo.org${sitedeploy.dir}/${project.version}/</url>
                 </site>
             </distributionManagement>
         </profile>
