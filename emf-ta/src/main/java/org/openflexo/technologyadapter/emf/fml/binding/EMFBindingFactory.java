@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.IBindingPathElement;
@@ -73,21 +74,21 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	protected SimplePathElement makeSimplePathElement(Object object, IBindingPathElement parent) {
+	protected SimplePathElement<?> makeSimplePathElement(Object object, IBindingPathElement parent, Bindable bindable) {
 		if (object instanceof EMFAttributeAssociation) {
 			if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeDataProperty) {
 				return new AttributeDataPropertyFeatureAssociationPathElement(parent, (EMFAttributeAssociation) object,
-						(EMFAttributeDataProperty) ((EMFAttributeAssociation) object).getFeature());
+						(EMFAttributeDataProperty) ((EMFAttributeAssociation) object).getFeature(), bindable);
 			}
 			else if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeObjectProperty) {
 				return new AttributeObjectPropertyFeatureAssociationPathElement(parent, (EMFAttributeAssociation) object,
-						(EMFAttributeObjectProperty) ((EMFAttributeAssociation) object).getFeature());
+						(EMFAttributeObjectProperty) ((EMFAttributeAssociation) object).getFeature(), bindable);
 			}
 		}
 		else if (object instanceof EMFReferenceAssociation
 				&& ((EMFReferenceAssociation) object).getFeature() instanceof EMFReferenceObjectProperty) {
 			return new ObjectReferenceFeatureAssociationPathElement(parent, (EMFReferenceAssociation) object,
-					(EMFReferenceObjectProperty) ((EMFReferenceAssociation) object).getFeature());
+					(EMFReferenceObjectProperty) ((EMFReferenceAssociation) object).getFeature(), bindable);
 		}
 		logger.warning("Unexpected " + object);
 		return null;
@@ -111,14 +112,14 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(IBindingPathElement parent) {
+	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
 		if (parent.getType() instanceof IndividualOfClass) {
 			IndividualOfClass<?> parentType = (IndividualOfClass<?>) parent.getType();
-			List<SimplePathElement> returned = new ArrayList<>();
+			List<SimplePathElement<?>> returned = new ArrayList<>();
 			if (parentType.getOntologyClass() instanceof EMFClassClass) {
 				for (IFlexoOntologyFeatureAssociation<?> fa : ((EMFClassClass) parentType.getOntologyClass())
 						.getStructuralFeatureAssociations()) {
-					returned.add(getSimplePathElement(fa, parent));
+					returned.add(getSimplePathElement(fa, parent, bindable));
 				}
 			}
 
@@ -127,13 +128,13 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 			return returned;
 		}
 
-		return super.getAccessibleSimplePathElements(parent);
+		return super.getAccessibleSimplePathElements(parent, bindable);
 	}
 
 	@Override
-	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(IBindingPathElement parent) {
+	public List<? extends FunctionPathElement<?>> getAccessibleFunctionPathElements(IBindingPathElement parent, Bindable bindable) {
 		// TODO: implements same as above, with behavioural features
-		return super.getAccessibleFunctionPathElements(parent);
+		return super.getAccessibleFunctionPathElements(parent, bindable);
 	}
 
 }

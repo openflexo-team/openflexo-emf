@@ -41,9 +41,10 @@ package org.openflexo.technologyadapter.emf.fml.binding;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.BindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
@@ -51,15 +52,20 @@ import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
-public class ReferenceObjectPropertyPathElement extends SimplePathElement {
+public class ReferenceObjectPropertyPathElement extends SimplePathElementImpl<EMFReferenceObjectProperty> {
 
 	private EMFReferenceObjectProperty objectProperty;
 
 	private static final Logger logger = Logger.getLogger(ReferenceObjectPropertyPathElement.class.getPackage().getName());
 
-	public ReferenceObjectPropertyPathElement(BindingPathElement parent, EMFReferenceObjectProperty property) {
-		super(parent, property.getName(), EMFObjectIndividual.class);
+	public ReferenceObjectPropertyPathElement(BindingPathElement parent, EMFReferenceObjectProperty property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		objectProperty = property;
+	}
+
+	@Override
+	public EMFReferenceObjectProperty getProperty() {
+		return getObjectProperty();
 	}
 
 	public EMFReferenceObjectProperty getObjectProperty() {
@@ -90,8 +96,19 @@ public class ReferenceObjectPropertyPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		((EMFObjectIndividual) target).getObject().eSet(objectProperty.getObject(), value);
 	}
+
+	@Override
+	public boolean isResolved() {
+		return getProperty() != null;
+	}
+
+	@Override
+	public void resolve() {
+		// TODO
+	}
+
 }

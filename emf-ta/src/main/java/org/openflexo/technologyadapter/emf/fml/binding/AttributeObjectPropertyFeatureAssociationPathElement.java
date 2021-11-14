@@ -43,9 +43,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
@@ -56,7 +57,7 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
-public class AttributeObjectPropertyFeatureAssociationPathElement extends SimplePathElement {
+public class AttributeObjectPropertyFeatureAssociationPathElement extends SimplePathElementImpl<EMFAttributeObjectProperty> {
 
 	private EMFAttributeObjectProperty objectProperty;
 	private EMFAttributeAssociation association;
@@ -65,10 +66,15 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 			.getLogger(AttributeObjectPropertyFeatureAssociationPathElement.class.getPackage().getName());
 
 	public AttributeObjectPropertyFeatureAssociationPathElement(IBindingPathElement parent, EMFAttributeAssociation association,
-			EMFAttributeObjectProperty property) {
-		super(parent, property.getName(), EMFObjectIndividual.class);
+			EMFAttributeObjectProperty property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		objectProperty = property;
 		this.association = association;
+	}
+
+	@Override
+	public EMFAttributeObjectProperty getProperty() {
+		return getObjectProperty();
 	}
 
 	public EMFAttributeObjectProperty getObjectProperty() {
@@ -129,4 +135,15 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 			throws TypeMismatchException, NullReferenceException {
 		((EMFObjectIndividual) target).getObject().eSet(objectProperty.getObject(), value);
 	}
+
+	@Override
+	public boolean isResolved() {
+		return getProperty() != null;
+	}
+
+	@Override
+	public void resolve() {
+		// TODO
+	}
+
 }

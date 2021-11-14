@@ -40,6 +40,7 @@
 
 package org.openflexo.technologyadapter.emf.metamodel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -282,6 +283,11 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return ontology.getTechnologyAdapter();
+	}
+
+	@Override
+	public Type getType() {
+		return getRange().getAccessedType();
 	}
 
 }

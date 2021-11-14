@@ -44,9 +44,10 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EObjectEList;
+import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.binding.IBindingPathElement;
-import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.binding.SimplePathElementImpl;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.ParameterizedTypeImpl;
@@ -57,7 +58,7 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
-public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElement {
+public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElementImpl<EMFReferenceObjectProperty> {
 
 	private EMFReferenceObjectProperty objectProperty;
 	private EMFReferenceAssociation association;
@@ -65,10 +66,15 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 	private static final Logger logger = Logger.getLogger(ObjectReferenceFeatureAssociationPathElement.class.getPackage().getName());
 
 	public ObjectReferenceFeatureAssociationPathElement(IBindingPathElement parent, EMFReferenceAssociation association,
-			EMFReferenceObjectProperty property) {
-		super(parent, property.getName(), EMFObjectIndividual.class);
+			EMFReferenceObjectProperty property, Bindable bindable) {
+		super(parent, property.getName(), property.getType(), bindable);
 		objectProperty = property;
 		this.association = association;
+	}
+
+	@Override
+	public EMFReferenceObjectProperty getProperty() {
+		return getObjectProperty();
 	}
 
 	public EMFReferenceObjectProperty getObjectProperty() {
@@ -130,4 +136,15 @@ public class ObjectReferenceFeatureAssociationPathElement extends SimplePathElem
 			((EMFObjectIndividual) target).getObject().eSet(objectProperty.getObject(), value);
 		}
 	}
+
+	@Override
+	public boolean isResolved() {
+		return getProperty() != null;
+	}
+
+	@Override
+	public void resolve() {
+		// TODO
+	}
+
 }

@@ -40,6 +40,7 @@
 
 package org.openflexo.technologyadapter.emf.metamodel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,12 +49,14 @@ import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EReference;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
@@ -290,4 +293,13 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	public String toString() {
 		return "EMFClassReference: " + getName() + " range=" + getRange() + " domain=" + getDomain();
 	}
+
+	@Override
+	public Type getType() {
+		if (getRange() instanceof IFlexoOntologyClass) {
+			return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass<EMFTechnologyAdapter>) getRange());
+		}
+		return null;
+	}
+
 }
