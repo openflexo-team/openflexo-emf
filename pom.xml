@@ -21,7 +21,7 @@
 		<flexodocresourcecenter.version>1.8.0</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.8.0</flexodocresourcemanager.version>
 		<flexocore.version>2.0.0-SNAPSHOT</flexocore.version>
-		<poi.version>3.12</poi.version>
+		<poi.version>5.2.1</poi.version>
 		<ta.logo>https://support.openflexo.org/images/components/ta/emf_ta/EMF200x144.png</ta.logo>
 	    <sitedeploy.dir>/home/www/sites/openflexo-emf</sitedeploy.dir>
 	</properties>
