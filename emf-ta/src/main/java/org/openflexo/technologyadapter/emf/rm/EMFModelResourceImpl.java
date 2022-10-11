@@ -43,13 +43,19 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
+import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 
@@ -84,6 +90,15 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 		EMFModel resourceData;
 		resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
 		setResourceData(resourceData);
+		resourceData.setResource(this);
+
+		/*for (IFlexoOntologyClass<EMFTechnologyAdapter> iFlexoOntologyClass : resourceData.getClasses()) {
+			System.out.println(" >> Concept " + iFlexoOntologyClass);
+		}
+		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : resourceData.getIndividuals()) {
+			System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
+		}*/
+
 		return resourceData;
 	}
 
@@ -204,6 +219,61 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	@Override
 	public Class<EMFModel> getResourceDataClass() {
 		return EMFModel.class;
+	}
+
+	/**
+	 * Generic method used to retrieve in this resource an object with supplied objectIdentifier, userIdentifier, and type identifier<br>
+	 * 
+	 * Note that for certain resources, some parameters might not be used (for example userIdentifier or typeIdentifier)
+	 * 
+	 * @param objectIdentifier
+	 * @param userIdentifier
+	 * @param typeIdentifier
+	 * @return
+	 */
+	@Override
+	public FlexoObject findObject(String objectIdentifier, String userIdentifier, String typeIdentifier) {
+		System.out.println("Dans EMFModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
+				+ " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
+		// return getFlexoObject(Long.parseLong(objectIdentifier), userIdentifier);
+		return null;
+	}
+
+	/**
+	 * Used to compute identifier of an object asserting this object is the {@link ResourceData} itself, or a {@link InnerResourceData}
+	 * object stored inside this resource
+	 * 
+	 * @param object
+	 * @return a String identifying supplied object (semantics is composite key using userIdentifier and typeIdentifier)
+	 */
+	@Override
+	public String getObjectIdentifier(Object object) {
+
+		if (object instanceof AEMFMetaModelObjectImpl) {
+			EObject eObject = ((AEMFMetaModelObjectImpl) object).getObject();
+			return EcoreUtil.getID(eObject);
+			/*if (eObject instanceof ENamedElement) {
+				return ((ENamedElement) eObject).getName();
+			}
+			else {
+				logger.warning("Could not find id for " + object);
+				return null;
+			}*/
+		}
+		logger.warning("Unexpected object " + object);
+		return null;
+	}
+
+	/**
+	 * Used to compute user identifier of an object asserting this object is the {@link ResourceData} itself, or a {@link InnerResourceData}
+	 * object stored inside this resource
+	 * 
+	 * @param object
+	 * @return a String identifying author (user) of supplied object
+	 */
+	@Override
+	public String getUserIdentifier(Object object) {
+		return "FLX";
 	}
 
 }

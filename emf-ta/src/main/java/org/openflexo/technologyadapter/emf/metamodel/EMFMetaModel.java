@@ -230,14 +230,18 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getOntologyObject(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyConcept<EMFTechnologyAdapter> getOntologyObject(String objectURI) {
-		IFlexoOntologyConcept<EMFTechnologyAdapter> result = null;
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> getOntologyObject(String objectNameOrURI) {
 		for (IFlexoOntologyConcept<EMFTechnologyAdapter> concept : getConcepts()) {
-			if (concept.getURI().equalsIgnoreCase(objectURI)) {
-				result = concept;
+			if (concept.getURI().equalsIgnoreCase(objectNameOrURI)) {
+				return concept;
 			}
 		}
-		return result;
+		for (IFlexoOntologyConcept<EMFTechnologyAdapter> concept : getConcepts()) {
+			if (concept.getName().equalsIgnoreCase(objectNameOrURI)) {
+				return concept;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -324,10 +328,13 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getClass(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classURI) {
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classNameOrURI) {
 		IFlexoOntologyClass<EMFTechnologyAdapter> result = null;
 		for (IFlexoOntologyClass<EMFTechnologyAdapter> aClass : getClasses()) {
-			if (aClass.getURI().equalsIgnoreCase(classURI)) {
+			if (aClass.getURI().equalsIgnoreCase(classNameOrURI)) {
+				result = aClass;
+			}
+			if (aClass.getName().equalsIgnoreCase(classNameOrURI)) {
 				result = aClass;
 			}
 			if (result != null)

@@ -57,6 +57,7 @@ import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.SelectUniqueEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -70,7 +71,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  */
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
 @DeclareEditionActions({ AddEMFObjectIndividual.class })
-@DeclareFetchRequests({ SelectEMFObjectIndividual.class })
+@DeclareFetchRequests({ SelectEMFObjectIndividual.class, SelectUniqueEMFObjectIndividual.class })
 @ModelEntity
 @ImplementationClass(UMLEMFModelSlot.UMLEMFModelSlotImpl.class)
 @XMLElement

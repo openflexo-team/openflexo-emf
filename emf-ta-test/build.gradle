@@ -1,0 +1,12 @@
+dependencies {
+
+    compile project(':emf-ta')
+    compile flexoFoundation()
+    
+    compile testUtils()
+    compile flexoFoundationTest()
+
+    // Test resource center
+    testRuntime project(':emf-ta-test-rc')
+  
+}

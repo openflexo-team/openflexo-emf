@@ -2,7 +2,7 @@
  * 
  * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Emfconnector, a component of the software infrastructure 
+ * This file is part of Excelconnector, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -38,28 +38,39 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
-import java.util.List;
+import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.FetchRequest;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
-import org.openflexo.technologyadapter.emf.EMFModelSlot;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
-import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 
 /**
- * EMF technology - specific {@link FetchRequest} allowing to retrieve a selection of some {@link EMFObjectIndividual} matching some
- * conditions and a given type.<br>
+ * {@link EditionAction} allowing to create an empty {@link EMFModelResource}
  * 
  * @author sylvain
+ *
  */
 @ModelEntity
-@ImplementationClass(SelectEMFObjectIndividual.AbstractSelectEMFObjectIndividualImpl.class)
+@ImplementationClass(CreateEMFModel.DuplicateEMFModelImpl.class)
 @XMLElement
-@FML("SelectEMFObjectIndividual")
-public interface SelectEMFObjectIndividual
-		extends AbstractSelectEMFObjectIndividual<List<EMFObjectIndividual>>, FetchRequest<EMFModelSlot, EMFModel, EMFObjectIndividual> {
+@FML("CreateEMFModel")
+public interface CreateEMFModel extends AbstractCreateEMFResource {
 
+	public static abstract class DuplicateEMFModelImpl extends AbstractCreateEMFResourceImpl implements CreateEMFModel {
+
+		private static final Logger logger = Logger.getLogger(CreateEMFModel.class.getPackage().getName());
+
+		@Override
+		protected EMFModelResource getInitialResource(RunTimeEvaluationContext evaluationContext) {
+			if (getMetaModelResource() != null) {
+				return getMetaModelResource().getInitialModelResource();
+			}
+			return null;
+		}
+
+	}
 }

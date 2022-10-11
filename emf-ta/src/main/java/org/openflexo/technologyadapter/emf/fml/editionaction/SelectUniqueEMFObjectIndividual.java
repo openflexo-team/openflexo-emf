@@ -55,9 +55,9 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
  * @author sylvain
  */
 @ModelEntity
-@ImplementationClass(SelectUniqueEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
+@ImplementationClass(SelectUniqueEMFObjectIndividual.AbstractSelectEMFObjectIndividualImpl.class)
 @XMLElement
-@FML("SelectEMFObjectIndividual")
+@FML("SelectUniqueEMFObjectIndividual")
 public interface SelectUniqueEMFObjectIndividual
 		extends AbstractSelectEMFObjectIndividual<EMFObjectIndividual>, UniqueFetchRequest<EMFModelSlot, EMFModel, EMFObjectIndividual> {
 

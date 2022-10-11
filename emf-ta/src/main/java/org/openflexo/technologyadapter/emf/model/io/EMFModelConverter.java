@@ -48,6 +48,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
@@ -56,7 +57,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -125,6 +128,7 @@ public class EMFModelConverter {
 	 */
 	public EMFObjectIndividual convertObjectIndividual(EMFModel model, EObject eObject) {
 		EMFObjectIndividual individual = null;
+		eObject = resolve(model, eObject);
 		if (individuals.get(eObject) == null) {
 			individual = builder.buildObjectIndividual(model, eObject);
 			individuals.put(eObject, individual);
@@ -231,7 +235,8 @@ public class EMFModelConverter {
 		}
 	}
 
-	public Object convertIndividualReferenceList(EMFModel model, EObject object, EMFReferenceObjectProperty property) {
+	public EMFObjectIndividualReferenceObjectPropertyValue convertIndividualReferenceList(EMFModel model, EObject object,
+			EMFReferenceObjectProperty property) {
 
 		EMFObjectIndividual individual;
 
@@ -364,6 +369,23 @@ public class EMFModelConverter {
 	 */
 	public Map<EObject, EMFObjectIndividual> getIndividuals() {
 		return individuals;
+	}
+
+	public EMFObjectIndividual getIndividual(EMFModel model, EObject eObject) {
+		EObject resolved = resolve(model, eObject);
+		return individuals.get(resolved);
+	}
+
+	private EObject resolve(EMFModel model, EObject eObject) {
+		if (eObject.eIsProxy()) {
+			EObject resolved = EcoreUtil.resolve(eObject, model.getEMFResource());
+			if (resolved.eIsProxy()) {
+				URI proxyURI = ((InternalEObject) resolved).eProxyURI();
+				resolved = model.getEMFResource().getEObject(proxyURI.fragment());
+			}
+			return resolved;
+		}
+		return eObject;
 	}
 
 	/**

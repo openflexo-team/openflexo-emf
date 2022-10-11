@@ -50,14 +50,22 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.InnerResourceData;
+import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.InJarIODelegate;
+import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 
@@ -89,6 +97,11 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public EMFMetaModel getMetaModel() {
+		return getMetaModelData();
 	}
 
 	/**
@@ -128,6 +141,21 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 					result.setResource(this);
 				}
 			}
+			/*System.out.println("------------> Registering Metamodel " + result);
+			
+			System.out.println("Root concept " + result.getRootConcept());
+			for (IFlexoOntologyClass<EMFTechnologyAdapter> iFlexoOntologyClass : result.getClasses()) {
+				System.out.println("* Concept " + iFlexoOntologyClass);
+				for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> iFlexoOntologyFeatureAssociation : iFlexoOntologyClass
+						.getStructuralFeatureAssociations()) {
+					System.out.println("   > " + iFlexoOntologyFeatureAssociation.getFeature().getName() + " : "
+							+ iFlexoOntologyFeatureAssociation.getRange());
+				}
+			}*/
+			/*for (IFlexoOntologyIndividual<EMFTechnologyAdapter> iFlexoOntologyIndividual : result.getIndividuals()) {
+				System.out.println(" > Individual " + iFlexoOntologyIndividual + " of " + iFlexoOntologyIndividual.getTypes());
+			}*/
+
 			return result;
 
 		} catch (ClassNotFoundException e) {
@@ -228,5 +256,79 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 			}
 			return file;
 		}
+	}
+
+	/**
+	 * Generic method used to retrieve in this resource an object with supplied objectIdentifier, userIdentifier, and type identifier<br>
+	 * 
+	 * Note that for certain resources, some parameters might not be used (for example userIdentifier or typeIdentifier)
+	 * 
+	 * @param objectIdentifier
+	 * @param userIdentifier
+	 * @param typeIdentifier
+	 * @return
+	 */
+	@Override
+	public FlexoObject findObject(String objectIdentifier, String userIdentifier, String typeIdentifier) {
+		// System.out.println("Dans EMFMetaModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
+		// + " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
+
+		EMFMetaModel metaModel = getMetaModel();
+
+		FlexoObject returned = metaModel.getClass(objectIdentifier);
+		if (returned != null) {
+			return returned;
+		}
+		returned = metaModel.getOntologyObject(objectIdentifier);
+		return returned;
+	}
+
+	/**
+	 * Used to compute identifier of an object asserting this object is the {@link ResourceData} itself, or a {@link InnerResourceData}
+	 * object stored inside this resource
+	 * 
+	 * @param object
+	 * @return a String identifying supplied object (semantics is composite key using userIdentifier and typeIdentifier)
+	 */
+	@Override
+	public String getObjectIdentifier(Object object) {
+
+		if (object instanceof IFlexoOntologyConcept) {
+			return ((IFlexoOntologyConcept<?>) object).getURI();
+		}
+		if (object instanceof AEMFMetaModelObjectImpl) {
+			EObject eObject = ((AEMFMetaModelObjectImpl) object).getObject();
+			return EcoreUtil.getID(eObject);
+		}
+		logger.warning("Unexpected object " + object);
+		return null;
+	}
+
+	/**
+	 * Used to compute user identifier of an object asserting this object is the {@link ResourceData} itself, or a {@link InnerResourceData}
+	 * object stored inside this resource
+	 * 
+	 * @param object
+	 * @return a String identifying author (user) of supplied object
+	 */
+	@Override
+	public String getUserIdentifier(Object object) {
+		return "FLX";
+	}
+
+	@Override
+	public <I> EMFModelResource getInitialModelResource() {
+
+		FlexoResourceCenter<I> rc = (FlexoResourceCenter<I>) getResourceCenter();
+		System.out.println("rc=" + rc);
+		I initialModel = rc.getEntry("Initial." + getModelFileExtension(), rc.getContainer((I) getIODelegate().getSerializationArtefact()));
+		System.out.println("initialModel=" + initialModel);
+		if (rc.exists(initialModel)) {
+			System.out.println("Found initial model : " + initialModel);
+			EMFModelResource returned = rc.getResource(initialModel, EMFModelResource.class);
+			System.out.println("Return : " + returned);
+			return returned;
+		}
+		return null;
 	}
 }

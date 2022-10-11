@@ -43,6 +43,7 @@ package org.openflexo.technologyadapter.emf.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
@@ -57,8 +58,10 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelObjectImpl<EObject> implements
-		IFlexoOntologyObjectPropertyValue<EMFTechnologyAdapter> {
+public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelObjectImpl<EObject>
+		implements IFlexoOntologyObjectPropertyValue<EMFTechnologyAdapter> {
+
+	protected static final Logger logger = Logger.getLogger(EMFObjectIndividualReferenceObjectPropertyValue.class.getPackage().getName());
 
 	/** Reference. */
 	protected final EReference reference;
@@ -111,7 +114,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 */
 	@Override
 	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getObjectProperty() {
-		return ontology.getMetaModel().getConverter().convertReferenceObjectProperty(ontology.getMetaModel(), reference,null,null);
+		return ontology.getMetaModel().getConverter().convertReferenceObjectProperty(ontology.getMetaModel(), reference, null, null);
 	}
 
 	/**
@@ -134,22 +137,40 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = null;
 		if (object.eGet(reference) != null) {
 			if (reference.getUpperBound() == 1) {
-				if (ontology.getConverter().getIndividuals().get(object.eGet(reference)) != null) {
-					result = Collections.singletonList((IFlexoOntologyConcept<EMFTechnologyAdapter>) (ontology.getConverter()
-							.getIndividuals().get(object.eGet(reference))));
-				} else {
-					result = Collections.emptyList();
-				}
-			} else {
-				result = new ArrayList<>();
-				List<?> valueList = (List<?>) object.eGet(reference);
-				for (Object value : valueList) {
-					if (ontology.getConverter().getIndividuals().get(value) != null) {
-						result.add((ontology.getConverter().getIndividuals().get(value)));
+				Object value = object.eGet(reference);
+				if (value instanceof EObject) {
+					EMFObjectIndividual emfObjectIndividual = ontology.getConverter().getIndividual(getEMFModel(), (EObject) value);
+					if (emfObjectIndividual != null) {
+						result = Collections.singletonList(emfObjectIndividual);
+					}
+					else {
+						result = Collections.emptyList();
 					}
 				}
+				else {
+					result = Collections.emptyList();
+				}
 			}
-		} else {
+			else {
+				result = new ArrayList<>();
+				Object allValues = object.eGet(reference);
+				if (allValues instanceof List) {
+					List<?> valueList = (List<?>) allValues;
+					for (Object value : valueList) {
+						if (value instanceof EObject) {
+							EMFObjectIndividual emfObjectIndividual = ontology.getConverter().getIndividual(getEMFModel(), (EObject) value);
+							if (emfObjectIndividual != null) {
+								result.add(emfObjectIndividual);
+							}
+						}
+					}
+				}
+				else {
+					logger.warning("Unexpected value list : " + allValues);
+				}
+			}
+		}
+		else {
 			result = Collections.emptyList();
 		}
 		return Collections.unmodifiableList(result);

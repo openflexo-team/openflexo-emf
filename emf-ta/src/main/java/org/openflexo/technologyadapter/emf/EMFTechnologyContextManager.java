@@ -50,9 +50,11 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 
@@ -178,6 +180,11 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	public void registerModel(EMFModelResource newModelResource) {
 		registerResource(newModelResource);
 		models.put(newModelResource.getURI(), newModelResource);
+	}
+
+	@Override
+	public EMFObjectIndividualType makeIndividualOfClass(IFlexoOntologyClass<EMFTechnologyAdapter> anOntologyClass) {
+		return new EMFObjectIndividualType((EMFClassClass) anOntologyClass);
 	}
 
 }

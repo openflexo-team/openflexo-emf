@@ -65,7 +65,10 @@ import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.CreateEMFModel;
+import org.openflexo.technologyadapter.emf.fml.editionaction.DuplicateEMFModel;
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.SelectUniqueEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -80,8 +83,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
  * 
  */
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
-@DeclareEditionActions({ AddEMFObjectIndividual.class })
-@DeclareFetchRequests({ SelectEMFObjectIndividual.class })
+@DeclareEditionActions({ CreateEMFModel.class, DuplicateEMFModel.class, AddEMFObjectIndividual.class })
+@DeclareFetchRequests({ SelectEMFObjectIndividual.class, SelectUniqueEMFObjectIndividual.class })
 @DeclareActorReferences({ ConceptActorReference.class, FlexoOntologyModelSlotInstance.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)

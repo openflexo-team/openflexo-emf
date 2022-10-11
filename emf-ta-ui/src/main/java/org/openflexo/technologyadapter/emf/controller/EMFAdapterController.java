@@ -43,21 +43,27 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.connie.type.CustomType;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.controller.CustomTypeEditor;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.ObjectIndividualTypeEditor;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
+import org.openflexo.technologyadapter.emf.EMFObjectIndividualType;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AbstractSelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.CreateEMFModel;
+import org.openflexo.technologyadapter.emf.fml.editionaction.DuplicateEMFModel;
 import org.openflexo.technologyadapter.emf.gui.EMFIconLibrary;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelView;
@@ -203,6 +209,12 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	 */
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
+		if (CreateEMFModel.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFModel.class), IconLibrary.DUPLICATE);
+		}
+		if (DuplicateEMFModel.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFModel.class), IconLibrary.DUPLICATE);
+		}
 		if (AddEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.DUPLICATE);
 		}
@@ -267,4 +279,15 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 		}
 		return new EmptyPanel<>(controller, perspective, object);
 	}
+
+	@Override
+	protected CustomTypeEditor<?> makeCustomTypeEditor(Class<? extends CustomType> typeClass) {
+		if (typeClass.equals(EMFObjectIndividualType.class)) {
+			// return new EMFObjectIndividualTypeEditor(getServiceManager());
+			return new ObjectIndividualTypeEditor<EMFTechnologyAdapter, EMFObjectIndividual, EMFClassClass, EMFObjectIndividualType>(
+					getServiceManager(), EMFTechnologyAdapter.class, EMFObjectIndividualType.class, EMFClassClass.class, "EMF instance");
+		}
+		return super.makeCustomTypeEditor(typeClass);
+	}
+
 }

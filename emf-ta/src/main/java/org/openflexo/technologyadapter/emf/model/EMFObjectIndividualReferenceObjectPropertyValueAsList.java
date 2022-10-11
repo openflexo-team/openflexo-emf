@@ -92,8 +92,15 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 		List<EMFObjectIndividual> result = null;
 		if (object.eGet(reference) != null) {
 			if (reference.getUpperBound() == 1) {
-				if (ontology.getConverter().getIndividuals().get(object.eGet(reference)) != null) {
-					result = Collections.singletonList((ontology.getConverter().getIndividuals().get(object.eGet(reference))));
+				Object value = object.eGet(reference);
+				if (value instanceof EObject) {
+					EMFObjectIndividual emfObjectIndividual = ontology.getConverter().getIndividual(getEMFModel(), (EObject) value);
+					if (emfObjectIndividual != null) {
+						result = Collections.singletonList(emfObjectIndividual);
+					}
+					else {
+						result = Collections.emptyList();
+					}
 				}
 				else {
 					result = Collections.emptyList();
@@ -103,8 +110,11 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 				result = new ArrayList<>();
 				List<?> valueList = (List<?>) object.eGet(reference);
 				for (Object value : valueList) {
-					if (ontology.getConverter().getIndividuals().get(value) != null) {
-						result.add((ontology.getConverter().getIndividuals().get(value)));
+					if (value instanceof EObject) {
+						EMFObjectIndividual emfObjectIndividual = ontology.getConverter().getIndividual(getEMFModel(), (EObject) value);
+						if (emfObjectIndividual != null) {
+							result.add(emfObjectIndividual);
+						}
 					}
 				}
 			}
