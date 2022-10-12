@@ -39,52 +39,27 @@
 
 package org.openflexo.technologyadapter.emf.model;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.CreationScheme;
-import org.openflexo.foundation.fml.FMLModelFactory;
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.action.AddUseDeclaration;
-import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
-import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.model.uml.TestUMLModelEdition;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
-import org.openflexo.test.TestOrder;
 
 /**
  * Test Class for EMF Model Edition.
@@ -125,7 +100,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws SaveResourceException
 	 * @throws IOException
 	 */
-	@Test
+	/*@Test
 	@TestOrder(1)
 	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException, IOException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
@@ -152,14 +127,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// newViewPoint.getResource()).getFile().exists());
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
-	}
+	}*/
 
 	/**
 	 * Test the VirtualModel creation
 	 * 
 	 * @throws ModelDefinitionException
 	 */
-	@Test
+	/*@Test
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
@@ -198,9 +173,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(newModelSlot);
 		newVirtualModel.addToModelSlots(newModelSlot);
 		assertTrue(newVirtualModel.getModelSlots(EMFModelSlot.class).size() == 1);
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testCreateProject() {
 		editor = createStandaloneProject("TestProject");
@@ -229,9 +204,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(5)
 	public void testCreateVMI() {
 
@@ -249,22 +224,15 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");
 
-		/*EMFModelSlotInstanceConfiguration modelSlotInstanceConfiguration = (EMFModelSlotInstanceConfiguration) vmiAction
-				.getModelSlotInstanceConfiguration(newModelSlot);
-		assertNotNull(modelSlotInstanceConfiguration);
-		modelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingModel);
-		modelSlotInstanceConfiguration.setModelResource(emfModelResource);
-		assertTrue(modelSlotInstanceConfiguration.isValidConfiguration());*/
-
 		logger.info("Creating a new FMLRTVirtualModelInstance");
 		vmiAction.doAction();
 		newVirtualModelInstance = vmiAction.getNewVirtualModelInstance();
 
 		newVirtualModelInstance.setFlexoPropertyValue(newModelSlot, emfModelResource.getLoadedResourceData());
 
-	}
+	}*/
 
-	@Test
+/*	@Test
 	@TestOrder(6)
 	public void testCreateFlexoConceptC() throws SaveResourceException {
 
@@ -287,9 +255,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(7)
 	public void testEdithEMFModelinVMI() {
 
@@ -300,44 +268,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			creationSchemeCreationAction = new CreationSchemeAction(creationScheme, newVirtualModelInstance, null, editor);
 			assertNotNull(creationSchemeCreationAction);
-
-			/*
-			 * EMFObjectIndividual intParameter =
-			 * createIntParameter(emfModelResource, emfMetaModelResource,
-			 * "IntParameter Name", Integer.valueOf(12),
-			 * newVirtualModel.getFMLModelFactory());
-			 * assertNotNull(intParameter);
-			 */
-			/*
-			 * EMFObjectIndividual doubleParameter =
-			 * createDoubleParameter(emfModelResource, emfMetaModelResource,
-			 * "DoubleParameter Name", Double.valueOf(42.12),
-			 * newVirtualModel.getFMLModelFactory());
-			 * assertNotNull(doubleParameter);
-			 */
-
-			// TODO : this does not work yet
-
-			/*
-			 * EMFObjectIndividual boolParameter =
-			 * createBoolParameter(emfModelResource, emfMetaModelResource,
-			 * "BoolParameter Name", true,
-			 * newVirtualModel.getFMLModelFactory());
-			 * assertNotNull(boolParameter);
-			 * 
-			 * EMFObjectIndividual stringParameter =
-			 * createStringParameter(emfModelResource, emfMetaModelResource,
-			 * "StringParameter Name", "StringParameter Value",
-			 * newVirtualModel.getFMLModelFactory());
-			 * assertNotNull(stringParameter);
-			 * 
-			 * EMFObjectIndividual parameterSet =
-			 * createParameterSet(emfModelResource, emfMetaModelResource,
-			 * "ParameterSet Name", Arrays.asList(intParameter, doubleParameter,
-			 * boolParameter, stringParameter),
-			 * newVirtualModel.getFMLModelFactory());
-			 * assertNotNull(parameterSet);
-			 */
 
 			emfModelResource.save();
 
@@ -377,9 +307,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 		return result;
-	}
+	}*/
 
-	protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
+	/*protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
 			FMLModelFactory factory) throws FlexoException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
@@ -395,7 +325,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// removeObject.finalizePerformAction(creationSchemeCreationAction,
 		// null);
 		return result;
-	}
+	}*/
+	
 	/*
 	 * 
 	 * protected EMFObjectIndividualAttributeDataPropertyValue

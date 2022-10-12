@@ -39,46 +39,12 @@
 
 package org.openflexo.technologyadapter.emf.model.uml;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.CreationScheme;
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
-import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.action.AddUseDeclaration;
-import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
-import org.openflexo.foundation.fml.rt.FMLRTVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.emf.EMFModelSlot;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.UMLEMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.TestEMFModelEdition;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
-import org.openflexo.test.TestOrder;
 
 /**
  * Test Class for EMF Model Edition.
@@ -90,7 +56,7 @@ import org.openflexo.test.TestOrder;
 public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
 
-	public static final String VIEWPOINT_NAME = "TestViewPoint";
+	/*public static final String VIEWPOINT_NAME = "TestViewPoint";
 	public static final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPoint";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
 
@@ -110,7 +76,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	private static CreationSchemeAction creationSchemeCreationAction;
 
 	private static DirectoryResourceCenter newResourceCenter;
-	private static FlexoResourceCenter<?> emfResourceCenter;
+	private static FlexoResourceCenter<?> emfResourceCenter;*/
 
 	/**
 	 * Test the VP creation
@@ -119,7 +85,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws SaveResourceException
 	 * @throws IOException
 	 */
-	@Test
+	/*@Test
 	@TestOrder(1)
 	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException, IOException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
@@ -138,14 +104,14 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
-	}
+	}*/
 
 	/**
 	 * Test the VirtualModel creation
 	 * 
 	 * @throws ModelDefinitionException
 	 */
-	@Test
+	/*@Test
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
@@ -179,18 +145,18 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(newModelSlot);
 		newVirtualModel.addToModelSlots(newModelSlot);
 		assertTrue(newVirtualModel.getModelSlots(UMLEMFModelSlot.class).size() == 1);
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testCreateProject() {
 		editor = createStandaloneProject("TestProject");
 		project = (FlexoProject<File>) editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(4)
 	public void testCreateEMFModel() throws ModelDefinitionException {
 		try {
@@ -201,14 +167,6 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.uml");
 			umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
 					umlMetaModelResource, newResourceCenter, "coucou.uml", "myURI", true);
-			/*
-			 * try { RepositoryFolder<FlexoResource<?>> modelFolder =
-			 * project.createNewFolder("Models"); umlModelResource =
-			 * technologicalAdapter.createNewEMFModel(new
-			 * File(modelFolder.getFile(), "coucou.uml"), "myURI",
-			 * umlMetaModelResource, resourceCenter); } catch (Exception e) {
-			 * e.printStackTrace(); }
-			 */
 
 			assertNotNull(umlModelResource);
 
@@ -217,9 +175,9 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(5)
 	public void testCreateVMI() {
 
@@ -243,9 +201,9 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		newVirtualModelInstance.setFlexoPropertyValue(newModelSlot, umlModelResource.getLoadedResourceData());
 
-	}
+	}*/
 
-	@Test
+	/*@Test
 	@TestOrder(6)
 	public void testCreateFlexoConceptC() throws SaveResourceException {
 
@@ -268,13 +226,9 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
 
-		/**
-		 * NamedElement e = null; Profile profile = null; profile.getAllProfileApplications(); e.getApplicableStereotypes();
-		 **/
+	}*/
 
-	}
-
-	@Test
+	/*@Test
 	@TestOrder(7)
 	public void testEditEMFModelinVMI() {
 
@@ -286,7 +240,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			creationSchemeCreationAction = new CreationSchemeAction(creationScheme, newVirtualModelInstance, null, editor);
 			assertNotNull(creationSchemeCreationAction);
 
-			/* TODO some stuff TO DO HERE */
+			// TODO some stuff TO DO HERE
 
 			umlModelResource.save();
 
@@ -294,5 +248,5 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-	}
+	}*/
 }
