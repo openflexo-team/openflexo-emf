@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.connie.type.CustomType;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
@@ -241,10 +242,23 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
+	public boolean isRepresentableInModuleView(TechnologyObject<EMFTechnologyAdapter> object) {
+		// TODO: we can also handle other EMFObject
 		return object instanceof EMFModel || object instanceof EMFMetaModel;
 	}
-
+	
+	@Override
+	public FlexoObject getRepresentableMasterObject(TechnologyObject<EMFTechnologyAdapter> object) {
+		// TODO: we can also handle other EMFObject
+		if (object instanceof EMFModel) {
+			return object;
+		}
+		if (object instanceof EMFMetaModel) {
+			return object;
+		}
+		return null;
+	}
+	
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller) {
 		if (object instanceof EMFModel) {
@@ -257,7 +271,7 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller,
+	public ModuleView<?> createModuleViewForMasterObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
 			EMFModelView returned = new EMFModelView((EMFModel) object, controller, perspective);
