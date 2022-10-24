@@ -2,6 +2,7 @@ dependencies {
 
     implementation project(':emf-ta')
     implementation flexoFoundation()
+    implementation flexoOntology()
     implementation group: 'org.eclipse.uml2', name: 'uml', version: '5.0.1'
     implementation 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.10.0'
 
