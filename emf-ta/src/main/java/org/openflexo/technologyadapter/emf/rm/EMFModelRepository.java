@@ -43,7 +43,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.ModelRepository;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
-import org.openflexo.pamela.factory.ModelFactory;
+import org.openflexo.pamela.factory.PamelaModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -54,9 +54,9 @@ public interface EMFModelRepository<I>
 
 	public static <I> EMFModelRepository<I> instanciateNewRepository(EMFTechnologyAdapter technologyAdapter,
 			FlexoResourceCenter<I> resourceCenter) {
-		ModelFactory factory;
+		PamelaModelFactory factory;
 		try {
-			factory = new ModelFactory(EMFModelRepository.class);
+			factory = new PamelaModelFactory(EMFModelRepository.class);
 			EMFModelRepository<I> newRepository = factory.newInstance(EMFModelRepository.class);
 			newRepository.setTechnologyAdapter(technologyAdapter);
 			newRepository.setResourceCenter(resourceCenter);

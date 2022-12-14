@@ -321,7 +321,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 		umlMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(UML_MM_NAME, UML_MM_URI, UML_MM_EXT,
 				UML_MM_PKGCLSNAME, UML_MM_FACTORYCLSNAME, getTechnologyContextManager());
 
-		/*ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+		/*PamelaModelFactory factory = new PamelaModelFactory(PamelaMetaModelLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
 		
 		if (ecoreMetaModelResource == null) {
@@ -392,10 +392,10 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	
 		EMFMetaModelResource metaModelResource = null;
 	
-		ModelFactory factory;
+		PamelaModelFactory factory;
 		try {
 	
-			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class,
+			factory = new PamelaModelFactory(PamelaMetaModelLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class,
 					EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
 	
 			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
