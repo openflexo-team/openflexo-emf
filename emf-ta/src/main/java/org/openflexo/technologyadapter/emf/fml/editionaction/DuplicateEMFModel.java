@@ -46,6 +46,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.Getter;
@@ -75,6 +76,7 @@ public interface DuplicateEMFModel extends AbstractCreateEMFResource {
 
 	@Getter(value = COPIED_EMF_MODEL_KEY)
 	@XMLAttribute
+	@FMLAttribute(value = COPIED_EMF_MODEL_KEY, required = false, description = "<html>The copied model</html>")
 	public DataBinding<EMFModel> getCopiedEMFModel();
 
 	@Setter(COPIED_EMF_MODEL_KEY)

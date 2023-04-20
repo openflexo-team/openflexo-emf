@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ModelEntity
 @ImplementationClass(EMFObjectIndividualRole.EMFObjectIndividualRoleImpl.class)
 @XMLElement
-@FML("EMFClassClassRole")
+@FML("EMFObjectRole")
 public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndividual> {
 
 	public static abstract class EMFObjectIndividualRoleImpl extends IndividualRoleImpl<EMFObjectIndividual>
