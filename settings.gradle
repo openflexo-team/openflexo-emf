@@ -1,1 +1,1 @@
-include 'emf-ta', 'emf-ta-test', 'emf-ta-test-rc', 'emf-ta-ui'
+include 'emf-ta', 'emf-ta-rc', 'emf-ta-test', 'emf-ta-test-rc', 'emf-ta-ui'

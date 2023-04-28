@@ -1,0 +1,6 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+
+@URI("http://www.openflexo.org/test/emf/SimpleBPMNProcess.fml")
+public model SimpleBPMNProcess {
+
+}

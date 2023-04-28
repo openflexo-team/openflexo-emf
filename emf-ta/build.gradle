@@ -14,6 +14,9 @@ dependencies {
   // testing dep
   testImplementation flexoFoundationTest()
 
+  // This resource center must always be present at run-time
+  runtimeOnly project(':emf-ta-rc')
+
   // Test resource center
   testRuntimeOnly project(':emf-ta-test-rc')
 }
