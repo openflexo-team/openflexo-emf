@@ -45,6 +45,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
@@ -87,6 +88,7 @@ public interface UMLEMFModelSlot extends EMFModelSlot {
 		@Override
 		@Getter(value = META_MODEL_URI_KEY)
 		@XMLAttribute
+		@FMLAttribute(value = META_MODEL_URI_KEY, required = false, description = "<html>reference of the UML metamodel</html>")
 		public String getMetaModelURI() {
 			return EMFTechnologyAdapter.UML_MM_URI;
 		}

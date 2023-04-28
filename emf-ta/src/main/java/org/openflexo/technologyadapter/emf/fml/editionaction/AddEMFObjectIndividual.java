@@ -47,6 +47,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
@@ -79,7 +80,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
-@FML("AddEMFObjectIndividual")
+@FML("AddEMFObject")
 public interface AddEMFObjectIndividual
 		extends AddIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual, EMFTechnologyAdapter>, EMFAction<EMFObjectIndividual> {
 
@@ -88,6 +89,7 @@ public interface AddEMFObjectIndividual
 
 	@Getter(value = CONTAINER_KEY)
 	@XMLAttribute
+	@FMLAttribute(value = CONTAINER_KEY, required = false, description = "<html>reference of the container</html>")
 	public DataBinding<List> getContainer();
 
 	@Setter(CONTAINER_KEY)

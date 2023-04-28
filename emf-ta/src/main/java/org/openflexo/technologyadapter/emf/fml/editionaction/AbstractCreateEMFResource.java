@@ -43,6 +43,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.FMLExecutionException;
@@ -79,6 +80,7 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 
 	@Getter(value = META_MODEL_URI_KEY)
 	@XMLAttribute
+	@FMLAttribute(value = META_MODEL_URI_KEY, required = false, description = "<html>URI of the metamodel</html>")
 	public String getMetaModelURI();
 
 	@Setter(META_MODEL_URI_KEY)
