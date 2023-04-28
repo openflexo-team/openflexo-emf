@@ -39,6 +39,7 @@
 
 package org.openflexo.technologyadapter.emf;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -60,6 +61,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceFactory;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
+import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
 
 /**
@@ -68,8 +70,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
  * @author sylvain
  * 
  */
-@DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
-		UMLEMFModelSlot.class })
+@DeclareModelSlots({ EMFModelSlot.class /*,EMFMetaModelSlot.class*/
+		/*UMLEMFModelSlot.class*/ })
 @DeclareTechnologySpecificTypes({ EMFObjectIndividualType.class })
 @DeclareResourceFactories({ EMFMetaModelResourceFactory.class, EMFModelResourceFactory.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter> {
@@ -94,7 +96,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	private static String UML_MM_EXT = "uml";
 	private static String UML_MM_PKGCLSNAME = UMLPackage.class.getName();
 	private static String UML_MM_FACTORYCLSNAME = UMLResourceFactoryImpl.class.getName();
-	private EMFMetaModelResource umlMetaModelResource = null;
+	// private EMFMetaModelResource umlMetaModelResource = null;
 
 	/**
 	 * 
@@ -318,8 +320,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 		ecoreMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(ECORE_MM_NAME, ECORE_MM_URI, ECORE_MM_EXT,
 				ECORE_MM_PKGCLSNAME, ECORE_MM_FACTORYCLSNAME, getTechnologyContextManager());
 
-		umlMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(UML_MM_NAME, UML_MM_URI, UML_MM_EXT,
-				UML_MM_PKGCLSNAME, UML_MM_FACTORYCLSNAME, getTechnologyContextManager());
+		// umlMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(UML_MM_NAME, UML_MM_URI, UML_MM_EXT,
+		// UML_MM_PKGCLSNAME, UML_MM_FACTORYCLSNAME, getTechnologyContextManager());
 
 		/*PamelaModelFactory factory = new PamelaModelFactory(PamelaMetaModelLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
@@ -595,6 +597,37 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 			emfObjectIndividualTypeFactory = new EMFObjectIndividualTypeFactory(this);
 		}
 		return emfObjectIndividualTypeFactory;
+	}
+
+	private <I> void handleNewMetaModelRegistered(EMFMetaModelResource mmResource, FlexoResourceCenter<I> rc) {
+		for (I serializationArtefact : rc) {
+			if (!isSerializationArtefactIgnorable(rc, serializationArtefact)) {
+				EMFModelResourceFactory resourceFactory = getEMFModelResourceFactory();
+				if (resourceFactory.isValidSerializationArtefact(serializationArtefact, rc, mmResource)
+						&& resourceFactory.getRegisteredResource(serializationArtefact) == null) {
+					try {
+						EMFModelResource modelResource = resourceFactory.retrieveResource(serializationArtefact, rc);
+						logger.info("Registered new model " + modelResource + " conform to " + mmResource);
+					} catch (ModelDefinitionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+
+	}
+
+	public void newMetaModelWasRegistered(EMFMetaModelResource mmResource, FlexoResourceCenter<?> resourceCenter) {
+
+		logger.info("Lookup models conform to " + mmResource);
+		for (FlexoResourceCenter<?> rc : getServiceManager().getResourceCenterService().getResourceCenters()) {
+			// Then we iterate on all resources found in the resource factory
+			handleNewMetaModelRegistered(mmResource, rc);
+		}
 	}
 
 }

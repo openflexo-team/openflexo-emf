@@ -126,6 +126,8 @@ public class EMFMetaModelResourceFactory
 		}
 		else {
 			((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(resource);
+			EMFTechnologyAdapter technologyAdapter = getTechnologyAdapter(resource.getServiceManager());
+			technologyAdapter.newMetaModelWasRegistered(resource, resourceCenter);
 		}
 
 		// Register the resource in the EMFMetaModelRepository of supplied resource center
@@ -146,10 +148,10 @@ public class EMFMetaModelResourceFactory
 		returned.setMetaModelType(EMFMetaModelType.Standard);
 
 		// returned.setResourceCenter(resourceCenter);
+		returned.setURI(metaModelURI);
 		returned.setServiceManager(technologyContextManager.getServiceManager());
 		returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 		returned.initName(metaModelName);
-		returned.setURI(metaModelURI);
 
 		returned.setModelFileExtension(metaModelExtension);
 		returned.setPackageClassName(pkgClassName);

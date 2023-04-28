@@ -56,7 +56,16 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-		return true;
+
+		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
+				resourceCenter.getServiceManager());
+
+		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
+			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public <I> EMFModelResource makeEMFModelResource(I serializationArtefact, EMFMetaModelResource metaModelResource,
@@ -88,6 +97,10 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	@Override
 	public <I> EMFModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
 			throws ModelDefinitionException, IOException {
+
+		if (getRegisteredResource(serializationArtefact) != null) {
+			return getRegisteredResource(serializationArtefact);
+		}
 
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
 				resourceCenter.getServiceManager());

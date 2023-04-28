@@ -104,7 +104,8 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 				EMFPackageRegistry.put(mmURI, ePackage);
 			}
 			else {
-				logger.warning("EMF MEtamodel already exists in registry : " + newMetaModelResource.getURI());
+				logger.warning("EMF Metamodel already exists in registry URI: " + newMetaModelResource.getURI() + " resource from: "
+						+ newMetaModelResource.getIODelegate().getSerializationArtefact());
 			}
 		}
 		else {
