@@ -1,8 +1,6 @@
 **/target
 **/build
-*.class
-*.war
-*.ear
+**/bin
 *.ipr
 *.idea
 *.iws
@@ -10,6 +8,12 @@
 .classpath
 .project
 .settings
-.gradle/
-/.DS_Store
-**/out/
+.DS_Store
+/pom.xml~
+/target
+/.gradle/
+/infer-out/
+.metadata
+**/*~
+
+
