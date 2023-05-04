@@ -127,9 +127,14 @@ public class EMFModelConverter {
 	 * @return
 	 */
 	public EMFObjectIndividual convertObjectIndividual(EMFModel model, EObject eObject) {
+		if (eObject == null) {
+			logger.warning("convertObjectIndividual called for null EObject model=" + model);
+			return null;
+		}
 		EMFObjectIndividual individual = null;
 		eObject = resolve(model, eObject);
 		if (individuals.get(eObject) == null) {
+
 			individual = builder.buildObjectIndividual(model, eObject);
 			individuals.put(eObject, individual);
 
@@ -162,6 +167,8 @@ public class EMFModelConverter {
 					}
 				}
 			}
+
+			logger.info("Building EMFObjectIndividual for " + eObject + " types=" + individual.getTypes());
 
 		}
 		else {

@@ -125,6 +125,9 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public String getURI() {
+		if (getResource() != null) {
+			return getResource().getURI();
+		}
 		return EMFModelURIBuilder.getUri(resource);
 	}
 
