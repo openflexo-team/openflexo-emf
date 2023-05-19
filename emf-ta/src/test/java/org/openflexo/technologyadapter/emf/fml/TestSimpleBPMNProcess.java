@@ -47,7 +47,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.exception.InvalidBindingException;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -74,7 +73,6 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.test.UITest;
 
 /**
  * Test the instantiation of a VirtualModel whose instances have {@link FMLControlledDiagramVirtualModelNature}
@@ -183,7 +181,6 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 
 	@Test
 	@TestOrder(4)
-	@Category(UITest.class)
 	public void testListAllEMFObjectIndividuals() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
 			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		System.err.println("testListAllEMFObjectIndividuals()");
@@ -191,87 +188,22 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(34, allObjects.size());
 	}
 
-	/*
 	@Test
 	@TestOrder(5)
-	@Category(UITest.class)
-	public void testListDeclaredOWLClasses() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
+	public void testListAllProcesses() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
 			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listDeclaredOWLClasses()");
-		List<OWLClass> allClasses = vmi.execute("this.listDeclaredOWLClasses()");
-		assertEquals(4, allClasses.size());
+		System.err.println("testListAllProcesses()");
+		List<EMFObjectIndividual> allProcesses = vmi.execute("this.listAllProcesses()");
+		assertEquals(1, allProcesses.size());
 	}
-	
+
 	@Test
 	@TestOrder(6)
-	@Category(UITest.class)
-	public void testListDeclaredOWLClasses2() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
+	public void testListAllTasks() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
 			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listDeclaredOWLClasses2()");
-		List<OWLClass> allClasses = vmi.execute("this.listDeclaredOWLClasses2()");
-		assertEquals(4, allClasses.size());
+		System.err.println("testListAllTasks()");
+		List<EMFObjectIndividual> allTasks = vmi.execute("this.listAllTasks()");
+		assertEquals(2, allTasks.size());
 	}
-	
-	@Test
-	@TestOrder(7)
-	@Category(UITest.class)
-	public void testSelectUniqueOWLClass() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("selectUniqueOWLClass()");
-		OWLClass theCat = vmi.execute("this.selectUniqueOWLClass()");
-		System.err.println("theCat=" + theCat);
-		assertNotNull(theCat);
-	}
-	
-	@Test
-	@TestOrder(8)
-	@Category(UITest.class)
-	public void testListAllOWLIndividuals() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listAllOWLIndividuals()");
-		List<OWLIndividual> allIndividuals = vmi.execute("this.listAllOWLIndividuals()");
-		assertEquals(3, allIndividuals.size());
-	}
-	
-	@Test
-	@TestOrder(9)
-	@Category(UITest.class)
-	public void testListAllOWLIndividuals2() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listAllOWLIndividuals2()");
-		List<OWLIndividual> allIndividuals = vmi.execute("this.listAllOWLIndividuals2()");
-		assertEquals(3, allIndividuals.size());
-	}
-	
-	@Test
-	@TestOrder(10)
-	@Category(UITest.class)
-	public void testSelectUniqueOWLIndividual() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("selectUniqueOWLIndividual()");
-		OWLIndividual jerry = vmi.execute("this.selectUniqueOWLIndividual()");
-		System.err.println("jerry=" + jerry);
-		assertNotNull(jerry);
-	}
-	
-	@Test
-	@TestOrder(11)
-	@Category(UITest.class)
-	public void testListAllCats() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listAllCats()");
-		List<OWLIndividual> allCats = vmi.execute("this.listAllCats()");
-		assertEquals(2, allCats.size());
-	}
-	
-	@Test
-	@TestOrder(12)
-	@Category(UITest.class)
-	public void testListAllCats2() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		System.err.println("listAllCats2()");
-		List<OWLIndividual> allCats = vmi.execute("this.listAllCats2()");
-		assertEquals(2, allCats.size());
-	}
-	*/
+
 }

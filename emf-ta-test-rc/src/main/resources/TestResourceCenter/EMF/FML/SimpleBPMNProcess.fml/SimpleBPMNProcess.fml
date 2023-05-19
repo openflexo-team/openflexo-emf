@@ -4,10 +4,10 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 
 import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN;
 import [BPMN:"Process"] as PROCESS;
+import [BPMN:"Task"] as TASK;
 
-//import org.openflexo.technologyadapter.owl.model.OWLOntology;
-
-//type EMFObjectIndividualType(owlClass=CAT) as Cat;
+type EMFObjectIndividualType(eClass=PROCESS) as Process;
+type EMFObjectIndividualType(eClass=TASK) as Task;
 
 @URI("http://www.openflexo.org/test/emf/SimpleBPMNProcess.fml")
 public model SimpleBPMNProcess {
@@ -27,61 +27,22 @@ public model SimpleBPMNProcess {
 		return returned;
 	}
 
-	/*public List<OWLClass> listDeclaredOWLClasses() {
-		List<OWLClass> returned = new ArrayList();
-		for (OWLClass aClass : select OWLClass from ontology) {
-			if (aClass.ontology == ontology) {
-				returned.add(aClass);
-			}
+	public List<Process> listAllProcesses() {
+		List<Process> returned = new ArrayList();
+		for (Process aProcess : select Process from process) {
+			log "Process: " + aProcess;
+			returned.add(aProcess);
 		}
 		return returned;
 	}
 
-	public List<OWLClass> listDeclaredOWLClasses2() {
-		List<OWLClass> returned = new ArrayList();
-		for (OWLClass aClass : select OWLClass with SelectOWLClass(declared=true) from ontology) {
-			returned.add(aClass);
+	public List<Task> listAllTasks() {
+		List<Task> returned = new ArrayList();
+		for (Task aTask : select Task from process) {
+			log "Task: " + aTask;
+			returned.add(aTask);
 		}
 		return returned;
 	}
-
-	public OWLClass selectUniqueOWLClass() {
-		return select unique OWLClass from ontology where (selected.name == "Cat");
-	}
-
-	public List<OWLIndividual> listAllOWLIndividuals() {
-		List<OWLIndividual> returned = new ArrayList();
-		for (OWLIndividual anIndividual : select OWLIndividual from ontology) {
-			log "OWLIndividual: " + anIndividual;
-			returned.add(anIndividual);
-		}
-		return returned;
-	}
-
-	public List<OWLIndividual> listAllOWLIndividuals2() {
-		return select OWLIndividual from ontology;
-	}
-
-	public OWLIndividual selectUniqueOWLIndividual() {
-		return select unique OWLIndividual from ontology where (selected.name == "Jerry");
-	}
-
-	public List<OWLIndividual> listAllCats() {
-		List<OWLIndividual> returned = new ArrayList();
-		for (OWLIndividualType(owlClass=CAT) aCat : select OWLIndividualType(owlClass=CAT) from ontology) {
-			log "Cat: " + aCat;
-			returned.add(aCat);
-		}
-		return returned;
-	}
-
-	public List<Cat> listAllCats2() {
-		List<Cat> returned = new ArrayList();
-		for (Cat aCat : select Cat from ontology) {
-			log "Cat: " + aCat;
-			returned.add(aCat);
-		}
-		return returned;
-	}*/
 
 }
