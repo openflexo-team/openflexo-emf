@@ -49,6 +49,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
 import org.openflexo.foundation.ontology.fml.rt.FlexoOntologyModelSlotInstance;
@@ -57,8 +58,11 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
+import org.openflexo.pamela.annotations.PropertyIdentifier;
+import org.openflexo.pamela.annotations.Setter;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
@@ -92,8 +96,18 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
 @FML("EMFModelSlot")
 public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
 
+	@PropertyIdentifier(type = EMFMetaModel.class)
+	public static final String META_MODEL_KEY = "metaModel";
+
 	@Override
 	public EMFTechnologyAdapter getModelSlotTechnologyAdapter();
+
+	@Getter(value = META_MODEL_KEY, ignoreType = true)
+	@FMLAttribute(value = META_MODEL_KEY, required = true)
+	public EMFMetaModel getMetaModel();
+
+	@Setter(META_MODEL_KEY)
+	public void setMetaModel(EMFMetaModel aMetaModel);
 
 	public static abstract class EMFModelSlotImpl extends FlexoOntologyModelSlotImpl<EMFModel, EMFMetaModel, EMFTechnologyAdapter>
 			implements EMFModelSlot {
@@ -194,6 +208,19 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		@Override
 		public boolean isStrictMetaModelling() {
 			return true;
+		}
+
+		@Override
+		public EMFMetaModel getMetaModel() {
+			if (getMetaModelResource() != null) {
+				return getMetaModelResource().getMetaModelData();
+			}
+			return null;
+		}
+
+		@Override
+		public void setMetaModel(EMFMetaModel aMetaModel) {
+			setMetaModelResource(aMetaModel != null ? aMetaModel.getResource() : null);
 		}
 
 	}
