@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+//import java.lang.reflect.Type;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
@@ -112,6 +113,10 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	@Override
 	public EMFMetaModel loadResourceData() throws ResourceLoadingCancelledException {
 
+		if (isLoaded()) {
+			return getMetaModelData();
+		}
+
 		EMFMetaModel result = null;
 		Class<?> ePackageClass = null;
 		ClassLoader classLoader = null;
@@ -122,8 +127,11 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 
 			System.out.println("Reading EMF metamodel from " + getIODelegate());
 			System.out.println("ClassLoader=" + classLoader);
+			System.out.println("packageClassName=" + getPackageClassName());
 
 			ePackageClass = classLoader.loadClass(getPackageClassName());
+			System.out.println("ePackageClass=" + ePackageClass);
+
 			if (ePackageClass != null) {
 				Field ePackageField = ePackageClass.getField("eINSTANCE");
 				if (ePackageField != null) {
@@ -139,8 +147,13 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 					EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
 					result = converter.convertMetaModel(getPackage());
 					result.setResource(this);
+					resourceData = result;
 				}
+
 			}
+
+			// System.out.println("Done loaded " + getURI());
+
 			/*System.out.println("------------> Registering Metamodel " + result);
 			
 			System.out.println("Root concept " + result.getRootConcept());
