@@ -72,7 +72,14 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 				return null;
 			}
 
-			List<EMFObjectIndividual> selectedIndividuals = (List) emfModel.getIndividuals(getType());
+			List<EMFObjectIndividual> selectedIndividuals;
+			if (getType() == null) {
+				selectedIndividuals = (List) emfModel.getIndividuals();
+			}
+			else {
+				selectedIndividuals = (List) emfModel.getIndividuals(getType());
+			}
+
 			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, evaluationContext);
 			return returned;
 
