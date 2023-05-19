@@ -38,14 +38,17 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.type.ProxyType;
 import org.openflexo.foundation.fml.editionaction.AbstractFetchRequest;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.fml.editionaction.AbstractSelectIndividual;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
+import org.openflexo.technologyadapter.emf.EMFObjectIndividualType;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
@@ -62,6 +65,17 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 			AbstractSelectIndividualImpl<EMFModelSlot, EMFModel, EMFObjectIndividual, AT> implements AbstractSelectEMFObjectIndividual<AT> {
 
 		private static final Logger logger = Logger.getLogger(AbstractSelectEMFObjectIndividual.class.getPackage().getName());
+
+		@Override
+		public void setFetchedType(Type type) {
+			super.setFetchedType(type);
+			if (type instanceof EMFObjectIndividualType) {
+				setType(((EMFObjectIndividualType) type).getOntologyClass());
+			}
+			if (type instanceof ProxyType && ((ProxyType) type).getReferencedType() instanceof EMFObjectIndividualType) {
+				setType(((EMFObjectIndividualType) ((ProxyType) type).getReferencedType()).getOntologyClass());
+			}
+		}
 
 		@Override
 		public List<EMFObjectIndividual> performExecute(RunTimeEvaluationContext evaluationContext) {

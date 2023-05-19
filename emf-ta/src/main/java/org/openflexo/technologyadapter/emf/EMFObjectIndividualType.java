@@ -62,6 +62,8 @@ public class EMFObjectIndividualType extends IndividualOfClass<EMFTechnologyAdap
 				.getIndividualOfClass(anOntologyClass);
 	}
 
+	public static EMFObjectIndividualType UNDEFINED_EMF_INDIVIDUAL_TYPE = new EMFObjectIndividualType(null);
+
 	/**
 	 * Factory for {@link EMFObjectIndividualType} instances
 	 * 

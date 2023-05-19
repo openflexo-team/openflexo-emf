@@ -46,17 +46,20 @@ import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
+import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
+import org.openflexo.foundation.technologyadapter.SpecificTypeInfo;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFObjectIndividualType.EMFObjectIndividualTypeFactory;
 import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceFactory;
@@ -628,6 +631,30 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 			// Then we iterate on all resources found in the resource factory
 			handleNewMetaModelRegistered(mmResource, rc);
 		}
+	}
+
+	@Override
+	public <T extends TechnologySpecificType<EMFTechnologyAdapter>> T instantiateType(
+			SpecificTypeInfo<EMFTechnologyAdapter> specificTypeInfo) {
+
+		T returned = null;
+		if (specificTypeInfo.getTechnologySpecificTypeClass().equals(EMFObjectIndividualType.class)) {
+			if (specificTypeInfo.getParameter("eClass") != null) {
+				EMFClassClass type = (EMFClassClass) specificTypeInfo.getParameter("eClass");
+				returned = (T) EMFObjectIndividualType.getEMFObjectIndividualOfClass(type);
+
+			}
+			else {
+				returned = (T) EMFObjectIndividualType.UNDEFINED_EMF_INDIVIDUAL_TYPE;
+			}
+		}
+
+		if (returned != null) {
+			returned.registerSpecificTypeInfo(specificTypeInfo);
+			return returned;
+		}
+
+		return null;
 	}
 
 }
