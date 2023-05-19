@@ -56,7 +56,6 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.resource.FileIODelegate;
@@ -66,6 +65,7 @@ import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
@@ -282,18 +282,30 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	 * @return
 	 */
 	@Override
-	public FlexoObject findObject(String objectIdentifier, String userIdentifier, String typeIdentifier) {
-		// System.out.println("Dans EMFMetaModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
-		// + " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> findObject(String objectIdentifier, String userIdentifier, String typeIdentifier) {
+		System.out.println("Dans EMFMetaModelResource, on me demande de trouver l'objet objectIdentifier=" + objectIdentifier
+				+ " userIdentifier=" + userIdentifier + " typeIdentifier=" + typeIdentifier);
 
 		EMFMetaModel metaModel = getMetaModel();
 
-		FlexoObject returned = metaModel.getClass(objectIdentifier);
+		IFlexoOntologyConcept<EMFTechnologyAdapter> returned = metaModel.getClass(objectIdentifier);
 		if (returned != null) {
 			return returned;
 		}
 		returned = metaModel.getOntologyObject(objectIdentifier);
 		return returned;
+	}
+
+	/**
+	 * Generic method used to retrieve in this resource an object with supplied objectIdentifier, userIdentifier, and type identifier<br>
+	 * 
+	 * @param objectIdentifier
+	 * @param userIdentifier
+	 * @return
+	 */
+	@Override
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> findObject(String objectIdentifier, String userIdentifier) {
+		return findObject(objectIdentifier, userIdentifier, null);
 	}
 
 	/**
