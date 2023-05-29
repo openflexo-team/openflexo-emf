@@ -6,8 +6,8 @@ import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN;
 import [BPMN:"Process"] as PROCESS;
 import [BPMN:"Task"] as TASK;
 
-type EMFObjectIndividualType(eClass=PROCESS) as Process;
-type EMFObjectIndividualType(eClass=TASK) as Task;
+typedef EMFObjectIndividualType(eClass=PROCESS) as Process;
+typedef EMFObjectIndividualType(eClass=TASK) as Task;
 
 @URI("http://www.openflexo.org/test/emf/SimpleBPMNProcess.fml")
 public model SimpleBPMNProcess {
