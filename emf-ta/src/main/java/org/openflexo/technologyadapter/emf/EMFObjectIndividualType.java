@@ -45,6 +45,7 @@ import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.utils.FlexoObjectReference.ReferenceOwner;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * An type defined as an {@link EMFObjectIndividual} of a given {@link EMFClassClass}
@@ -109,11 +110,17 @@ public class EMFObjectIndividualType extends IndividualOfClass<EMFTechnologyAdap
 
 	@Override
 	public String simpleRepresentation() {
+		if (getSpecificTypeInfo() != null && StringUtils.isNotEmpty(getSpecificTypeInfo().getSerializationForm())) {
+			return getSpecificTypeInfo().getSerializationForm();
+		}
 		return getOntologyClass() != null ? getOntologyClass().getName() : "EMFObjectIndividual";
 	}
 
 	@Override
 	public String fullQualifiedRepresentation() {
+		if (getSpecificTypeInfo() != null && StringUtils.isNotEmpty(getSpecificTypeInfo().getSerializationForm())) {
+			return getSpecificTypeInfo().getSerializationForm();
+		}
 		return getClass().getName() + "(" + getSerializationRepresentation() + ")";
 	}
 
