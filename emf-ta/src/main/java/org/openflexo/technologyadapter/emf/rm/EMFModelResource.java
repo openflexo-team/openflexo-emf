@@ -63,6 +63,8 @@ public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaMo
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
+	public static final String XMI_EXTENSION = ".xmi";
+
 	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public EMFTechnologyContextManager getTechnologyContextManager();

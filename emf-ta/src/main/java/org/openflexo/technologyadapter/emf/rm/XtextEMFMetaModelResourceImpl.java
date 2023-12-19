@@ -52,7 +52,8 @@ import com.google.inject.Injector;
  * 
  * @author xtof
  */
-public abstract class XtextEMFMetaModelResourceImpl extends EMFMetaModelResourceImpl implements XtextEMFMetaModelResource {
+@Deprecated
+public abstract class XtextEMFMetaModelResourceImpl extends JarBasedMetaModelResourceImpl implements XtextEMFMetaModelResource {
 
 	@Override
 	protected void performLoadMetaModel(ClassLoader classLoader)

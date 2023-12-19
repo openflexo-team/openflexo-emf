@@ -62,6 +62,7 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -190,8 +191,14 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 				EMFTechnologyAdapter emfTA = getServiceManager().getTechnologyAdapterService()
 						.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
-				generatedResource = createResource(emfTA, EMFModelResourceFactory.class, evaluationContext,
-						getMetaModelResource().getModelFileExtension(), false);
+				if (getMetaModelResource() instanceof JarBasedMetaModelResource) {
+					generatedResource = createResource(emfTA, EMFModelResourceFactory.class, evaluationContext,
+							((JarBasedMetaModelResource) getMetaModelResource()).getModelFileExtension(), false);
+				}
+				else {
+					generatedResource = createResource(emfTA, EMFModelResourceFactory.class, evaluationContext,
+							EMFModelResource.XMI_EXTENSION, false);
+				}
 				generatedResource.setMetaModelResource(getMetaModelResource());
 				System.out.println("Return new EMF resource: " + generatedResource);
 

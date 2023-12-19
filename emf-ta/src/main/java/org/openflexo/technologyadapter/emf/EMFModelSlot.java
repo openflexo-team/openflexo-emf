@@ -75,9 +75,9 @@ import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndi
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectUniqueEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>
@@ -165,8 +165,14 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 			EMFTechnologyAdapter emfTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 			EMFModelResourceFactory factory = getModelSlotTechnologyAdapter().getEMFModelResourceFactory();
 
-			Object serializationArtefact = emfTA.retrieveResourceSerializationArtefact(rc, filename, relativePath,
-					((EMFMetaModelResource) metaModelResource).getModelFileExtension());
+			Object serializationArtefact = null;
+			if (metaModelResource instanceof JarBasedMetaModelResource) {
+				serializationArtefact = emfTA.retrieveResourceSerializationArtefact(rc, filename, relativePath,
+						((JarBasedMetaModelResource) metaModelResource).getModelFileExtension());
+			}
+			else {
+				logger.warning("Not implemented : createProjectSpecificEmptyModel for " + metaModelResource);
+			}
 
 			EMFModelResource newEMFModelResource;
 			try {

@@ -49,7 +49,8 @@ import com.google.inject.Injector;
 @ModelEntity
 @ImplementationClass(XtextEMFMetaModelResourceImpl.class)
 @XMLElement
-public interface XtextEMFMetaModelResource extends EMFMetaModelResource {
+@Deprecated
+public interface XtextEMFMetaModelResource extends JarBasedMetaModelResource {
 
 	public static String INJECTOR_KEY = "injector";
 	public static String STANDALONE_SET_UP_CLASS_NAME_KEY = "standaloneSetupClassName";

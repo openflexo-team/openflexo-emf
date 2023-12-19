@@ -66,6 +66,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceFactory;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 
 /**
  * This class defines and implements the EMF technology adapter
@@ -243,7 +244,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	protected <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (resourceCenter.isDirectory(contents)) {
 			for (I c : resourceCenter.getContents(contents)) {
-				if (resourceCenter.retrieveName(c).endsWith(EMFMetaModelResourceFactory.PROPERTIES_SUFFIX)) {
+				if (resourceCenter.retrieveName(c).endsWith(JarBasedMetaModelResource.PROPERTIES_SUFFIX)) {
 					return true;
 				}
 			}
@@ -560,10 +561,10 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	}
 
 	public String getExpectedModelExtension(EMFMetaModelResource metaModelResource) {
-		if (metaModelResource != null) {
-			return "." + metaModelResource.getModelFileExtension();
+		if (metaModelResource instanceof JarBasedMetaModelResource) {
+			return "." + ((JarBasedMetaModelResource) metaModelResource).getModelFileExtension();
 		}
-		return null;
+		return EMFModelResource.XMI_EXTENSION;
 	}
 
 	@Override

@@ -42,118 +42,40 @@ package org.openflexo.technologyadapter.emf.rm;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.pamela.annotations.Getter;
-import org.openflexo.pamela.annotations.ImplementationClass;
+import org.openflexo.pamela.annotations.Import;
+import org.openflexo.pamela.annotations.Imports;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 
-@ModelEntity
-@ImplementationClass(EMFMetaModelResourceImpl.class)
-@XMLElement
+/**
+ * Represents an abstract EMF metamodel resource
+ * 
+ * @author sylvain
+ *
+ */
+@ModelEntity(isAbstract = true)
+@Imports({ @Import(ECoreMetaModelResource.class), @Import(JarBasedMetaModelResource.class) })
 public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter>,
 		TechnologyAdapterResource<EMFMetaModel, EMFTechnologyAdapter> {
 
-	public static final String EXTENSION = "extension";
-	public static final String PACKAGE_CLASSNAME = "package.classname";
 	public static final String PACKAGE = "package";
-	public static final String EMFRESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
-	public static final String EMFRESOURCE_FACTORY = "resourcefactory";
-	public static final String META_MODEL_TYPE = "EMFMetaModelType";
 
-	public static enum EMFMetaModelType {
-		Standard, Profile, XText
-	}
-
+	/**
+	 * Return the effective metamodel addressed by this resource, its {@link ResourceData}
+	 * 
+	 * @return
+	 */
 	public EMFMetaModel getMetaModel();
 
 	/**
-	 * Setter of extension for model files related to this MtaModel.
-	 * 
-	 * @return
-	 */
-	@Setter(EXTENSION)
-	void setModelFileExtension(String modelFileExtension);
-
-	/**
-	 * Getter of extension for model files related to this MtaModel.
-	 * 
-	 * @return
-	 */
-	@Getter(EXTENSION)
-	String getModelFileExtension();
-
-	/**
-	 * Setter of Package MetaModel.
-	 * 
-	 * @param ePackage
-	 */
-	@Setter(value = PACKAGE_CLASSNAME)
-	void setPackageClassName(String ePackage);
-
-	/**
-	 * Getter of Package MetaModel.
-	 * 
-	 * @return
-	 */
-	@Getter(value = PACKAGE_CLASSNAME, ignoreType = true)
-	String getPackageClassName();
-
-	/**
-	 * Setter of Package MetaModel.
-	 * 
-	 * @param ePackage
-	 */
-	@Setter(value = PACKAGE)
-	void setPackage(EPackage ePackage);
-
-	/**
-	 * Getter of Package MetaModel.
-	 * 
-	 * @return
-	 */
-	@Getter(value = PACKAGE, ignoreType = true)
-	EPackage getPackage();
-
-	/**
-	 * Setter of ResourceFactory of Model for MetaModel.
-	 * 
-	 * @param resourceFactory
-	 */
-	@Setter(EMFRESOURCE_FACTORY_CLASSNAME)
-	void setResourceFactoryClassName(String resourceFactory);
-
-	/**
-	 * Getter of ResourceFactory of Model for MetaModel.
-	 * 
-	 * @return
-	 */
-	@Getter(value = EMFRESOURCE_FACTORY_CLASSNAME, ignoreType = true)
-	String getEMFResourceFactoryClassName();
-
-	/**
-	 * Setter of ResourceFactory of Model for MetaModel.
-	 * 
-	 * @param resourceFactory
-	 */
-	@Setter(EMFRESOURCE_FACTORY)
-	void setEMFResourceFactory(Resource.Factory resourceFactory);
-
-	/**
-	 * Getter of ResourceFactory of Model for MetaModel.
-	 * 
-	 * @return
-	 */
-	@Getter(value = EMFRESOURCE_FACTORY, ignoreType = true)
-	Resource.Factory getEMFResourceFactory();
-
-	/**
-	 * Get the MetaModel stored in the Resource..
+	 * Return the effective metamodel addressed by this resource, its {@link ResourceData}
 	 * 
 	 * @return
 	 */
@@ -169,26 +91,19 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate);
 
 	/**
-	 * Getter of type of this MetaModel
+	 * Getter of Package MetaModel.
 	 * 
 	 * @return
 	 */
-	@Getter(META_MODEL_TYPE)
-	EMFMetaModelType getMetaModelType();
+	@Getter(value = PACKAGE, ignoreType = true)
+	EPackage getPackage();
 
 	/**
-	 * Setter of type of this MetaModel.
+	 * Setter of Package MetaModel.
 	 * 
-	 * @return
+	 * @param ePackage
 	 */
-	@Setter(META_MODEL_TYPE)
-	void setMetaModelType(EMFMetaModelType mmType);
-
-	/**
-	 * Getter of initial model resource
-	 * 
-	 * @return
-	 */
-	<I> EMFModelResource getInitialModelResource();
+	@Setter(value = PACKAGE)
+	void setPackage(EPackage ePackage);
 
 }

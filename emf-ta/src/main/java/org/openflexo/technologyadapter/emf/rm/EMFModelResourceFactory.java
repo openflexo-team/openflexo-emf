@@ -60,7 +60,32 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
 				resourceCenter.getServiceManager());
 
+		// System.out.println("serializationArtefact=" + serializationArtefact + " of " + serializationArtefact.getClass());
+		/*if (serializationArtefact instanceof File && ((File) serializationArtefact).getName().endsWith("AsoociationCall.profile.uml")) {
+			System.out.println("Hop, j'ai trouve " + serializationArtefact);
+			System.out.println("Les MM: " + ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources());
+			EMFModelResource returned;
+			try {
+				returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
+				// returned.setMetaModelResource(mmRes);
+				registerResource(returned, resourceCenter);
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.exit(-1);
+		}*/
+
 		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
+			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
+				// System.out.println(">>>>>> Hop, conforme a " + mmRes + " : " + serializationArtefact);
+				return true;
+			}
+		}
+		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllProfileResources()) {
 			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
 				return true;
 			}
@@ -113,6 +138,14 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 			}
 		}
 
+		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllProfileResources()) {
+			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
+				EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
+				returned.setMetaModelResource(mmRes);
+				registerResource(returned, resourceCenter);
+			}
+		}
+
 		return null;
 	}
 
@@ -128,6 +161,10 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 			EMFMetaModelResource metaModelResource) {
 		if (resourceCenter.exists(serializationArtefact) && !resourceCenter.isDirectory(serializationArtefact)) {
 			// TODO syntaxic check and conformity to XMI
+			if (resourceCenter.retrieveName(serializationArtefact).endsWith(EMFMetaModelResourceFactory.ECORE_FILE_EXTENSION)) {
+				// ECore models must be interpreted as ECoreMetaModelResource
+				return false;
+			}
 			if (resourceCenter.retrieveName(serializationArtefact)
 					.endsWith(metaModelResource.getTechnologyAdapter().getExpectedModelExtension(metaModelResource))) {
 				return true;

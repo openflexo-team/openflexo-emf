@@ -57,15 +57,16 @@ import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 
 public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextManager<EMFTechnologyAdapter> {
 
 	protected static final Logger logger = Logger.getLogger(EMFTechnologyContextManager.class.getPackage().getName());
 
 	/** Stores all known metamodels where key is the URI of metamodel */
-	protected Map<String, EMFMetaModelResource> metamodels = new HashMap<>();
+	protected Map<String, JarBasedMetaModelResource> metamodels = new HashMap<>();
 	/** Stores all known metamodels where key is the URI of profiles (UML) */
-	protected Map<String, EMFMetaModelResource> profiles = new HashMap<>();
+	protected Map<String, JarBasedMetaModelResource> profiles = new HashMap<>();
 	/** Stores all known models where key is the URI of model */
 	protected Map<String, EMFModelResource> models = new HashMap<>();
 
@@ -91,7 +92,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	 * 
 	 * @param newModel
 	 */
-	public void registerMetaModel(EMFMetaModelResource newMetaModelResource) {
+	public void registerMetaModel(JarBasedMetaModelResource newMetaModelResource) {
 		String mmURI = newMetaModelResource.getURI();
 		EMFMetaModelResource existingMM = metamodels.get(mmURI);
 		if (existingMM == null) {
@@ -119,7 +120,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	 * 
 	 * @param newModel
 	 */
-	public void registerProfile(EMFMetaModelResource newMetaModelResource) {
+	public void registerProfile(JarBasedMetaModelResource newMetaModelResource) {
 		String mmURI = newMetaModelResource.getURI();
 		EMFMetaModelResource existingMM = profiles.get(mmURI);
 		if (existingMM == null) {

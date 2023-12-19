@@ -121,11 +121,19 @@ public class EMFMetaModelConverter {
 	 */
 	public EMFMetaModel convertMetaModel(Resource aResource) {
 		EMFMetaModel metaModel = null;
-		if (aResource.getContents().size() == 1 && aResource.getContents().get(0).eClass().getClassifierID() == EcorePackage.EPACKAGE) {
-			EPackage aPackage = (EPackage) aResource.getContents().get(0);
+		EPackage aPackage = getRootPackage(aResource);
+		if (aPackage != null) {
 			metaModel = convertMetaModel(aPackage);
 		}
 		return metaModel;
+	}
+
+	public EPackage getRootPackage(Resource aResource) {
+		if (aResource.getContents().size() == 1 && aResource.getContents().get(0).eClass().getClassifierID() == EcorePackage.EPACKAGE) {
+			return (EPackage) aResource.getContents().get(0);
+		}
+		logger.warning("Cannot find root package for " + aResource);
+		return null;
 	}
 
 	/**

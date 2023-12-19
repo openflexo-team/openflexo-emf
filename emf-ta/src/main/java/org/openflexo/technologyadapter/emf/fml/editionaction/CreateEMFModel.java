@@ -47,6 +47,7 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 
 /**
  * {@link EditionAction} allowing to create an empty {@link EMFModelResource}
@@ -66,8 +67,8 @@ public interface CreateEMFModel extends AbstractCreateEMFResource {
 
 		@Override
 		protected EMFModelResource getInitialResource(RunTimeEvaluationContext evaluationContext) {
-			if (getMetaModelResource() != null) {
-				return getMetaModelResource().getInitialModelResource();
+			if (getMetaModelResource() instanceof JarBasedMetaModelResource) {
+				return ((JarBasedMetaModelResource) getMetaModelResource()).getInitialModelResource();
 			}
 			return null;
 		}

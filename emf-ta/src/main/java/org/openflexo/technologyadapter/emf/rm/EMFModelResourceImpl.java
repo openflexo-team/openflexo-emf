@@ -59,12 +59,6 @@ import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 
-/**
- * Represents the resource associated to a {@link OWLOntology}
- * 
- * @author sguerin
- * 
- */
 public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> implements EMFModelResource {
 
 	private static final Logger logger = Logger.getLogger(EMFModelResourceImpl.class.getPackage().getName());

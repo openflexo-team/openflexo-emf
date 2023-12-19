@@ -35,7 +35,8 @@ import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource.EMFMetaModelType;
+import org.openflexo.technologyadapter.emf.rm.ECoreMetaModelResource.ECoreMetaData;
+import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource.EMFMetaModelType;
 
 /**
  * Implementation of ResourceFactory for {@link EMFMetaModelResource}
@@ -48,7 +49,7 @@ public class EMFMetaModelResourceFactory
 
 	private static final Logger logger = Logger.getLogger(EMFMetaModelResourceFactory.class.getPackage().getName());
 
-	public static final String PROPERTIES_SUFFIX = ".properties";
+	public static String ECORE_FILE_EXTENSION = ".ecore";
 
 	public static final String URI_KEY = "URI";
 	public static final String EXTENSION_KEY = "EXTENSION";
@@ -73,6 +74,23 @@ public class EMFMetaModelResourceFactory
 
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+
+		return isValidECoreArtefact(serializationArtefact, resourceCenter)
+				|| isValidJarBasedArtefact(serializationArtefact, resourceCenter);
+
+	}
+
+	public <I> boolean isValidECoreArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+
+		if (resourceCenter.isDirectory(serializationArtefact)) {
+			return false;
+		}
+
+		return resourceCenter.retrieveName(serializationArtefact).endsWith(ECORE_FILE_EXTENSION);
+
+	}
+
+	public <I> boolean isValidJarBasedArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
 		if (!resourceCenter.isDirectory(serializationArtefact)) {
 			return false;
@@ -119,16 +137,25 @@ public class EMFMetaModelResourceFactory
 
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(resource.getServiceManager());
 
-		// Depending on the MM Type, you must do different things
+		if (resource instanceof JarBasedMetaModelResource) {
 
-		if (resource.getMetaModelType() == EMFMetaModelType.Profile) {
-			((EMFTechnologyContextManager) technologyContextManager).registerProfile(resource);
+			// Depending on the MM Type, you must do different things
+
+			JarBasedMetaModelResource jarBasedResource = (JarBasedMetaModelResource) resource;
+
+			if (jarBasedResource.getMetaModelType() == EMFMetaModelType.Profile) {
+
+				System.out.println("On enregistre le profil " + resource);
+
+				((EMFTechnologyContextManager) technologyContextManager).registerProfile(jarBasedResource);
+			}
+			else {
+				((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(jarBasedResource);
+			}
 		}
-		else {
-			((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(resource);
-			EMFTechnologyAdapter technologyAdapter = getTechnologyAdapter(resource.getServiceManager());
-			technologyAdapter.newMetaModelWasRegistered(resource, resourceCenter);
-		}
+
+		EMFTechnologyAdapter technologyAdapter = getTechnologyAdapter(resource.getServiceManager());
+		technologyAdapter.newMetaModelWasRegistered(resource, resourceCenter);
 
 		// Register the resource in the EMFMetaModelRepository of supplied resource center
 		if (resourceCenter != null) {
@@ -139,12 +166,12 @@ public class EMFMetaModelResourceFactory
 		return resource;
 	}
 
-	public <I> EMFMetaModelResource retrieveResourceFromClassPath(String metaModelName, String metaModelURI, String metaModelExtension,
+	public <I> JarBasedMetaModelResource retrieveResourceFromClassPath(String metaModelName, String metaModelURI, String metaModelExtension,
 			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
 
 		// FlexoResourceCenter<I> resourceCenter = null;
 
-		EMFMetaModelResource returned = newInstance(EMFMetaModelResource.class);
+		JarBasedMetaModelResource returned = newInstance(JarBasedMetaModelResource.class);
 		returned.setMetaModelType(EMFMetaModelType.Standard);
 
 		// returned.setResourceCenter(resourceCenter);
@@ -169,42 +196,65 @@ public class EMFMetaModelResourceFactory
 	@Override
 	protected <I> EMFMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
 			throws ModelDefinitionException, IOException {
-		EMFMetaModelResource returned = null;
 
-		Properties properties = resourceCenter.getProperties(serializationArtefact);
+		if (isValidJarBasedArtefact(serializationArtefact, resourceCenter)) {
 
-		String uri = properties.getProperty(URI_KEY);
-		String extension = properties.getProperty(EXTENSION_KEY);
-		String ePackageClassName = properties.getProperty(PACKAGE_KEY);
-		String resourceFactoryClassName = properties.getProperty(RESOURCE_FACTORY_KEY);
+			JarBasedMetaModelResource returned = null;
 
-		String mmType = properties.getProperty(PROPERTY_TYPE);
+			Properties properties = resourceCenter.getProperties(serializationArtefact);
 
-		if (mmType != null && mmType.equals(TYPE_XTEXT)) {
-			returned = newInstance(XtextEMFMetaModelResource.class);
-			returned.setMetaModelType(EMFMetaModelType.XText);
-			((XtextEMFMetaModelResource) returned).setStandaloneSetupClassName(properties.getProperty(PROPERTY_XTEXT_STANDALONE_SETUP));
+			String uri = properties.getProperty(URI_KEY);
+			String extension = properties.getProperty(EXTENSION_KEY);
+			String ePackageClassName = properties.getProperty(PACKAGE_KEY);
+			String resourceFactoryClassName = properties.getProperty(RESOURCE_FACTORY_KEY);
+
+			String mmType = properties.getProperty(PROPERTY_TYPE);
+
+			if (mmType != null && mmType.equals(TYPE_XTEXT)) {
+				returned = newInstance(XtextEMFMetaModelResource.class);
+				returned.setMetaModelType(EMFMetaModelType.XText);
+				((XtextEMFMetaModelResource) returned).setStandaloneSetupClassName(properties.getProperty(PROPERTY_XTEXT_STANDALONE_SETUP));
+			}
+			else if (mmType != null && mmType.equals(TYPE_PROFILE)) {
+				returned = newInstance(JarBasedMetaModelResource.class);
+				returned.setMetaModelType(EMFMetaModelType.Profile);
+			}
+			else /*if (mmType != null && mmType.equals(TYPE_METAMODEL))*/ {
+				returned = newInstance(JarBasedMetaModelResource.class);
+				returned.setMetaModelType(EMFMetaModelType.Standard);
+			}
+
+			returned.setResourceCenter(resourceCenter);
+			returned.initName(resourceCenter.retrieveName(serializationArtefact));
+			returned.setURI(uri);
+
+			returned.setModelFileExtension(extension);
+			returned.setPackageClassName(ePackageClassName);
+			returned.setResourceFactoryClassName(resourceFactoryClassName);
+
+			returned.setIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
+
+			return returned;
 		}
-		else if (mmType != null && mmType.equals(TYPE_PROFILE)) {
-			returned = newInstance(EMFMetaModelResource.class);
-			returned.setMetaModelType(EMFMetaModelType.Profile);
+
+		else if (isValidECoreArtefact(serializationArtefact, resourceCenter)) {
+
+			ECoreMetaModelResource returned = newInstance(ECoreMetaModelResource.class);
+			returned.setResourceCenter(resourceCenter);
+			returned.setIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
+
+			ECoreMetaData metaData = returned.getMetaData(resourceCenter);
+			returned.initName(metaData.name);
+			returned.setURI(metaData.uri);
+
+			return returned;
+
 		}
-		else /*if (mmType != null && mmType.equals(TYPE_METAMODEL))*/ {
-			returned = newInstance(EMFMetaModelResource.class);
-			returned.setMetaModelType(EMFMetaModelType.Standard);
+
+		else {
+			logger.warning("Unexpected artefact: " + serializationArtefact);
+			return null;
 		}
-
-		returned.setResourceCenter(resourceCenter);
-		returned.initName(resourceCenter.retrieveName(serializationArtefact));
-		returned.setURI(uri);
-
-		returned.setModelFileExtension(extension);
-		returned.setPackageClassName(ePackageClassName);
-		returned.setResourceFactoryClassName(resourceFactoryClassName);
-
-		returned.setIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
-
-		return returned;
 	}
 
 	@Override
@@ -215,7 +265,17 @@ public class EMFMetaModelResourceFactory
 		}
 		return super.makeFlexoIODelegate(serializationArtefact, resourceCenter);*/
 
-		return resourceCenter.makeDirectoryBasedFlexoIODelegate(serializationArtefact, "", PROPERTIES_SUFFIX, this);
+		if (isValidJarBasedArtefact(serializationArtefact, resourceCenter)) {
+			return resourceCenter.makeDirectoryBasedFlexoIODelegate(serializationArtefact, "", JarBasedMetaModelResource.PROPERTIES_SUFFIX,
+					this);
+		}
+		else if (isValidECoreArtefact(serializationArtefact, resourceCenter)) {
+			return super.makeFlexoIODelegate(serializationArtefact, resourceCenter);
+		}
+		else {
+			logger.warning("Unexpected artefact: " + serializationArtefact);
+			return null;
+		}
 	}
 
 }
