@@ -49,9 +49,15 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.Resource.Factory;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
@@ -76,11 +82,23 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	protected EPackage.Registry EMFPackageRegistry = EPackage.Registry.INSTANCE;
 	protected Map<String, Object> EMFExtensionToFactoryMap;
 
+	private final ResourceSet resourceSet;
+	public final Factory ECORE_RESOURCE_FACTORY = new EcoreResourceFactoryImpl();
+	public final Factory XMI_RESOURCE_FACTORY = new XMIResourceFactoryImpl();
+
 	public EMFTechnologyContextManager(EMFTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 		EMFExtensionToFactoryMap = EMFRscFactoryRegistry.getExtensionToFactoryMap();
 		// This enables working with UML Models
 		UMLResourcesUtil.initGlobalRegistries();
+
+		resourceSet = new ResourceSetImpl();
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", ECORE_RESOURCE_FACTORY);
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", XMI_RESOURCE_FACTORY);
+	}
+
+	public ResourceSet getResourceSet() {
+		return resourceSet;
 	}
 
 	public EMFModelResource getModel(File modelFile) {
@@ -187,6 +205,18 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	@Override
 	public EMFObjectIndividualType makeIndividualOfClass(IFlexoOntologyClass<EMFTechnologyAdapter> anOntologyClass) {
 		return new EMFObjectIndividualType((EMFClassClass) anOntologyClass);
+	}
+
+	public void newMetaModelWasRegistered(EMFMetaModelResource mmResource, FlexoResourceCenter<?> resourceCenter) {
+		// We iterate on all EMFModelResource which does not declare any metamodel
+		for (EMFModelResource emfModelResource : models.values()) {
+			if (emfModelResource.getMetaModelResource() == null) {
+				if (emfModelResource.getMetaModelResourceURI() != null
+						&& emfModelResource.getMetaModelResourceURI().equals(mmResource.getURI())) {
+					emfModelResource.setMetaModelResource(mmResource);
+				}
+			}
+		}
 	}
 
 }

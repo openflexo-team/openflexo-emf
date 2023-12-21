@@ -39,7 +39,10 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
+import java.io.File;
+
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.pamela.annotations.Getter;
@@ -50,6 +53,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.toolbox.FileSystemMetaDataManager;
+import org.openflexo.xml.XMLRootElementInfo;
 
 /**
  * EMF Model Resource.
@@ -73,5 +78,49 @@ public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaMo
 	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
 
 	public Resource getEMFResource();
+
+	public void setMetaModelResourceURI(String mmURI);
+
+	public String getMetaModelResourceURI();
+
+	public static class XMIMetaData {
+
+		public static final String ROOT_NAMESPACE_KEY = "rootNamespace";
+
+		public String rootNamespace;
+
+		private XMLRootElementInfo debugXMLInfo;
+
+		public XMIMetaData(FileSystemMetaDataManager metaDataManager, File file) {
+			super();
+			rootNamespace = metaDataManager.getProperty(ROOT_NAMESPACE_KEY, file);
+		}
+
+		public XMIMetaData(XMLRootElementInfo xmlRootElementInfo) {
+			super();
+			this.debugXMLInfo = xmlRootElementInfo;
+			rootNamespace = xmlRootElementInfo.getRootNamespaceURI();
+		}
+
+		public void debug() {
+			System.out.println("metadata : ");
+			System.out.println("---------> " + debugXMLInfo.getRootNamespacePrefix() + " " + debugXMLInfo.getRootNamespaceURI());
+			for (String ns : debugXMLInfo.getNamespaces().keySet()) {
+				System.out.println(" ns > " + ns + " = " + debugXMLInfo.getNamespaceByPrefix(ns));
+			}
+			for (String key : debugXMLInfo.getAttributes().keySet()) {
+				System.out.println(" > " + key + " = " + debugXMLInfo.getAttribute(key));
+			}
+		}
+
+		public void save(FileSystemMetaDataManager metaDataManager, File file) {
+			metaDataManager.setProperty(ROOT_NAMESPACE_KEY, rootNamespace, file, false);
+			System.out.println("********* Saving metadata for " + this);
+			metaDataManager.saveMetaDataProperties(file);
+		}
+
+	}
+
+	public <I> XMIMetaData getMetaData(FlexoResourceCenter<I> resourceCenter);
 
 }

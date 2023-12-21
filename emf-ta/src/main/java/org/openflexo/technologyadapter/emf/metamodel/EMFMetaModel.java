@@ -155,6 +155,10 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		return converter;
 	}
 
+	public EPackage getRootPackage() {
+		return ePackage;
+	}
+
 	@Override
 	public EMFMetaModelResource getResource() {
 		return metaModelResource;
@@ -350,7 +354,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getDeclaredClass(String classURI) {
-		return null;
+		return getClass(classURI);
 	}
 
 	/**

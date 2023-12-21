@@ -56,7 +56,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
-import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -350,8 +349,8 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividuals()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
-		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<>();
+	public List<EMFObjectIndividual> getIndividuals() {
+		List<EMFObjectIndividual> result = new ArrayList<>();
 		result.addAll(converter.getIndividuals().values());
 		return Collections.unmodifiableList(result);
 	}
@@ -362,9 +361,9 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividual(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyIndividual<EMFTechnologyAdapter> getIndividual(String individualURI) {
-		IFlexoOntologyIndividual<EMFTechnologyAdapter> result = null;
-		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : getIndividuals()) {
+	public EMFObjectIndividual getIndividual(String individualURI) {
+		EMFObjectIndividual result = null;
+		for (EMFObjectIndividual individual : getIndividuals()) {
 			if (individual.getURI().equalsIgnoreCase(individualURI)) {
 				result = individual;
 			}
@@ -378,7 +377,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredIndividual(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyIndividual<EMFTechnologyAdapter> getDeclaredIndividual(String individualURI) {
+	public EMFObjectIndividual getDeclaredIndividual(String individualURI) {
 		return getIndividual(individualURI);
 	}
 
@@ -388,7 +387,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getAccessibleIndividuals()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getAccessibleIndividuals() {
+	public List<EMFObjectIndividual> getAccessibleIndividuals() {
 		return getIndividuals();
 	}
 
@@ -529,7 +528,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 * @param type
 	 * @return
 	 */
-	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals(IFlexoOntologyClass<?> type) {
+	public List<EMFObjectIndividual> getIndividuals(IFlexoOntologyClass<?> type) {
 
 		// System.out.println(
 		// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());

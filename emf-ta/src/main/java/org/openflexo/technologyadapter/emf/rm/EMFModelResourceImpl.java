@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -48,16 +49,21 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.InnerResourceData;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
+import org.openflexo.toolbox.FileSystemMetaDataManager;
 
 public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> implements EMFModelResource {
 
@@ -268,6 +274,68 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	@Override
 	public String getUserIdentifier(Object object) {
 		return "FLX";
+	}
+
+	private XMIMetaData metaData;
+
+	@Override
+	public <I> XMIMetaData getMetaData(FlexoResourceCenter<I> resourceCenter) {
+		if (metaData == null) {
+			metaData = findMetaData(resourceCenter, true);
+		}
+		return metaData;
+	}
+
+	private <I> XMIMetaData findMetaData(FlexoResourceCenter<I> resourceCenter, boolean forceRebuild) {
+		if (resourceCenter instanceof FlexoProject) {
+			resourceCenter = ((FlexoProject<I>) resourceCenter).getDelegateResourceCenter();
+		}
+
+		if (resourceCenter instanceof FileSystemBasedResourceCenter) {
+			FileSystemMetaDataManager metaDataManager = ((FileSystemBasedResourceCenter) resourceCenter).getMetaDataManager();
+			File file = (File) getIODelegate().getSerializationArtefact();
+
+			if (!forceRebuild && (file.lastModified() < metaDataManager.metaDataLastModified(file))) {
+				// OK, in this case the metadata file is there and more recent than xml file
+				// Attempt to retrieve metadata from cache
+				return new XMIMetaData(metaDataManager, file);
+			}
+			else {
+				// No way, metadata are either not present or older than file version, we should parse XML file, continuing...
+			}
+		}
+
+		System.out.println("Retrieve info from file for " + this);
+		XMIMetaData returned = new XMIMetaData(resourceCenter.getXMLRootElementInfo((I) getIODelegate().getSerializationArtefact()));
+
+		if (resourceCenter instanceof FileSystemBasedResourceCenter && returned != null) {
+			// Save metadata !!!
+			FileSystemMetaDataManager metaDataManager = ((FileSystemBasedResourceCenter) resourceCenter).getMetaDataManager();
+			File file = (File) getIODelegate().getSerializationArtefact();
+			returned.save(metaDataManager, file);
+		}
+
+		return returned;
+	}
+
+	private String metaModelResourceURI;
+
+	@Override
+	public void setMetaModelResourceURI(String mmURI) {
+		metaModelResourceURI = mmURI;
+	}
+
+	@Override
+	public String getMetaModelResourceURI() {
+		if (getMetaModelResource() != null) {
+			return getMetaModelResource().getURI();
+		}
+		return metaModelResourceURI;
+	}
+
+	@Override
+	public EMFTechnologyContextManager getTechnologyContextManager() {
+		return (EMFTechnologyContextManager) performSuperGetter(TECHNOLOGY_CONTEXT_MANAGER);
 	}
 
 }

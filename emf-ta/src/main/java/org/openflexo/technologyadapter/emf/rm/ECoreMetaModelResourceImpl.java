@@ -44,12 +44,8 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -66,18 +62,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 
 	protected static final Logger logger = Logger.getLogger(ECoreMetaModelResourceImpl.class.getPackage().getName());
 
-	private ResourceSet resourceSet;
 	private Resource resource;
-
-	private ResourceSet getResourceSet() {
-		if (resourceSet == null) {
-			// Create a resource set.
-			resourceSet = new ResourceSetImpl();
-			// Register the default resource factory -- only needed for stand-alone!
-			resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", new EcoreResourceFactoryImpl());
-		}
-		return resourceSet;
-	}
 
 	private Resource getEMFResource() {
 		if (resource == null) {
@@ -87,7 +72,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 				// URI fileURI = URI.createPlatformPluginURI("platform:/plugin/org.eclipse.mymetamodel/model/MyMetaModel.ecore", false);
 				URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(ecoreFile.getAbsolutePath());
 				// Demand load the resource for this file.
-				resource = getResourceSet().getResource(fileURI, true);
+				resource = getTechnologyContextManager().getResourceSet().getResource(fileURI, true);
 			}
 			else {
 				logger.warning("Don't know how to handle " + getIODelegate().getSerializationArtefact().getClass());
@@ -114,6 +99,9 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		setPackage(converter.getRootPackage(getEMFResource()));
 		resourceData.setResource(this);
 
+		logger.info("Registering " + resourceData.getRootPackage() + " for " + getURI());
+		getTechnologyContextManager().getResourceSet().getPackageRegistry().put(getURI(), resourceData.getRootPackage());
+
 		// System.out.println("result=" + resourceData);
 		// System.out.println("root_package=" + getPackage());
 		// System.out.println("all_classes=" + resourceData.getAccessibleClasses());
@@ -123,20 +111,13 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 	}
 
 	/**
-	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * Use the factory which is provided in configuration file
 	 * 
-	 * @param flexoIODelegate
-	 * @return
 	 */
-	@Override
-	public Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate) {
-
-		// TODO
-		// not implemented
-		logger.warning("createEMFModelResource() for ECoreMetaModelResourceImpl : not implemented");
-
-		return null;
-	}
+	/*@Override
+	protected Factory getEMFFactory() {
+		return getTechnologyContextManager().getXMIResourceFactory();
+	}*/
 
 	private ECoreMetaData metaData;
 

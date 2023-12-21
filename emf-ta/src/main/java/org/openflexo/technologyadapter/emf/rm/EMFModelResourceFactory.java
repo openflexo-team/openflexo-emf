@@ -32,6 +32,7 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
+import org.openflexo.technologyadapter.emf.rm.EMFModelResource.XMIMetaData;
 
 /**
  * Implementation of ResourceFactory for {@link EMFModelResource}
@@ -54,11 +55,20 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 		return converter.convertModel(resource.getMetaModelResource().getMetaModelData(), resource.getEMFResource());
 	}
 
+	public <I> boolean isValidXMIArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
+
+		return resourceCenter.retrieveName(serializationArtefact).endsWith(EMFModelResource.XMI_EXTENSION);
+	}
+
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
 				resourceCenter.getServiceManager());
+
+		if (isValidXMIArtefact(serializationArtefact, resourceCenter)) {
+			return true;
+		}
 
 		// System.out.println("serializationArtefact=" + serializationArtefact + " of " + serializationArtefact.getClass());
 		/*if (serializationArtefact instanceof File && ((File) serializationArtefact).getName().endsWith("AsoociationCall.profile.uml")) {
@@ -113,6 +123,9 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	public <I> EMFModelResource registerResource(EMFModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
+		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(resource.getServiceManager());
+		((EMFTechnologyContextManager) technologyContextManager).registerModel(resource);
+
 		registerResourceInResourceRepository(resource,
 				getTechnologyAdapter(resourceCenter.getServiceManager()).getEMFModelRepository(resourceCenter));
 
@@ -130,11 +143,31 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
 				resourceCenter.getServiceManager());
 
+		if (isValidXMIArtefact(serializationArtefact, resourceCenter)) {
+			EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
+			returned.getMetaData(resourceCenter).debug();
+
+			EMFMetaModelResource metaModelResource = ((EMFTechnologyContextManager) technologyContextManager)
+					.getMetaModelResourceByURI(returned.getMetaData(resourceCenter).rootNamespace);
+
+			if (metaModelResource != null) {
+				//System.out.println(
+				//		"Found metamodel: " + metaModelResource + " for URI: " + returned.getMetaData(resourceCenter).rootNamespace);
+				returned.setMetaModelResource(metaModelResource);
+			}
+			else {
+				//System.out.println(
+				//		"NOT found metamodel: " + metaModelResource + " for URI: " + returned.getMetaData(resourceCenter).rootNamespace);
+				returned.setMetaModelResourceURI(returned.getMetaData(resourceCenter).rootNamespace);
+			}
+			return registerResource(returned, resourceCenter);
+		}
+
 		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
 			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
 				EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 				returned.setMetaModelResource(mmRes);
-				registerResource(returned, resourceCenter);
+				return registerResource(returned, resourceCenter);
 			}
 		}
 
@@ -142,7 +175,7 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
 				EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 				returned.setMetaModelResource(mmRes);
-				registerResource(returned, resourceCenter);
+				return registerResource(returned, resourceCenter);
 			}
 		}
 
@@ -177,6 +210,11 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	protected <I> EMFModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
 			throws ModelDefinitionException, IOException {
 		EMFModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter);
+
+		XMIMetaData metaData = returned.getMetaData(resourceCenter);
+
+		// returned.initName(metaData.name);
+		// returned.setURI(metaData.uri);
 
 		// TODO: uri management ???
 		/*XMLRootElementInfo xmlRootElementInfo = resourceCenter.getXMLRootElementInfo(serializationArtefact);

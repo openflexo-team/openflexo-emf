@@ -632,6 +632,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 			// Then we iterate on all resources found in the resource factory
 			handleNewMetaModelRegistered(mmResource, rc);
 		}
+
+		getTechnologyContextManager().newMetaModelWasRegistered(mmResource, resourceCenter);
 	}
 
 	@Override

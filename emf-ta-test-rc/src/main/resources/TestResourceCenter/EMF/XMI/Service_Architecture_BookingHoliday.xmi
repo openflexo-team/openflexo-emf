@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAMLMetaModel:Service_Architecture
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SOAMLMetaModel="http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel"
+    xsi:schemaLocation="http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel ../../Metamodel/SOAMLmetaModel/SOAMLmeta.ecore"
+    Name="BookingHoliday">
+  <collaborationuse
+      Name="Client"/>
+  <collaborationuse
+      Name="Agency"/>
+  <collaborationuse
+      Name="Bank"/>
+  <collaborationuse
+      Name="Hotel"/>
+  <collaborationuse
+      Name="Airlines"/>
+  <participantrole
+      Name="clientP"/>
+  <participantrole
+      Name="BankP"/>
+  <participantrole
+      Name="AgencyP"/>
+  <participantrole
+      Name="HotelP"/>
+  <participantrole
+      Name="AilinesP"/>
+  <Binding participantrole="//@participantrole.0"
+      collaborationuse="//@collaborationuse.1"
+      Name="AgencyClientP"/>
+</SOAMLMetaModel:Service_Architecture>
