@@ -120,7 +120,10 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 	public void loadBasicModelResource() {
 
 		basicModelRes = (EMFModelResource) serviceManager.getResourceManager()
-				.getResource("http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/BPMN/BasicExample.bpmn", EMFModel.class);
+				.getResource("http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/bpmn/BasicExample.bpmn", EMFModel.class);
+		/*for (FlexoResource<?> resource : serviceManager.getResourceManager().getRegisteredResources()) {
+			System.out.println(" > " + resource.getURI() + " : " + resource);
+		}*/
 
 		assertNotNull(basicModelRes);
 		assertSame(bpmnMMRes, basicModelRes.getMetaModelResource());
