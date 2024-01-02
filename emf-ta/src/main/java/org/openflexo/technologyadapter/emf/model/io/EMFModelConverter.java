@@ -132,7 +132,12 @@ public class EMFModelConverter {
 			return null;
 		}
 		EMFObjectIndividual individual = null;
+		EObject unresolvedEObject = eObject;
 		eObject = resolve(model, eObject);
+		if (eObject == null) {
+			logger.warning("convertObjectIndividual called for unresolvable EObject " + unresolvedEObject + " model=" + model);
+			return null;
+		}
 		if (individuals.get(eObject) == null) {
 
 			individual = builder.buildObjectIndividual(model, eObject);
