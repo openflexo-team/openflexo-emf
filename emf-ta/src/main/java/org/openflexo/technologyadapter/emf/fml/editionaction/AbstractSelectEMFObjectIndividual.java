@@ -68,7 +68,7 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 
 		@Override
 		public void setFetchedType(Type type) {
-			super.setFetchedType(type);
+			performSuperSetter(FETCHED_TYPE_KEY, type);
 			if (type instanceof EMFObjectIndividualType) {
 				setType(((EMFObjectIndividualType) type).getOntologyClass());
 			}
@@ -88,10 +88,10 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 
 			List<EMFObjectIndividual> selectedIndividuals;
 			if (getType() == null) {
-				selectedIndividuals = (List) emfModel.getIndividuals();
+				selectedIndividuals = emfModel.getIndividuals();
 			}
 			else {
-				selectedIndividuals = (List) emfModel.getIndividuals(getType());
+				selectedIndividuals = emfModel.getIndividuals(getType());
 			}
 
 			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, evaluationContext);
