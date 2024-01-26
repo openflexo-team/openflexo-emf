@@ -113,8 +113,8 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public List<? extends SimplePathElement<?>> getAccessibleSimplePathElements(IBindingPathElement parent, Bindable bindable) {
-		if (parent.getType() instanceof EMFObjectIndividualType) {
-			EMFObjectIndividualType parentType = (EMFObjectIndividualType) parent.getType();
+		if (parent.getActualType() instanceof EMFObjectIndividualType) {
+			EMFObjectIndividualType parentType = (EMFObjectIndividualType) parent.getActualType();
 			List<SimplePathElement<?>> returned = new ArrayList<>();
 			if (parentType.getOntologyClass() instanceof EMFClassClass) {
 				returned.add(new EMFObjectIndividualTypePathElement(parent, parentType.getOntologyClass(), bindable));
