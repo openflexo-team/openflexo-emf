@@ -1,0 +1,19 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+
+import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN;
+
+import [BPMN:"Participant"] as BPMN_PARTICIPANT;
+
+typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
+
+@URI("http://www.openflexo.org/test/emf/TestEMF1.fml")
+public model TestEMF1 {
+	EMFModel bpmn with EMFModelSlot(metaModel=BPMN);
+
+	//BPMNParticipant participant with EMFObjectRole(container=bpmn);
+	//EMFObjectIndividual participant with EMFObjectRole(container=bpmn);
+	BPMNParticipant participant with EMFObjectRole(container=bpmn);
+}
