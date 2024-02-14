@@ -5,7 +5,7 @@ dependencies {
   implementation flexoUi()
   implementation flexoOntology()
   implementation flexoOntologyUi()
-  runtimeOnly fmlTechnologyAdapterUi()
+  implementation fmlTechnologyAdapterUi()
   // external dep
   // testing dep
   testImplementation flexoUiTest()
