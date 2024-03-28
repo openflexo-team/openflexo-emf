@@ -54,6 +54,7 @@ import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 import org.openflexo.toolbox.FileSystemMetaDataManager;
@@ -79,6 +80,12 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 				URI fileURI = org.eclipse.emf.common.util.URI.createFileURI(ecoreFile.getAbsolutePath());
 				// Demand load the resource for this file.
 				resource = getTechnologyContextManager().getResourceSet().getResource(fileURI, true);
+			}
+			if (getIODelegate().getSerializationArtefact() instanceof InJarResourceImpl) {
+				InJarResourceImpl inJarResource = ((InJarResourceImpl) getIODelegate().getSerializationArtefact());
+				// System.out.println("URI: " + hop.getURI());
+				URI jarEntryURI = org.eclipse.emf.common.util.URI.createURI(inJarResource.getURI());
+				resource = getTechnologyContextManager().getResourceSet().getResource(jarEntryURI, true);
 			}
 			else {
 				logger.warning("Don't know how to handle " + getIODelegate().getSerializationArtefact().getClass());
