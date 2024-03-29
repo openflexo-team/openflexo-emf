@@ -148,4 +148,23 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 		}
 	}
 
+	@Test
+	@TestOrder(8)
+	public void testSysMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		EMFMetaModelResource sysMLMMRes = technologicalAdapter.getTechnologyContextManager()
+				.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");
+		assertNotNull(sysMLMMRes);
+
+		EMFMetaModel sysMLMM = sysMLMMRes.loadResourceData();
+		assertNotNull(sysMLMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : sysMLMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
+	}
+
 }
