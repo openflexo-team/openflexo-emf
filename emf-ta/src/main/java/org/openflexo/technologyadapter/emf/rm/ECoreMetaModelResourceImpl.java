@@ -81,7 +81,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 				// Demand load the resource for this file.
 				resource = getTechnologyContextManager().getResourceSet().getResource(fileURI, true);
 			}
-			if (getIODelegate().getSerializationArtefact() instanceof InJarResourceImpl) {
+			else if (getIODelegate().getSerializationArtefact() instanceof InJarResourceImpl) {
 				InJarResourceImpl inJarResource = ((InJarResourceImpl) getIODelegate().getSerializationArtefact());
 				// System.out.println("URI: " + hop.getURI());
 				URI jarEntryURI = org.eclipse.emf.common.util.URI.createURI(inJarResource.getURI());
