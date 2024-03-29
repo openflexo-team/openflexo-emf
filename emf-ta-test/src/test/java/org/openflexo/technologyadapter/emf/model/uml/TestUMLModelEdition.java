@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.emf.model.uml;
 
 import java.util.logging.Logger;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.emf.model.TestEMFModelEdition;
@@ -53,13 +54,14 @@ import org.openflexo.test.OrderedRunner;
  * 
  */
 @RunWith(OrderedRunner.class)
+@Ignore
 public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
 
 	/*public static final String VIEWPOINT_NAME = "TestViewPoint";
 	public static final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPoint";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
-
+	
 	static FlexoEditor editor;
 	static EMFTechnologyAdapter technologicalAdapter;
 	static VirtualModel newViewPoint;
@@ -74,7 +76,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	private static CreateFlexoBehaviour creationEditionScheme;
 	private static CreationScheme creationScheme;
 	private static CreationSchemeAction creationSchemeCreationAction;
-
+	
 	private static DirectoryResourceCenter newResourceCenter;
 	private static FlexoResourceCenter<?> emfResourceCenter;*/
 
@@ -89,19 +91,19 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException, IOException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
-
+	
 		newResourceCenter = makeNewDirectoryResourceCenter();
-
+	
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
-
+	
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
-
+	
 		VirtualModelResource newViewPointResource = factory.makeTopLevelVirtualModelResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(newResourceCenter).getRootFolder(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
-
+	
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
 	}*/
@@ -114,31 +116,31 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	/*@Test
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
-
+	
 		emfResourceCenter = serviceManager.getResourceCenterService().getFlexoResourceCenter("http://openflexo.org/emf-test");
 		assertNotNull(emfResourceCenter);
-
+	
 		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter);
-
+	
 		umlMetaModelResource = technologicalAdapter.getTechnologyContextManager()
 				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
-
+	
 		assertNotNull(umlMetaModelResource);
-
+	
 		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeContainedVirtualModelResource(VIRTUAL_MODEL_NAME,
 				newViewPoint.getVirtualModelResource(), true);
 		newVirtualModel = newVMResource.getLoadedResourceData();
-
+	
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((VirtualModelResource) newViewPoint.getResource()).getIODelegate().exists());
-
+	
 		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
 		useDeclarationAction.setModelSlotClass(UMLEMFModelSlot.class);
 		useDeclarationAction.doAction();
-
+	
 		newModelSlot = technologicalAdapter.makeModelSlot(UMLEMFModelSlot.class, newVirtualModel);
 		newModelSlot.setName("umlModel");
 		newModelSlot.setMetaModelResource(umlMetaModelResource);
@@ -160,18 +162,18 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(4)
 	public void testCreateEMFModel() throws ModelDefinitionException {
 		try {
-
+	
 			assertNotNull(umlMetaModelResource);
-
+	
 			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.uml");
 			umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
 					umlMetaModelResource, newResourceCenter, "coucou.uml", "myURI", true);
-
+	
 			assertNotNull(umlModelResource);
-
+	
 			umlModelResource.save();
-
+	
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		}
@@ -180,7 +182,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	/*@Test
 	@TestOrder(5)
 	public void testCreateVMI() {
-
+	
 		CreateBasicVirtualModelInstance viewAction = CreateBasicVirtualModelInstance.actionType
 				.makeNewAction(project.getVirtualModelInstanceRepository().getRootFolder(), null, editor);
 		viewAction.setNewVirtualModelInstanceName("MyView");
@@ -189,64 +191,64 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		viewAction.doAction();
 		assertTrue(viewAction.hasActionExecutionSucceeded());
 		newView = viewAction.getNewVirtualModelInstance();
-
+	
 		CreateBasicVirtualModelInstance vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		vmiAction.setNewVirtualModelInstanceName("MyVMI");
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");
-
+	
 		logger.info("Creating a new FMLRTVirtualModelInstance");
 		vmiAction.doAction();
 		newVirtualModelInstance = vmiAction.getNewVirtualModelInstance();
-
+	
 		newVirtualModelInstance.setFlexoPropertyValue(newModelSlot, umlModelResource.getLoadedResourceData());
-
+	
 	}*/
 
 	/*@Test
 	@TestOrder(6)
 	public void testCreateFlexoConceptC() throws SaveResourceException {
-
+	
 		CreateFlexoConcept addEP = CreateFlexoConcept.actionType.makeNewAction(newVirtualModel, null, editor);
 		addEP.setNewFlexoConceptName("EMFFlexoConcept");
 		addEP.doAction();
-
+	
 		flexoConcept = addEP.getNewFlexoConcept();
-
+	
 		System.out.println("FlexoConcept = " + flexoConcept);
 		assertNotNull(flexoConcept);
-
+	
 		creationEditionScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		creationEditionScheme.setFlexoBehaviourClass(CreationScheme.class);
 		creationEditionScheme.setFlexoBehaviourName("DynamicCreation");
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
-
+	
 		((VirtualModelResource) newVirtualModel.getResource()).save();
-
+	
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getIODelegate().toString());
-
+	
 	}*/
 
 	/*@Test
 	@TestOrder(7)
 	public void testEditEMFModelinVMI() {
-
+	
 		try {
-
+	
 			creationScheme = (CreationScheme) creationEditionScheme.getNewFlexoBehaviour();
 			assertNotNull(creationScheme);
-
+	
 			creationSchemeCreationAction = new CreationSchemeAction(creationScheme, newVirtualModelInstance, null, editor);
 			assertNotNull(creationSchemeCreationAction);
-
+	
 			// TODO some stuff TO DO HERE
-
+	
 			umlModelResource.save();
-
+	
 		} catch (FlexoException e) {
 			e.printStackTrace();
 		}
-
+	
 	}*/
 }
