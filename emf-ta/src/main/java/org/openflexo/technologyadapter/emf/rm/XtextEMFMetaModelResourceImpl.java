@@ -39,13 +39,7 @@
 package org.openflexo.technologyadapter.emf.rm;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.xtext.ISetup;
-import org.eclipse.xtext.resource.XtextResource;
-import org.eclipse.xtext.resource.XtextResourceSet;
-import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
-
-import com.google.inject.Injector;
 
 /**
  * IO Delegate to load a MetaModelResource from Directory in FileSystem
@@ -59,9 +53,9 @@ public abstract class XtextEMFMetaModelResourceImpl extends JarBasedMetaModelRes
 	protected void performLoadMetaModel(ClassLoader classLoader)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		Class<?> standaloneSetupClass = classLoader.loadClass(getStandaloneSetupClassName());
-		ISetup standaloneSetup = ((ISetup) standaloneSetupClass.newInstance());
-		Injector injector = standaloneSetup.createInjectorAndDoEMFRegistration();
-		setInjector(injector);
+		// ISetup standaloneSetup = ((ISetup) standaloneSetupClass.newInstance());
+		// Injector injector = standaloneSetup.createInjectorAndDoEMFRegistration();
+		// setInjector(injector);
 	}
 
 	/**
@@ -75,14 +69,16 @@ public abstract class XtextEMFMetaModelResourceImpl extends JarBasedMetaModelRes
 
 		// TODO : refactor with proper IODelegate Support
 
-		XtextResourceSet resourceSet = getInjector().getInstance(XtextResourceSet.class);
-
+		/*XtextResourceSet resourceSet = getInjector().getInstance(XtextResourceSet.class);
+		
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
-
+		
 		Resource resource = resourceSet.createResource(
 				org.eclipse.emf.common.util.URI.createFileURI(((FileIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+		
+		return resource;*/
 
-		return resource;
+		return null;
 
 	}
 
