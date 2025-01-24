@@ -189,7 +189,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(newViewPoint.getResource().getDirectory() != null);
 		assertTrue(newViewPoint.getResource().getIODelegate().exists());
 
-		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel, null, _editor);
+		AddUseDeclaration useDeclarationAction = AddUseDeclaration.actionType.makeNewAction(newVirtualModel.getCompilationUnit(), null,
+				_editor);
 		useDeclarationAction.setModelSlotClass(EMFModelSlot.class);
 		useDeclarationAction.doAction();
 
