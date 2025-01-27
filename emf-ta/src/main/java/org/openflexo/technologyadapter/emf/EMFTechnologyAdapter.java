@@ -46,6 +46,8 @@ import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
+import org.openflexo.foundation.fml.ElementImportDeclaration;
+import org.openflexo.foundation.fml.FMLCompilationUnit;
 import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceFactories;
@@ -658,6 +660,24 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 		}
 
 		return null;
+	}
+
+	@Override
+	public String serializeType(TechnologySpecificType<EMFTechnologyAdapter> type, FMLCompilationUnit compilationUnit,
+			boolean useTypeDefinitions) {
+		if (type instanceof EMFObjectIndividualType) {
+			EMFObjectIndividualType individualType = (EMFObjectIndividualType) type;
+			if (useTypeDefinitions && compilationUnit.getTypeDeclaration(type) != null) {
+				return compilationUnit.getTypeDeclaration(type).getAbbrev();
+			}
+			if (individualType.getOntologyClass() != null) {
+				EMFClassClass ontologyClass = individualType.getOntologyClass();
+				ElementImportDeclaration ontologyClassImport = compilationUnit.ensureElementImport(ontologyClass, false);
+				return "EMFObjectIndividualType(eClass=" + ontologyClassImport.getAbbrev() + ")";
+			}
+			return "EMFObjectIndividualType()";
+		}
+		return super.serializeType(type, compilationUnit, useTypeDefinitions);
 	}
 
 }

@@ -1,10 +1,12 @@
 use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 
 import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 
-import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN;
-import [BPMN:"Process"] as PROCESS;
-import [BPMN:"Task"] as TASK;
+import EMFMetaModel BPMN from ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"];
+import EMFClassClass PROCESS from [BPMN:"Process"];
+import EMFClassClass TASK from [BPMN:"Task"];
 
 typedef EMFObjectIndividualType(eClass=PROCESS) as Process;
 typedef EMFObjectIndividualType(eClass=TASK) as Task;
