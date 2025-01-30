@@ -2,10 +2,11 @@ use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
 
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 
-import ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"] as BPMN;
-
-import [BPMN:"Participant"] as BPMN_PARTICIPANT;
+import EMFMetaModel BPMN from ["http://www.omg.org/spec/BPMN/20100524/MODEL-XMI"];
+import EMFClassClass BPMN_PARTICIPANT from [BPMN:"Participant"];
 
 typedef EMFObjectIndividualType(eClass=BPMN_PARTICIPANT) as BPMNParticipant;
 
