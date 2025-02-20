@@ -94,7 +94,7 @@ import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
 @XMLElement
 @FML("EMFModelSlot")
-public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaModel, EMFModelResource, EMFTechnologyAdapter> {
 
 	@PropertyIdentifier(type = EMFMetaModel.class)
 	public static final String META_MODEL_KEY = "metaModel";
@@ -109,8 +109,8 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 	@Setter(META_MODEL_KEY)
 	public void setMetaModel(EMFMetaModel aMetaModel);
 
-	public static abstract class EMFModelSlotImpl extends FlexoOntologyModelSlotImpl<EMFModel, EMFMetaModel, EMFTechnologyAdapter>
-			implements EMFModelSlot {
+	public static abstract class EMFModelSlotImpl
+			extends FlexoOntologyModelSlotImpl<EMFModel, EMFMetaModel, EMFModelResource, EMFTechnologyAdapter> implements EMFModelSlot {
 
 		private static final Logger logger = Logger.getLogger(EMFModelSlot.class.getPackage().getName());
 
