@@ -316,15 +316,34 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<>();
-		for (EMFClassClass aClass : converter.getClasses().values()) {
-			result.add(aClass);
-		}
-		for (EMFEnumClass aClass : converter.getEnums().values()) {
-			result.add(aClass);
-		}
-		return Collections.unmodifiableList(result);
+	    List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<>();
+
+	    System.out.println(">>> [DEBUG] Début de getClasses()");
+
+	    System.out.println(">>> [DEBUG] Parcours des EMFClassClass");
+	    for (EMFClassClass aClass : converter.getClasses().values()) {
+	        if (aClass == null) {
+	            System.out.println("  - [NULL] EMFClassClass null détectée !");
+	        } else {
+	            System.out.println("  - [OK] EMFClassClass: name=" + aClass.getName() + ", URI=" + aClass.getURI());
+	        }
+	        result.add(aClass);
+	    }
+
+	    System.out.println(">>> [DEBUG] Parcours des EMFEnumClass");
+	    for (EMFEnumClass aClass : converter.getEnums().values()) {
+	        if (aClass == null) {
+	            System.out.println("  - [NULL] EMFEnumClass null détectée !");
+	        } else {
+	            System.out.println("  - [OK] EMFEnumClass: name=" + aClass.getName() + ", URI=" + aClass.getURI());
+	        }
+	        result.add(aClass);
+	    }
+
+	    System.out.println(">>> [DEBUG] Fin de getClasses() - total=" + result.size());
+	    return Collections.unmodifiableList(result);
 	}
+
 
 	/**
 	 * Follow the link.

@@ -70,6 +70,9 @@ public class EMFMetaModelURIBuilder {
 	 * @return
 	 */
 	public static String getUri(EClass aClass) {
+		System.out.println("- aClass : " + aClass + "");
+		System.out.println("- aClass.getEPackage :" + aClass.getEPackage() + "");
+		System.out.println("- aClass.getEPackage.getNsURI :" + aClass.getEPackage().getNsURI() + "");
 		return aClass.getEPackage().getNsURI() + '/' + aClass.getName();
 	}
 

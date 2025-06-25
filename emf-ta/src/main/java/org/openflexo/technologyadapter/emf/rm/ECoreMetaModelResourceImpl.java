@@ -47,10 +47,12 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -106,6 +108,8 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		if (isLoaded()) {
 			return getMetaModelData();
 		}
+		
+		
 
 		EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
 		resourceData = converter.convertMetaModel(getEMFResource());
@@ -115,6 +119,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		logger.info("Registering " + resourceData.getRootPackage() + " for " + getURI());
 		getTechnologyContextManager().getResourceSet().getPackageRegistry().put(getURI(), resourceData.getRootPackage());
 
+		
 		// System.out.println("result=" + resourceData);
 		// System.out.println("root_package=" + getPackage());
 		// System.out.println("all_classes=" + resourceData.getAccessibleClasses());
@@ -187,7 +192,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		if (resourceCenter instanceof FileSystemBasedResourceCenter) {
 			FileSystemMetaDataManager metaDataManager = ((FileSystemBasedResourceCenter) resourceCenter).getMetaDataManager();
 			File file = (File) getIODelegate().getSerializationArtefact();
-
+			/*
 			if (!forceRebuild && (file.lastModified() < metaDataManager.metaDataLastModified(file))) {
 				// OK, in this case the metadata file is there and more recent than xml file
 				// Attempt to retrieve metadata from cache
@@ -195,9 +200,9 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 			}
 			else {
 				// No way, metadata are either not present or older than file version, we should parse XML file, continuing...
-			}
+			}*/
 		}
-
+		
 		// System.out.println("Retrieve info from file for " + this);
 
 		ECoreMetaData returned = new ECoreMetaData(resourceCenter.getXMLRootElementInfo((I) getIODelegate().getSerializationArtefact()));
@@ -211,5 +216,16 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 
 		return returned;
 	}
+	
+	@Override
+	public String getModelFileExtension() {
+	    return "capella";
+	}
+
+	@Override
+	public Resource.Factory getEMFResourceFactory() {
+	    return new XMIResourceFactoryImpl();
+	}
+
 
 }

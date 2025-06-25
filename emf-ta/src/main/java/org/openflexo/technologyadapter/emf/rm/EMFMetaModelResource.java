@@ -105,5 +105,8 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 */
 	@Setter(value = PACKAGE)
 	void setPackage(EPackage ePackage);
+	
+	String getModelFileExtension();
+	Resource.Factory getEMFResourceFactory();
 
 }

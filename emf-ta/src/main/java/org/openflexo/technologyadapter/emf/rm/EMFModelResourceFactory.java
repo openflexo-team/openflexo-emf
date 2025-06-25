@@ -57,7 +57,8 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 
 	public <I> boolean isValidXMIArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
-		return resourceCenter.retrieveName(serializationArtefact).endsWith(EMFModelResource.XMI_EXTENSION);
+		return resourceCenter.retrieveName(serializationArtefact).endsWith(EMFModelResource.XMI_EXTENSION)||
+				resourceCenter.retrieveName(serializationArtefact).endsWith(".capella");
 	}
 
 	@Override
@@ -65,7 +66,7 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(
 				resourceCenter.getServiceManager());
-
+		
 		if (isValidXMIArtefact(serializationArtefact, resourceCenter)) {
 			return true;
 		}
@@ -106,7 +107,7 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	public <I> EMFModelResource makeEMFModelResource(I serializationArtefact, EMFMetaModelResource metaModelResource,
 			FlexoResourceCenter<I> resourceCenter, String name, String uri, boolean createEmptyContents)
 			throws SaveResourceException, ModelDefinitionException {
-
+		
 		EMFModelResource returned = initResourceForCreation(serializationArtefact, resourceCenter, name, uri);
 		returned.setMetaModelResource(metaModelResource);
 		registerResource(returned, resourceCenter);
@@ -135,7 +136,8 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	@Override
 	public <I> EMFModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter)
 			throws ModelDefinitionException, IOException {
-
+		
+		System.out.println(serializationArtefact);
 		if (getRegisteredResource(serializationArtefact) != null) {
 			return getRegisteredResource(serializationArtefact);
 		}
@@ -149,7 +151,18 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 
 			EMFMetaModelResource metaModelResource = ((EMFTechnologyContextManager) technologyContextManager)
 					.getMetaModelResourceByURI(returned.getMetaData(resourceCenter).rootNamespace);
-
+			
+			System.out.println("====================");
+			System.out.println("metamodèle : " +metaModelResource);
+			System.out.println("returned : " + returned);
+			System.out.println(">>> rootNamespace from .capella: " + returned.getMetaData(resourceCenter).rootNamespace);
+			System.out.println(">>> Métamodèles disponibles dans EMFTechnologyContextManager :");
+			for (EMFMetaModelResource mm : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
+			    System.out.println(" - nsURI = " + mm.getMetaModelData().getRootPackage().getNsURI() + " | res = " + mm);
+			}
+			
+			System.out.println("====================\n");
+			
 			if (metaModelResource != null) {
 				//System.out.println(
 				//		"Found metamodel: " + metaModelResource + " for URI: " + returned.getMetaData(resourceCenter).rootNamespace);
