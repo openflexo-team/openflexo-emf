@@ -120,10 +120,6 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		getTechnologyContextManager().getResourceSet().getPackageRegistry().put(getURI(), resourceData.getRootPackage());
 
 		
-		// System.out.println("result=" + resourceData);
-		// System.out.println("root_package=" + getPackage());
-		// System.out.println("all_classes=" + resourceData.getAccessibleClasses());
-		// System.out.println("classes=" + resourceData.getClasses());
 
 		return resourceData;
 	}

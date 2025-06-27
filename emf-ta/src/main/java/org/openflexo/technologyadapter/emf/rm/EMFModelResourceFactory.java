@@ -152,17 +152,6 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 			EMFMetaModelResource metaModelResource = ((EMFTechnologyContextManager) technologyContextManager)
 					.getMetaModelResourceByURI(returned.getMetaData(resourceCenter).rootNamespace);
 			
-			System.out.println("====================");
-			System.out.println("metamodèle : " +metaModelResource);
-			System.out.println("returned : " + returned);
-			System.out.println(">>> rootNamespace from .capella: " + returned.getMetaData(resourceCenter).rootNamespace);
-			System.out.println(">>> Métamodèles disponibles dans EMFTechnologyContextManager :");
-			for (EMFMetaModelResource mm : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
-			    System.out.println(" - nsURI = " + mm.getMetaModelData().getRootPackage().getNsURI() + " | res = " + mm);
-			}
-			
-			System.out.println("====================\n");
-			
 			if (metaModelResource != null) {
 				//System.out.println(
 				//		"Found metamodel: " + metaModelResource + " for URI: " + returned.getMetaData(resourceCenter).rootNamespace);

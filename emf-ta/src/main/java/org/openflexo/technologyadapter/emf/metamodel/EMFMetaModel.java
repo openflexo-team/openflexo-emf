@@ -42,7 +42,9 @@ package org.openflexo.technologyadapter.emf.metamodel;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EPackage;
@@ -76,6 +78,8 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	protected final EPackage ePackage;
 	/** Converter. */
 	protected final EMFMetaModelConverter converter;
+	
+	private Map<String, IFlexoOntologyClass<EMFTechnologyAdapter>> classMap = null;
 
 	/**
 	 * Constructor.
@@ -86,6 +90,21 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		this.converter = converter;
 
 	}
+	
+	private void ensureclassMap() {
+	    if (classMap == null) {
+	        classMap = new HashMap<>();
+	        for (IFlexoOntologyClass<EMFTechnologyAdapter> aClass : getClasses()) {
+	            if (aClass.getURI() != null) {
+	                classMap.put(aClass.getURI().toLowerCase(), aClass);
+	            }
+	            if (aClass.getName() != null) {
+	                classMap.put(aClass.getName().toLowerCase(), aClass);
+	            }
+	        }
+	    }
+	}
+
 
 	/**
 	 * Follow the link.
@@ -317,30 +336,14 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
 	    List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<>();
-
-	    System.out.println(">>> [DEBUG] Début de getClasses()");
-
-	    System.out.println(">>> [DEBUG] Parcours des EMFClassClass");
 	    for (EMFClassClass aClass : converter.getClasses().values()) {
-	        if (aClass == null) {
-	            System.out.println("  - [NULL] EMFClassClass null détectée !");
-	        } else {
-	            System.out.println("  - [OK] EMFClassClass: name=" + aClass.getName() + ", URI=" + aClass.getURI());
-	        }
 	        result.add(aClass);
 	    }
 
-	    System.out.println(">>> [DEBUG] Parcours des EMFEnumClass");
 	    for (EMFEnumClass aClass : converter.getEnums().values()) {
-	        if (aClass == null) {
-	            System.out.println("  - [NULL] EMFEnumClass null détectée !");
-	        } else {
-	            System.out.println("  - [OK] EMFEnumClass: name=" + aClass.getName() + ", URI=" + aClass.getURI());
-	        }
 	        result.add(aClass);
 	    }
 
-	    System.out.println(">>> [DEBUG] Fin de getClasses() - total=" + result.size());
 	    return Collections.unmodifiableList(result);
 	}
 
@@ -352,18 +355,14 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classNameOrURI) {
-		IFlexoOntologyClass<EMFTechnologyAdapter> result = null;
-		for (IFlexoOntologyClass<EMFTechnologyAdapter> aClass : getClasses()) {
-			if (aClass.getURI().equalsIgnoreCase(classNameOrURI)) {
-				result = aClass;
-			}
-			if (aClass.getName().equalsIgnoreCase(classNameOrURI)) {
-				result = aClass;
-			}
-			if (result != null)
-				break;
-		}
-		return result;
+		System.out.println("======== Entrée getClass ========");
+		System.out.println("classNameOrURI : " + classNameOrURI);
+	    if (classNameOrURI == null) {
+	        return null;
+	    }
+	    ensureclassMap();
+	    System.out.println("======== Sortie getClass ========");
+	    return classMap.get(classNameOrURI.toLowerCase());
 	}
 
 	/**

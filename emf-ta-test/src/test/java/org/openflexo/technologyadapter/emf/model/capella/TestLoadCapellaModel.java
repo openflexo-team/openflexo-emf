@@ -5,11 +5,17 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +26,14 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
+import org.eclipse.emf.ecore.resource.Resource;
 @RunWith(OrderedRunner.class)
 public class TestLoadCapellaModel extends OpenflexoTestCase {
 
@@ -67,7 +74,7 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
             .getResource("http://www.polarsys.org/capella/core/modeller/7.0.0", EMFMetaModel.class);
 
         assertNotNull("Le métamodèle Capella doit être trouvé", capellaMMRes);
-        //assertFalse("Le métamodèle ne doit pas être encore chargé", capellaMMRes.isLoaded());
+        assertFalse("Le métamodèle ne doit pas être encore chargé", capellaMMRes.isLoaded());
 
 
         metaModel = capellaMMRes.getResourceData();
@@ -125,16 +132,8 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
         assertNotNull("La ressource du métamodèle Capella ne doit pas être null", capellaMMRes);
         assertNotNull("Le métamodèle Capella doit avoir un ResourceCenter", capellaMMRes.getResourceCenter());
         assertTrue("La ressource du métamodèle doit être chargée", capellaMMRes.isLoaded());
-        System.out.println("ePackage = " + (metaModel != null ? metaModel.getRootPackage() : "null"));
-        System.out.println("metaModel URI = " + metaModel.getURI());
-        System.out.println("ePackage nsURI = " + metaModel.getRootPackage().getNsURI());
-
-        try {
-            model = capellaModelRes.getResourceData();
-        } catch (Exception e) {
-        	e.printStackTrace();
-            fail("Erreur lors du chargement du modèle Capella : " + e.getMessage());
-        }
+        
+        model = capellaModelRes.getResourceData();
         
         assertNotNull("Le modèle Capella doit être chargé", model);
         assertNotNull("La ressource EMF du modèle ne doit pas être null", model.getEMFResource());
@@ -150,25 +149,11 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
     public void performSomeTests() {
     	log("performSomeTests");
     	
-    	System.out.println("=== DEBUG ResourceSet contents ===");
-    	EMFTechnologyContextManager ctxManager = (EMFTechnologyContextManager)
-        	    serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class).getTechnologyContextManager();
-        
-    	ResourceSet rs = ctxManager.getResourceSet();
-    	rs.getResources().forEach(r -> System.out.println(" - Resource: " + r.getURI()));
-    	System.out.println("=== DEBUG PackageRegistry ===");
-    	rs.getPackageRegistry().forEach((k, v) -> System.out.println(" * " + k + " → " + v));
-
-    	/*
-    	for (IFlexoOntologyClass<EMFTechnologyAdapter> c : metaModel.getClasses()) {
-			System.out.println(" > Class : " + c.getName() + " URI=" + c.getURI());
-		}
-    	*/
-    	//EcoreUtil.resolveAll(rs);
     	IFlexoOntologyClass<EMFTechnologyAdapter> systemEngineeringClass = metaModel
                 .getClass("http://www.polarsys.org/capella/core/modeller/7.0.0/SystemEngineering");
     	
-        assertNotNull("La classe SystemEngineering doit exister", systemEngineeringClass);
+    	System.out.println("AAAAAAAA");
+    	assertNotNull("La classe SystemEngineering doit exister", systemEngineeringClass);
         
         List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> systemEngineerings =
                 model.getIndividuals(systemEngineeringClass);
@@ -176,5 +161,4 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
         assertNotNull("Les individus de SystemEngineering ne doivent pas être null", systemEngineerings);
         assertFalse("Il doit y avoir au moins une instance de SystemEngineering", systemEngineerings.isEmpty());
     }
-
 }
