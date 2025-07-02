@@ -1,0 +1,64 @@
+use org.openflexo.technologyadapter.emf.EMFModelSlot as EMF;
+
+import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+
+//import EMFMetaModel CAPELLA_CORE from ["http://www.polarsys.org/capella/core/core/7.0.0"];
+//import EMFMetaModel CAPELLA_OA from ["http://www.polarsys.org/capella/core/oa/7.0.0"];
+//import EMFMetaModel CAPELLA_CTX from ["http://www.polarsys.org/capella/core/ctx/7.0.0"];
+//import EMFMetaModel CAPELLA_LA from ["http://www.polarsys.org/capella/core/la/7.0.0"];
+//import EMFMetaModel CAPELLA_PA from ["http://www.polarsys.org/capella/core/pa/7.0.0"];
+//import EMFMetaModel CAPELLA_EPBS from ["http://www.polarsys.org/capella/core/epbs/7.0.0"];
+//import EMFMetaModel CAPELLA_SHAREDMODEL from ["http://www.polarsys.org/capella/core/sharedmodel/7.0.0"];
+//import EMFMetaModel CAPELLA_BEHAVIOR from ["http://www.polarsys.org/capella/common/behavior/7.0.0"];
+//import EMFMetaModel CAPELLA_COMMON_CORE from ["http://www.polarsys.org/capella/common/core/7.0.0"];
+//import EMFMetaModel CAPELLA_COMMON from ["http://www.polarsys.org/capella/core/common/7.0.0"];
+//import EMFMetaModel CAPELLA_INFORMATION from ["http://www.polarsys.org/capella/core/information/7.0.0"];
+//import EMFMetaModel CAPELLA_FA from ["http://www.polarsys.org/capella/core/fa/7.0.0"];
+//import EMFMetaModel CAPELLA_INTERACTION from ["http://www.polarsys.org/capella/core/interaction/7.0.0"];
+//import EMFMetaModel CAPELLA_CS from ["http://www.polarsys.org/capella/core/cs/7.0.0"];
+//import EMFMetaModel CAPELLA_ACTIVITY from ["http://www.polarsys.org/capella/common/activity/7.0.0"];
+import EMFMetaModel CAPELLA_MODELLER from ["http://www.polarsys.org/capella/core/modeller/7.0.0"];
+
+
+import EMFClassClass SYSTEMENGINEERING from [CAPELLA_MODELLER:"SystemEngineering"];
+
+typedef EMFObjectIndividualType(eClass=SYSTEMENGINEERING) as SystemEngineering;
+/**
+ * 
+ * @author azim
+ * @version 0.1
+ */
+@URI("http://openflexo.org/test/TestResourceCenter/CapellaModel.fml")
+public model CapellaModel {
+
+   EMFModel capellaModel with EMFModelSlot(metaModel=CAPELLA_MODELLER);
+
+   @CreationScheme
+   create(Resource<EMFModel> aCapellaResource) {
+        capellaModel = parameters.aCapellaResource.resourceData;
+        log "Capella Model Loaded: " + capellaModel;
+    }
+
+    public List<EMFObjectIndividual> listAllEMFIndividuals() {
+        List<EMFObjectIndividual> returned = new ArrayList();
+        for (EMFObjectIndividual anObject : select EMFObjectIndividual from capellaModel) {
+            log "EMFObjectIndividual: " + anObject ;
+            returned.add(anObject);
+        }
+        return returned;
+    }
+
+    public List<SystemEngineering> listAllSystemEngineering() {
+       List<SystemEngineering> returned = new ArrayList();
+       for (SystemEngineering se : select SystemEngineering from capellaModel) {
+           log "SystemEngineering found: " + se + " name=" + se.name;
+           returned.add(se);
+       }
+       return returned;
+   }
+
+   
+}
