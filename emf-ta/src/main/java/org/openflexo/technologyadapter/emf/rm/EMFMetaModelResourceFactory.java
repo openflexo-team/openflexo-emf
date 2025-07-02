@@ -132,9 +132,9 @@ public class EMFMetaModelResourceFactory
 	public <I> EMFMetaModelResource registerResource(EMFMetaModelResource resource, FlexoResourceCenter<I> resourceCenter) {
 		super.registerResource(resource, resourceCenter);
 
-		// System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
-		// System.out.println("sm=" + resource.getServiceManager());
-
+		 System.out.println("j'enregistre " + resource.getURI() + " dans " + resourceCenter);
+		 System.out.println("sm=" + resource.getServiceManager());
+		 System.out.println(resource instanceof ECoreMetaModelResource);
 		TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager = getTechnologyContextManager(resource.getServiceManager());
 
 		if (resource instanceof JarBasedMetaModelResource) {
@@ -153,6 +153,13 @@ public class EMFMetaModelResourceFactory
 				((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(jarBasedResource);
 			}
 		}
+		
+		if (resource instanceof EMFMetaModelResource) {
+			EMFMetaModelResource eCoreResource = (EMFMetaModelResource)resource;
+			((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(eCoreResource);
+		}
+		
+		
 
 		EMFTechnologyAdapter technologyAdapter = getTechnologyAdapter(resource.getServiceManager());
 		technologyAdapter.newMetaModelWasRegistered(resource, resourceCenter);

@@ -50,6 +50,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
@@ -89,6 +91,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public String getName() {
+		if(object==null) {
+			return null;
+		}
 		return object.getName();
 	}
 
@@ -344,7 +349,12 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	@Override
 	@Deprecated
 	public boolean isRootConcept() {
-		return getName().equalsIgnoreCase("EObject");
+		String name = getName();
+	    if (name == null) {
+	        return false;
+	    }
+	    return name.equalsIgnoreCase("EObject");
+
 	}
 
 	@Override

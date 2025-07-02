@@ -70,7 +70,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	protected static final Logger logger = Logger.getLogger(EMFTechnologyContextManager.class.getPackage().getName());
 
 	/** Stores all known metamodels where key is the URI of metamodel */
-	protected Map<String, JarBasedMetaModelResource> metamodels = new HashMap<>();
+	protected Map<String, EMFMetaModelResource> metamodels = new HashMap<>();
 	/** Stores all known metamodels where key is the URI of profiles (UML) */
 	protected Map<String, JarBasedMetaModelResource> profiles = new HashMap<>();
 	/** Stores all known models where key is the URI of model */
@@ -110,7 +110,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	 * 
 	 * @param newModel
 	 */
-	public void registerMetaModel(JarBasedMetaModelResource newMetaModelResource) {
+	public void registerMetaModel(EMFMetaModelResource newMetaModelResource) {
 		String mmURI = newMetaModelResource.getURI();
 		EMFMetaModelResource existingMM = metamodels.get(mmURI);
 		if (existingMM == null) {
