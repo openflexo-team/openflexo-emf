@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -174,20 +175,26 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
     
     @Test
     @TestOrder(7)
-    public void performSomeTests() {
+    public void performSomeTests() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
     	log("performSomeTests");
     	
     	IFlexoOntologyClass<EMFTechnologyAdapter> systemEngineeringClass = metaModel
                 .getClass("http://www.polarsys.org/capella/core/modeller/7.0.0/SystemEngineering");
     	
-    	System.out.println("AAAAAAAA");
     	assertNotNull("La classe SystemEngineering doit exister", systemEngineeringClass);
         
         List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> systemEngineerings =
                 model.getIndividuals(systemEngineeringClass);
-
+        
         assertNotNull("Les individus de SystemEngineering ne doivent pas être null", systemEngineerings);
         assertFalse("Il doit y avoir au moins une instance de SystemEngineering", systemEngineerings.isEmpty());
+        
+        for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : metaModel.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
         
     }
 }
