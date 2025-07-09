@@ -5,5 +5,4 @@
     name="a"
     nsURI="http://example.org/a"
     nsPrefix="a">
-  <eClassifiers xsi:type="ecore:EClass" name="ClassA"/>
 </ecore:EPackage>
