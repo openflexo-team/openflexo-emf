@@ -355,13 +355,10 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classNameOrURI) {
-		System.out.println("======== Entrée getClass ========");
-		System.out.println("classNameOrURI : " + classNameOrURI);
 	    if (classNameOrURI == null) {
 	        return null;
 	    }
 	    ensureclassMap();
-	    System.out.println("======== Sortie getClass ========");
 	    return classMap.get(classNameOrURI.toLowerCase());
 	}
 

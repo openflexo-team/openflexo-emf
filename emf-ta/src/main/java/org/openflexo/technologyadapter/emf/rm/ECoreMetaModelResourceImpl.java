@@ -134,13 +134,9 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		// Retrieve dependencies
 		List<EObject> objects = resource.getContents();
 		
-		System.out.println("================");
-		System.out.println("Début loadResourceData : ");
 		for (EObject obj : objects) {
 			if (obj instanceof EPackage) {
 		        EPackage ePackage = (EPackage) obj;
-		        System.out.println("Package: " + ePackage.getName());
-		        System.out.println("Dependances externes: " + ePackage.getName()); 
 		        
 		        for (EClassifier classifier : ePackage.getEClassifiers()) {
 		            
@@ -195,7 +191,6 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
     
 		
 		for (FlexoResource<?> dep : getDependencies()){
-			//System.out.println(" - " + dep.getURI());
 			if(!dep.isLoaded()) {
 				try {
 					dep.loadResourceData();
@@ -205,8 +200,6 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 			}
 		}
 		
-		System.out.println("Fin loadResourceData");
-		System.out.println("================");
 
 		logger.info("Registering " + resourceData.getRootPackage() + " for " + getURI());
 		getTechnologyContextManager().getResourceSet().getPackageRegistry().put(getURI(), resourceData.getRootPackage());
@@ -226,7 +219,6 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		if(extPkg != null &&
 				!extURI.equals(srcURI) &&
 						filterDependency(extURI)){
-			//System.out.println("Dependency found : " + extURI);
 			EMFMetaModelResource depRes = 
 				    (EMFMetaModelResource) getTechnologyContextManager().getResourceWithURI(extURI);
 			if(depRes != null) {
