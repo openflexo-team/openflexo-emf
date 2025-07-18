@@ -118,7 +118,6 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public String getDescription() {
-		System.out.println("===== getDescription =====");
 		return null;
 	}
 
