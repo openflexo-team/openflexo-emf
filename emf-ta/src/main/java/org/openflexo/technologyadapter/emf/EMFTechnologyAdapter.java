@@ -40,6 +40,7 @@
 package org.openflexo.technologyadapter.emf;
 
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -104,6 +105,11 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 	private static String UML_MM_FACTORYCLSNAME = UMLResourceFactoryImpl.class.getName();
 	// private EMFMetaModelResource umlMetaModelResource = null;
 
+	
+	
+	
+
+	
 	/**
 	 * 
 	 * Constructor.

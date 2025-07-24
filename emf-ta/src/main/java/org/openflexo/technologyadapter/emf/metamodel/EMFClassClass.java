@@ -50,6 +50,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
@@ -65,6 +67,10 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * @author gbesancon
  */
 public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFlexoOntologyClass<EMFTechnologyAdapter> {
+	private List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> cachedDeclaredFeatureAssociations = null;
+	private List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> cachedStructuralFeatureAssociations = null;
+	private List<IFlexoOntologyClass<EMFTechnologyAdapter>> cachedSuperClasses = null;
+	private List<IFlexoOntologyClass<EMFTechnologyAdapter>> cachedSubClasses = null;
 	/**
 	 * Constructor.
 	 */
@@ -89,6 +95,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public String getName() {
+		if(object==null) {
+			return null;
+		}
 		return object.getName();
 	}
 
@@ -139,17 +148,15 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public List<IFlexoOntologyAnnotation> getAnnotations() {
-		List<IFlexoOntologyAnnotation> annotations = null;
-		if (object.getEAnnotations() != null && object.getEAnnotations().size() != 0) {
-			annotations = new ArrayList<>();
-			for (EAnnotation annotation : object.getEAnnotations()) {
-				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
-			}
+		List<EAnnotation> eAnnotations = object.getEAnnotations();
+		if (eAnnotations == null || eAnnotations.isEmpty()){
+			return Collections.emptyList();
 		}
-		else {
-			annotations = Collections.emptyList();
-		}
-		return annotations;
+		List<IFlexoOntologyAnnotation> annotations = new ArrayList<>(eAnnotations.size());
+	    for (EAnnotation annotation : eAnnotations) {
+	        annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
+	    }
+	    return annotations;
 	}
 
 	/**
@@ -159,15 +166,17 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getFeatureAssociations()
 	 */
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getDeclaredFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>(
-				0);
-		for (EAttribute attribute : object.getEAttributes()) {
-			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this, null));
-		}
-		for (EReference reference : object.getEReferences()) {
-			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference, this, null));
-		}
-		return Collections.unmodifiableList(featureAssociations);
+		if(cachedDeclaredFeatureAssociations == null) {
+			List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>(
+					0);
+			for (EAttribute attribute : object.getEAttributes()) {
+				featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this, null));
+			}
+			for (EReference reference : object.getEReferences()) {
+				featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference, this, null));
+			}
+			cachedDeclaredFeatureAssociations = Collections.unmodifiableList(featureAssociations);}
+		return cachedDeclaredFeatureAssociations;
 	}
 
 	/**
@@ -178,9 +187,12 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>();
-		appendFeatureAssociation(this, featureAssociations);
-		return Collections.unmodifiableList(featureAssociations);
+		if (cachedStructuralFeatureAssociations == null) {
+	        List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<>();
+	        appendFeatureAssociation(this, featureAssociations);
+	        cachedStructuralFeatureAssociations = Collections.unmodifiableList(featureAssociations);
+	    }
+	    return cachedStructuralFeatureAssociations;
 	}
 
 	/**
@@ -249,19 +261,21 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
-
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<>();
-		for (EClass superClass : object.getESuperTypes()) {
-			// prevent returning classes from EcorePackage when not in Ecore MM
-			EPackage myRootPackage = ontology.getResource().getPackage();
-			if (myRootPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass, myRootPackage));
+		if (cachedSuperClasses == null) {
+			List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<>();
+			for (EClass superClass : object.getESuperTypes()) {
+				// prevent returning classes from EcorePackage when not in Ecore MM
+				EPackage myRootPackage = ontology.getResource().getPackage();
+				if (myRootPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+					superClasses.add(ontology.getConverter().convertClass(ontology, superClass, myRootPackage));
+				}
+				else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+					superClasses.add(ontology.getConverter().convertClass(ontology, superClass, org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
+				}
 			}
-			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass, org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
-			}
+			cachedSuperClasses = Collections.unmodifiableList(superClasses);
 		}
-		return Collections.unmodifiableList(superClasses);
+        return cachedSuperClasses;
 	}
 
 	/**
@@ -271,20 +285,20 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getSubClasses(IFlexoOntology<EMFTechnologyAdapter> context) {
-
-		System.out.println("Looking for subclasses of: " + this.getName());
-
-		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<>();
-		if (context instanceof EMFMetaModel) {
-			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {
-				if (classEntry.getValue().getOntology() == context) {
-					if (classEntry.getKey().getESuperTypes().contains(object) && classEntry.getValue() != this) {
-						subClasses.add(classEntry.getValue());
+		if (cachedSubClasses == null) {
+			List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<>();
+			if (context instanceof EMFMetaModel) {
+				for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {
+					if (classEntry.getValue().getOntology() == context) {
+						if (classEntry.getKey().getESuperTypes().contains(object) && classEntry.getValue() != this) {
+							subClasses.add(classEntry.getValue());
+						}
 					}
 				}
 			}
+			cachedSubClasses = Collections.unmodifiableList(subClasses);
 		}
-		return Collections.unmodifiableList(subClasses);
+		return cachedSubClasses;
 	}
 
 	/**
@@ -344,7 +358,11 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass>implements IFl
 	@Override
 	@Deprecated
 	public boolean isRootConcept() {
-		return getName().equalsIgnoreCase("EObject");
+		String name = getName();
+	    if (name == null) {
+	        return false;
+	    }
+	    return name.equalsIgnoreCase("EObject");
 	}
 
 	@Override

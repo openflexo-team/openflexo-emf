@@ -40,14 +40,29 @@
 package org.openflexo.technologyadapter.emf.rm;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EClassifier;
+import org.eclipse.emf.ecore.EDataType;
+import org.eclipse.emf.ecore.EGenericType;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EParameter;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -56,7 +71,9 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.InJarIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 import org.openflexo.toolbox.FileSystemMetaDataManager;
@@ -109,23 +126,115 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 			return getMetaModelData();
 		}
 		
-		
-
 		EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
 		resourceData = converter.convertMetaModel(getEMFResource());
 		setPackage(converter.getRootPackage(getEMFResource()));
 		resourceData.setResource(this);
+		
+		// Retrieve dependencies
+		List<EObject> objects = resource.getContents();
+		
+		for (EObject obj : objects) {
+			if (obj instanceof EPackage) {
+		        EPackage ePackage = (EPackage) obj;
+		        
+		        for (EClassifier classifier : ePackage.getEClassifiers()) {
+		            
+		        	if (classifier instanceof EClass) {
+		                EClass eClass = (EClass) classifier;
+		                
+		                // ESuperTypes
+		                for (EClass superType : eClass.getESuperTypes()) {
+		                    EPackage superPkg = superType.getEPackage();
+		                    addExternalDependency(ePackage,superPkg);
+		                }
+
+		                // EReferences
+		                for (EReference ref : eClass.getEReferences()) {
+		                    EPackage refPkg = ref.getEReferenceType().getEPackage();
+		                    addExternalDependency(ePackage,refPkg);
+		                }
+
+		                // EAttributes
+		                for (EAttribute attr : eClass.getEAttributes()) {
+		                    EPackage attrPkg = attr.getEAttributeType().getEPackage();
+		                    addExternalDependency(ePackage,attrPkg);
+		                }
+
+		                // EOperations
+		                for (EOperation op : eClass.getEOperations()) {
+		                	if(op.getEType()!=null) {
+			                    EPackage opPkg = op.getEType().getEPackage();
+			                    addExternalDependency(ePackage,opPkg);
+	
+			                    for (EParameter param : op.getEParameters()) {
+			                        EPackage paramPkg = param.getEType().getEPackage();
+			                        addExternalDependency(ePackage,paramPkg);
+			                    }
+		                	}
+		                }
+
+		                // EGenericType
+		                for (ETypeParameter typeParam : eClass.getETypeParameters()) {
+		                    for (EGenericType genericBound : typeParam.getEBounds()) {
+		                        EPackage genericPkg = genericBound.getEClassifier().getEPackage();
+		                        addExternalDependency(ePackage,genericPkg);
+		                    }
+		                }
+
+		            }   
+		        }
+		        
+		        
+		    }
+        }
+    
+		
+		for (FlexoResource<?> dep : getDependencies()){
+			if(!dep.isLoaded()) {
+				try {
+					dep.loadResourceData();
+				} catch (FileNotFoundException | ResourceLoadingCancelledException | FlexoException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		
 
 		logger.info("Registering " + resourceData.getRootPackage() + " for " + getURI());
 		getTechnologyContextManager().getResourceSet().getPackageRegistry().put(getURI(), resourceData.getRootPackage());
-
-		
-		// System.out.println("result=" + resourceData);
-		// System.out.println("root_package=" + getPackage());
-		// System.out.println("all_classes=" + resourceData.getAccessibleClasses());
-		// System.out.println("classes=" + resourceData.getClasses());
-
 		return resourceData;
+	}
+	
+	/**
+	 * Adds an external dependency to this resource if it is relevant.
+	 * It checks whether the reference to {@link EPackage} is not null,
+	 * has a different namespace URI than the source {@link EPackage},
+	 * and passes the {@link #filterDependency(String)} filter.
+	 * If these conditions are met, it retrieves the corresponding {@link EMFMetaModelResource}
+	 * and adds it to this resource's dependencies if it is found.*/
+	private void addExternalDependency(EPackage sourcePkg , EPackage extPkg) {
+		String srcURI = sourcePkg.getNsURI();
+		String extURI = extPkg.getNsURI();
+		if(extPkg != null &&
+				!extURI.equals(srcURI) &&
+						filterDependency(extURI)){
+			EMFMetaModelResource depRes = 
+				    (EMFMetaModelResource) getTechnologyContextManager().getResourceWithURI(extURI);
+			if(depRes != null) {
+				addToDependencies(depRes);
+			}
+		}	
+	}
+	
+	/**
+	  * This helps restrict dependencies to references that are actually present in the imported metamodel,
+	  * avoiding unnecessary or unrelated Ecore dependencies.
+	  * Adjust this method to generalize or customize dependency filtering
+	  * for other Ecore domains if needed.
+	 */
+	private boolean filterDependency(String extURI) {
+		return (extURI.startsWith("http://www.polarsys.org/capella/"));
 	}
 
 	/**
