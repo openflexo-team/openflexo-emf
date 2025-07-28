@@ -4,12 +4,13 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import java.lang.String;
 
 //import EMFMetaModel CAPELLA_CORE from ["http://www.polarsys.org/capella/core/core/7.0.0"];
 //import EMFMetaModel CAPELLA_OA from ["http://www.polarsys.org/capella/core/oa/7.0.0"];
-//import EMFMetaModel CAPELLA_CTX from ["http://www.polarsys.org/capella/core/ctx/7.0.0"];
-//import EMFMetaModel CAPELLA_LA from ["http://www.polarsys.org/capella/core/la/7.0.0"];
-//import EMFMetaModel CAPELLA_PA from ["http://www.polarsys.org/capella/core/pa/7.0.0"];
+import EMFMetaModel CAPELLA_CTX from ["http://www.polarsys.org/capella/core/ctx/7.0.0"];
+import EMFMetaModel CAPELLA_LA from ["http://www.polarsys.org/capella/core/la/7.0.0"];
+import EMFMetaModel CAPELLA_PA from ["http://www.polarsys.org/capella/core/pa/7.0.0"];
 //import EMFMetaModel CAPELLA_EPBS from ["http://www.polarsys.org/capella/core/epbs/7.0.0"];
 //import EMFMetaModel CAPELLA_SHAREDMODEL from ["http://www.polarsys.org/capella/core/sharedmodel/7.0.0"];
 //import EMFMetaModel CAPELLA_BEHAVIOR from ["http://www.polarsys.org/capella/common/behavior/7.0.0"];
@@ -24,8 +25,14 @@ import EMFMetaModel CAPELLA_MODELLER from ["http://www.polarsys.org/capella/core
 
 
 import EMFClassClass SYSTEMENGINEERING from [CAPELLA_MODELLER:"SystemEngineering"];
+import EMFClassClass SYSTEMFUNCTION from [CAPELLA_CTX:"SystemFunction"];
+import EMFClassClass LOGICALFUNCTION from [CAPELLA_LA:"LogicalFunction"];
+import EMFClassClass PHYSICALFUNCTION from [CAPELLA_PA:"PhysicalFunction"];
 
 typedef EMFObjectIndividualType(eClass=SYSTEMENGINEERING) as SystemEngineering;
+typedef EMFObjectIndividualType(eClass=SYSTEMFUNCTION) as SystemFunction;
+typedef EMFObjectIndividualType(eClass=LOGICALFUNCTION) as LogicalFunction;
+typedef EMFObjectIndividualType(eClass=PHYSICALFUNCTION) as PhysicalFunction;
 /**
  * 
  * @author azim
@@ -58,6 +65,17 @@ public model CapellaModel {
            returned.add(se);
        }
        return returned;
+   }
+
+   public List<EMFObjectIndividual> listAllFunctions() {
+      List<EMFObjectIndividual> returned = new ArrayList();
+      
+      for (SystemFunction sf : select SystemFunction from capellaModel) {
+         log "SystemFunction found: " + sf + " name = " + sf.name;
+         returned.add(sf);
+      }
+      
+      return returned;
    }
 
    
