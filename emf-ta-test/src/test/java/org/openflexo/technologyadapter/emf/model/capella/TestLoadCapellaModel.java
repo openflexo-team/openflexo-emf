@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
@@ -25,6 +26,8 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
+import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -33,6 +36,7 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
@@ -134,7 +138,7 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
         
         
         capellaModelRes = (EMFModelResource) serviceManager.getResourceManager()
-            .getResource("http://openflexo.org/emf-test/TestResourceCenter/EMF/Model/capella/Exercicedrone.capella", EMFModel.class);
+            .getResource("http://openflexo.org/emf/Models/Capella7.0/Exercicedrone.capella", EMFModel.class);
         
         
         System.out.println("capellaModelRes = " + capellaModelRes + "\n");
@@ -172,6 +176,24 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
         Object root = model.getEMFResource().getContents().get(0);
         System.out.println("Modèle Capella chargé avec racine : " + root);
     }
+    /*
+    @Test
+    @TestOrder(8)
+    public void listAvailableMethodsOnFunctionClass() {
+        IFlexoOntologyClass<EMFTechnologyAdapter> functionClass = metaModel.getClass("http://www.polarsys.org/capella/core/ctx/7.0.0/SystemFunction");
+
+        System.out.println("Méthodes disponibles pour : " + functionClass.getClass().getName());
+        for (java.lang.reflect.Method method : functionClass.getClass().getMethods()) {
+            System.out.println(" - " + method.toString());
+        }
+        
+        IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa = functionClass.getStructuralFeatureAssociations().get(0);
+        System.out.println("Méthodes disponibles pour : " + fa.getClass());
+        for (java.lang.reflect.Method method : fa.getClass().getMethods()) {
+            System.out.println(" - " + method.toString());
+        }
+    }*/
+
     
     @Test
     @TestOrder(7)
@@ -195,6 +217,62 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
 				System.out.println("    > " + fa);
 			}
 		}
+        
+        String[] functionClassURIs = {
+        	"http://www.polarsys.org/capella/core/ctx/7.0.0/SystemFunction",
+            "http://www.polarsys.org/capella/core/la/7.0.0/LogicalFunction",
+            "http://www.polarsys.org/capella/core/pa/7.0.0/PhysicalFunction"
+        };
+
+            for (String classURI : functionClassURIs) {
+                EMFClassClass functionClass = (EMFClassClass) metaModel.getClass(classURI);
+                assertNotNull("Classe Capella non trouvée : " + classURI, functionClass);
+
+                System.out.println("==> Classe : " + functionClass.getName());
+                //System.out.println("    Propriétés :");
+
+                /*functionClass.getStructuralFeatureAssociations().forEach(fa -> {
+                    System.out.println("     - " + fa.getFeature().getName() + " (type: " + fa.getClass().getSimpleName() + ")");
+                });*/
+
+                List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> instances = model.getIndividuals(functionClass);
+                //System.out.println("    " + instances.size() + " instances trouvées.");
+                
+                for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : instances) {
+                    
+                	if (individual instanceof EMFObjectIndividual) {
+                		System.out.println(" - Fonction : " + individual.getName());
+
+                        EObject eObject = ((EMFObjectIndividual) individual).getObject();
+
+                        EList<?> inputs = (EList<?>) eObject.eGet(eObject.eClass().getEStructuralFeature("inputs"));
+                        EList<?> outputs = (EList<?>) eObject.eGet(eObject.eClass().getEStructuralFeature("outputs"));
+
+                        System.out.println("   > Inputs :");
+                        for (Object input : inputs) {
+                            if (input instanceof EObject) {
+                                String name = (String) ((EObject) input).eGet(((EObject) input).eClass().getEStructuralFeature("name"));
+                                String id = (String) ((EObject) input).eGet(((EObject) input).eClass().getEStructuralFeature("id"));
+                                System.out.println("     - " + name + "-> id :" + id);
+                            }
+                        }
+
+                        System.out.println("   > Outputs :");
+                        for (Object output : outputs) {
+                            if (output instanceof EObject) {
+                                String name = (String) ((EObject) output).eGet(((EObject) output).eClass().getEStructuralFeature("name"));
+                                String id = (String) ((EObject) output).eGet(((EObject) output).eClass().getEStructuralFeature("id"));
+                                System.out.println("     - " + name+ "-> id :" + id);
+                            }
+                        }
+                        
+                        System.out.println();
+                    }
+
+                }
+            }
+
+
         
     }
 }
