@@ -72,11 +72,25 @@ public model CapellaModel {
       
       for (SystemFunction sf : select SystemFunction from capellaModel) {
          log "SystemFunction found: " + sf + " name = " + sf.name;
+         log "    > inputs : " + sf.inputs;
+         log "    > outputs : " + sf.outputs;
+         for (Object  input : sf.getValues("inputs")) {
+            log "Input : " + input;
+         }
          returned.add(sf);
+      }
+      for (LogicalFunction lf : select LogicalFunction from capellaModel) {
+         log "LogicalFunction found: " + lf + " name = " + lf.name;
+         returned.add(lf);
+      }
+      for (PhysicalFunction pf : select PhysicalFunction from capellaModel) {
+         log "PhysicalFunction found: " + pf + " name = " + pf.name;
+         returned.add(pf);
       }
       
       return returned;
    }
 
-   
+   delete() {
+   }
 }
