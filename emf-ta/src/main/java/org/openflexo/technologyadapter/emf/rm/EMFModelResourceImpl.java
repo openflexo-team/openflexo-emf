@@ -205,12 +205,13 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 						return null;
 					}
 				}
-
 			}
-
+			
 			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
 			// RESOURCES!!
+			System.out.println(getIODelegate());
 			modelResource = mmResource.createEMFModelResource(getIODelegate());
+			System.out.println("modelResource : " + modelResource);
 
 		}
 		return modelResource;
@@ -280,8 +281,22 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 	@Override
 	public <I> XMIMetaData getMetaData(FlexoResourceCenter<I> resourceCenter) {
+
 		if (metaData == null) {
+			Object artefact = getIODelegate().getSerializationArtefact();
+			if (artefact instanceof File) {
+				File file = (File)artefact;
+				if(file.getName().endsWith(".aird")) {
+					XMIMetaData data = new XMIMetaData(resourceCenter.getXMLRootElementInfo((I) file));
+				    data.rootNamespace = "http://www.eclipse.org/sirius/1.1.0";
+				    return data;
+				}
+			}
+			
+			
+
 			metaData = findMetaData(resourceCenter, true);
+			   
 		}
 		return metaData;
 	}

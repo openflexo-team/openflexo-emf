@@ -73,8 +73,8 @@ public model CapellaModel {
       for (SystemFunction sf : select SystemFunction from capellaModel) {
          log "SystemFunction found: " + sf + " name = " + sf.name;
          log "    > inputs : " + sf.inputs;
-         log "    > outputs : " + sf.outputs;
-         for (Object  input : sf.getValues("inputs")) {
+         log "    > outputs : " + sf.outputs; 
+         for (EMFObjectIndividualType(eClass=EMFCLASS_CLASS)  input : sf.inputs) {
             log "Input : " + input;
          }
          returned.add(sf);

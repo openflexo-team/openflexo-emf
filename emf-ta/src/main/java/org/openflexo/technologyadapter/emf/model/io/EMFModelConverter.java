@@ -105,6 +105,8 @@ public class EMFModelConverter {
 	 * @throws IOException
 	 */
 	public EMFModel convertModel(EMFMetaModel metaModel, Resource aResource) {
+		System.out.println("metamodel is null : " + (metaModel == null));
+		System.out.println("aresource is null" + (aResource == null));
 		if (!aResource.isLoaded()) {
 			try {
 				aResource.load(null);

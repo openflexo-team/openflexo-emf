@@ -95,6 +95,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 		resourceSet = new ResourceSetImpl();
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("ecore", ECORE_RESOURCE_FACTORY);
 		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("xmi", XMI_RESOURCE_FACTORY);
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put("aird", XMI_RESOURCE_FACTORY);
 	}
 
 	public ResourceSet getResourceSet() {

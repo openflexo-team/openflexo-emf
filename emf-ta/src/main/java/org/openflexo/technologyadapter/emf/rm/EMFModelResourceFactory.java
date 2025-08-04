@@ -58,7 +58,8 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	public <I> boolean isValidXMIArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(EMFModelResource.XMI_EXTENSION)||
-				resourceCenter.retrieveName(serializationArtefact).endsWith(".capella");
+				resourceCenter.retrieveName(serializationArtefact).endsWith(".capella")||
+				resourceCenter.retrieveName(serializationArtefact).endsWith(".aird");
 	}
 
 	@Override
@@ -148,6 +149,9 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 		if (isValidXMIArtefact(serializationArtefact, resourceCenter)) {
 			EMFModelResource returned = initResourceForRetrieving(serializationArtefact, resourceCenter);
 			returned.getMetaData(resourceCenter).debug();
+			
+			System.out.println("→ Root namespace for " + serializationArtefact + " = " + returned.getMetaData(resourceCenter).rootNamespace);
+
 
 			EMFMetaModelResource metaModelResource = ((EMFTechnologyContextManager) technologyContextManager)
 					.getMetaModelResourceByURI(returned.getMetaData(resourceCenter).rootNamespace);
@@ -194,6 +198,11 @@ public class EMFModelResourceFactory extends TechnologySpecificFlexoResourceFact
 	 */
 	public <I> boolean isValidSerializationArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
 			EMFMetaModelResource metaModelResource) {
+		/*if (metaModelResource == null) {
+	        return false;
+	    }*/
+
+		
 		if (resourceCenter.exists(serializationArtefact) && !resourceCenter.isDirectory(serializationArtefact)) {
 			// TODO syntaxic check and conformity to XMI
 			if (resourceCenter.retrieveName(serializationArtefact).endsWith(EMFMetaModelResourceFactory.ECORE_FILE_EXTENSION)) {

@@ -265,14 +265,9 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
                                 System.out.println("     - " + name+ "-> id :" + id);
                             }
                         }
-                        
                         System.out.println();
                     }
-
                 }
             }
-
-
-        
-    }
+        }
 }

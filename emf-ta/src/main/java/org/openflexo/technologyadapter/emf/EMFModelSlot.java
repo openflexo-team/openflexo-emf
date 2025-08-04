@@ -185,7 +185,6 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 				e.printStackTrace();
 			}
 			return null;
-
 		}
 
 		@Override

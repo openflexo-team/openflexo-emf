@@ -266,7 +266,7 @@ public class EMFMetaModelResourceFactory
 
 	@Override
 	protected <I> FlexoIODelegate<I> makeFlexoIODelegate(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
-
+		
 		/*if (serializationArtefact instanceof File) {
 			return (FlexoIODelegate<I>) MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate((File) serializationArtefact, this);
 		}
@@ -284,5 +284,5 @@ public class EMFMetaModelResourceFactory
 			return null;
 		}
 	}
-
+	
 }

@@ -177,8 +177,12 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		                // EGenericType
 		                for (ETypeParameter typeParam : eClass.getETypeParameters()) {
 		                    for (EGenericType genericBound : typeParam.getEBounds()) {
-		                        EPackage genericPkg = genericBound.getEClassifier().getEPackage();
-		                        addExternalDependency(ePackage,genericPkg);
+		                    	if (genericBound.getEClassifier() != null) {
+		                            EPackage genericPkg = genericBound.getEClassifier().getEPackage();
+		                            if (genericPkg != null) {
+		                                addExternalDependency(ePackage, genericPkg);
+		                            }
+		                        }
 		                    }
 		                }
 
@@ -214,17 +218,24 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 	 * If these conditions are met, it retrieves the corresponding {@link EMFMetaModelResource}
 	 * and adds it to this resource's dependencies if it is found.*/
 	private void addExternalDependency(EPackage sourcePkg , EPackage extPkg) {
-		String srcURI = sourcePkg.getNsURI();
-		String extURI = extPkg.getNsURI();
-		if(extPkg != null &&
-				!extURI.equals(srcURI) &&
-						filterDependency(extURI)){
-			EMFMetaModelResource depRes = 
-				    (EMFMetaModelResource) getTechnologyContextManager().getResourceWithURI(extURI);
-			if(depRes != null) {
-				addToDependencies(depRes);
+		if(sourcePkg!=null && extPkg!=null) {
+			logger.info("sourcePkg : " + extPkg);
+			logger.info("extPkg : " + extPkg);
+			
+			String srcURI = sourcePkg.getNsURI();
+			String extURI = extPkg.getNsURI();
+			
+			logger.info("extURI : " + extURI);
+			if(extPkg != null &&
+					!extURI.equals(srcURI) &&
+							filterDependency(extURI)){
+				EMFMetaModelResource depRes = 
+					    (EMFMetaModelResource) getTechnologyContextManager().getResourceWithURI(extURI);
+				if(depRes != null) {
+					addToDependencies(depRes);
+				}
 			}
-		}	
+		}
 	}
 	
 	/**
@@ -258,12 +269,15 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 		// TODO: refactor this with IODelegate
 
 		if (flexoIODelegate instanceof FileIODelegate) {
+			System.out.println("test");
 			Resource returned = getTechnologyContextManager().getResourceSet().createResource(
 					org.eclipse.emf.common.util.URI.createFileURI(((FileIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+			System.out.println("returned : "+  returned) ;
 			return returned;
 		}
 
 		if (flexoIODelegate instanceof InJarIODelegate) {
+			System.out.println("test2");
 			try {
 				InJarIODelegate inJarIODelegate = (InJarIODelegate) flexoIODelegate;
 				JarEntry entry = inJarIODelegate.getInJarResource().getEntry();
