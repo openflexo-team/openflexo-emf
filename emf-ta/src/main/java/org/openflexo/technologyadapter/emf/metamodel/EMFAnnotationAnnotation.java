@@ -40,20 +40,23 @@
 
 package org.openflexo.technologyadapter.emf.metamodel;
 
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.emf.ecore.EAnnotation;
-import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
+import org.openflexo.foundation.ontology.*;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Annotation annotation.
  * 
  * @author gbesancon
  */
-public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation> implements IFlexoOntologyAnnotation {
+public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation> implements IFlexoOntologyAnnotation<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -70,6 +73,11 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 	@Override
 	public String getName() {
 		return object.getSource();
+	}
+
+	@Override
+	public Type getType() {
+		return null;
 	}
 
 	/**
@@ -104,5 +112,75 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 	@Override
 	public void setName(String name) throws Exception {
 
+	}
+
+	@Override
+	public IFlexoOntologyConcept getDomain() {
+		return getDomain();
+	}
+
+	@Override
+	public IFlexoOntologyObject getRange() {
+		return getRange();
+	}
+
+	@Override
+	public boolean isAnnotationProperty() {
+		return false;
+	}
+
+	@Override
+	public List<org.openflexo.technologyadapter.emf.model.EMFAnnotationAnnotation> getSuperProperties() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<org.openflexo.technologyadapter.emf.model.EMFAnnotationAnnotation> getSubProperties(IFlexoOntology context) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<EMFAttributeAssociation> getReferencingFeatureAssociations() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<org.openflexo.technologyadapter.emf.model.EMFAnnotationAnnotation> getAnnotations() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public IFlexoOntologyConceptContainer getContainer() {
+		return null;
+	}
+
+	@Override
+	public List<EMFAttributeAssociation> getStructuralFeatureAssociations() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<EMFAttributeAssociation> getBehaviouralFeatureAssociations() {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+		return false;
+	}
+
+	@Override
+	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+		return false;
+	}
+
+	@Override
+	public boolean equalsToConcept(IFlexoOntologyConcept concept) {
+		return false;
+	}
+
+	@Override
+	public Object accept(IFlexoOntologyConceptVisitor visitor) {
+		return null;
 	}
 }

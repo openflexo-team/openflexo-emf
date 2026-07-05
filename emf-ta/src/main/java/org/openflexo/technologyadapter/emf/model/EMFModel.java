@@ -425,6 +425,11 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		return Collections.emptyList();
 	}
 
+	@Override
+	public List<? extends IFlexoOntologyAnnotation<EMFTechnologyAdapter>> getAnnotationProperties() {
+		return Collections.emptyList();
+	}
+
 	/**
 	 * Follow the link.
 	 * 
@@ -453,6 +458,10 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	@Override
 	public List<? extends IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getAccessibleDataProperties() {
 		return getDataProperties();
+	}
+	@Override
+	public List<? extends IFlexoOntologyAnnotation<EMFTechnologyAdapter>> getAccessibleAnnotationProperties() {
+		return getAnnotationProperties();
 	}
 
 	/**

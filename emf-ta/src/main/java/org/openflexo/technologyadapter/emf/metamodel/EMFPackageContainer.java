@@ -54,15 +54,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.openflexo.foundation.ontology.IFlexoOntologyClass;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
-import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
-import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
-import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.foundation.ontology.*;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 
@@ -290,6 +282,10 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 			}
 		}
 		return Collections.unmodifiableList(concepts);
+	}
+	public List<? extends IFlexoOntologyAnnotation<EMFTechnologyAdapter>> getAnnotationProperties() {
+		//Not implemented
+		return null;
 	}
 
 	/**

@@ -469,6 +469,14 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 		}
 		return Collections.unmodifiableList(result);
 	}
+	@Override
+	public List<IFlexoOntologyAnnotation<EMFTechnologyAdapter>> getAnnotationProperties() {
+		/*List<IFlexoOntologyAnnotation<EMFTechnologyAdapter>> result = new ArrayList<>();
+		for (IFlexoOntologyAnnotation<EMFTechnologyAdapter> annotationProperty : converter.getDataAttributes().values()) {
+			result.add(annotationProperty);
+		}*/
+		return null;
+	}
 
 	/**
 	 * Follow the link.
@@ -506,7 +514,10 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
 	public List<? extends IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getAccessibleDataProperties() {
 		return getDataProperties();
 	}
-
+	@Override
+	public List<? extends IFlexoOntologyAnnotation<EMFTechnologyAdapter>> getAccessibleAnnotationProperties() {
+		return getAnnotationProperties();
+	}
 	/**
 	 * Follow the link.
 	 * 
