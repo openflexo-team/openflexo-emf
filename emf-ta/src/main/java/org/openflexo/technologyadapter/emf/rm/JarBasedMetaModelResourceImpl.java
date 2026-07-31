@@ -78,6 +78,24 @@ public abstract class JarBasedMetaModelResourceImpl extends EMFMetaModelResource
 			return getMetaModelData();
 		}
 
+		// A given metamodel URI must be backed by a single class loader. The very same metamodel may be discovered twice
+		// (eg. when its resource center happens to be registered twice), in which case only the first resource is registered
+		// in the technology context manager. Loading the other one would build a second JarClassLoader, whose EPackage
+		// silently overrides the first one in the global EPackage.Registry: model objects would then be instantiated by a
+		// factory coming from a class loader, while their EMF Resource comes from another one, and every cross-class-loader
+		// access fails (ClassCastException, or UnsupportedOperationException on derived features). We thus delegate here to
+		// the resource which is registered for that URI.
+		EMFMetaModelResource registeredResource = getTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(getURI());
+		if (registeredResource != null && registeredResource != this) {
+			EMFMetaModel registeredMetaModel = registeredResource.getMetaModelData();
+			setPackage(registeredResource.getPackage());
+			if (registeredResource instanceof JarBasedMetaModelResource) {
+				setEMFResourceFactory(((JarBasedMetaModelResource) registeredResource).getEMFResourceFactory());
+			}
+			resourceData = registeredMetaModel;
+			return registeredMetaModel;
+		}
+
 		EMFMetaModel result = null;
 		Class<?> ePackageClass = null;
 		ClassLoader classLoader = null;

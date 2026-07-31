@@ -56,33 +56,36 @@ import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.gui.EMFModelBrowserModel;
-import org.openflexo.technologyadapter.emf.gui.EMFModelView;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
+import org.openflexo.technologyadapter.emf.gui.EMFMetaModelView;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
-import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
-import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.test.UITest;
 
 /**
- * Test Class for OntologyBrowser on an ECore Model
- * 
+ * Test Class for OntologyBrowser on an ECore MetaModel
+ *
+ * A <code>.ecore</code> artefact is interpreted as an {@link EMFMetaModel} (and never as a model conform to the ECore meta-meta-model), it
+ * is thus retrieved from the {@link EMFMetaModelRepository}, using the URI declared by the ECore package itself
+ *
  * @author xtof
- * 
+ *
  */
 @RunWith(OrderedRunner.class)
 public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	protected static final Logger logger = Logger.getLogger(TestEcoreOntologyBrowerModel.class.getPackage().getName());
 
 	static EMFTechnologyAdapter technologicalAdapter;
-	static EMFModelResource ecoreModelResource = null;
-	static EMFModel ecoreModel = null;
+	static EMFMetaModelResource ecoreMetaModelResource = null;
+	static EMFMetaModel ecoreMetaModel = null;
 
 	private static SwingGraphicalContextDelegate gcDelegate;
 
-	static String ecoreModelResourceRelativeURI = "TestResourceCenter/EMF/Ecore/example.ecore";
+	/** URI of the ECore package serialized in TestResourceCenter/EMF/Ecore/example.ecore */
+	static String ecoreMetaModelURI = "http://www.itemis.de/showcases/cdo/market/0.0.1";
 
 	@BeforeClass
 	public static void setupClass() {
@@ -103,25 +106,22 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Test
 	@TestOrder(1)
 	@Category(UITest.class)
-	public void TestLoadECOREModel() {
+	public void TestLoadECOREMetaModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
 			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
-			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
-			assertNotNull(modelRepository);
 
-			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			System.out.println("Loading :" + ecoreMetaModelURI + " from " + resourceCenter.getDefaultBaseURI());
 
-			EMFModelResource modelResource = modelRepository
-					.getResource(resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			EMFMetaModelResource metaModelResource = metaModelRepository.getResource(ecoreMetaModelURI);
 
-			if (modelResource != null) {
-				ecoreModelResource = modelResource;
-				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			if (metaModelResource != null) {
+				ecoreMetaModelResource = metaModelResource;
+				System.out.println("Found resource " + ecoreMetaModelURI);
 			}
 			else {
-				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+				System.out.println("Not found: " + ecoreMetaModelURI);
 				for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 					System.out.println(" > " + r.getURI());
 				}
@@ -129,13 +129,17 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		}
 
-		System.out.println("ecoreModelResource=" + ecoreModelResource);
-		assertNotNull(ecoreModelResource);
+		System.out.println("ecoreMetaModelResource=" + ecoreMetaModelResource);
+		assertNotNull(ecoreMetaModelResource);
 
-		ecoreModel = ecoreModelResource.getModel();
-		assertNotNull(ecoreModel);
-		assertNotNull(ecoreModel.getMetaModel());
-		assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
+		ecoreMetaModel = ecoreMetaModelResource.getMetaModelData();
+		assertNotNull(ecoreMetaModel);
+		assertEquals(ecoreMetaModelURI, ecoreMetaModel.getURI());
+
+		// Check that the classes declared in example.ecore are all available
+		for (String className : new String[] { "NamedElement", "Market", "Actor", "Article" }) {
+			assertNotNull("No class found for " + className, ecoreMetaModel.getClass(ecoreMetaModelURI + "/" + className));
+		}
 	}
 
 	@Test
@@ -143,12 +147,14 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Category(UITest.class)
 	public void TestCreateOntologyBrowser() {
 
+		assertNotNull(ecoreMetaModel);
+
 		long previousDate, currentDate;
 		int latency_time = 0;
 
 		long startTime = System.currentTimeMillis();
 
-		OntologyBrowserModel<EMFTechnologyAdapter> obm = new EMFModelBrowserModel(ecoreModel);
+		OntologyBrowserModel<EMFTechnologyAdapter> obm = new EMFMetaModelBrowserModel(ecoreMetaModel);
 
 		long endTime = System.currentTimeMillis();
 
@@ -259,20 +265,23 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Test
 	@TestOrder(4)
 	@Category(UITest.class)
-	public void TestCreateEMFModelView() throws InterruptedException {
+	public void TestCreateEMFMetaModelView() throws InterruptedException {
+
+		assertNotNull(ecoreMetaModel);
+
 		long previousDate, currentDate;
 		int latency_time = 1000;
 
-		logger.info("TestCreateEMFModelView");
+		logger.info("TestCreateEMFMetaModelView");
 
 		previousDate = System.currentTimeMillis();
 
-		EMFModelView modelView = new EMFModelView(ecoreModel, null, null);
+		EMFMetaModelView modelView = new EMFMetaModelView(ecoreMetaModel, null, null);
 		currentDate = System.currentTimeMillis();
 		System.out.println(" initial creation of view took : " + (currentDate - previousDate - latency_time));
 		previousDate = currentDate;
 
-		gcDelegate.addTab("umlView", modelView.getFIBController());
+		gcDelegate.addTab("ecoreMetaModelView", modelView.getFIBController());
 
 		previousDate = System.currentTimeMillis();
 
