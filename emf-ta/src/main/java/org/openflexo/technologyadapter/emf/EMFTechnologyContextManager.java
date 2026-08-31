@@ -56,11 +56,13 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
+import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
@@ -209,8 +211,14 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 	}
 
 	@Override
-	public EMFObjectIndividualType makeIndividualOfClass(IFlexoOntologyClass<EMFTechnologyAdapter> anOntologyClass) {
-		return new EMFObjectIndividualType((EMFClassClass) anOntologyClass);
+	public IndividualOfClass<EMFTechnologyAdapter, ?, ?> makeIndividualOfClass(IFlexoOntologyClass<EMFTechnologyAdapter> anOntologyClass) {
+		if (anOntologyClass instanceof EMFClassClass) {
+			return new EMFObjectIndividualType((EMFClassClass) anOntologyClass);
+		}
+		else if (anOntologyClass instanceof EMFEnumClass) {
+			return new EMFEnumType((EMFEnumClass) anOntologyClass);
+		}
+		return null;
 	}
 
 	public void newMetaModelWasRegistered(EMFMetaModelResource mmResource, FlexoResourceCenter<?> resourceCenter) {
