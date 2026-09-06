@@ -74,6 +74,32 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 /**
  * Create EMF Object.
  * 
+ * <p>
+ * <b>KNOWN DEFECT - the <code>container</code> branch has never worked.</b> When <code>container</code> is left unset, the new object is
+ * added to <code>model.getEMFResource().getContents()</code> and everything is fine. When it IS set,
+ * {@link AddEMFObjectIndividualImpl#execute} calls <code>add()</code> on the value the binding yielded - and that value is an
+ * <b>unmodifiable copy</b>, not the live EMF list: {@link EMFObjectIndividualReferenceObjectPropertyValue#getValues()} ends with
+ * <code>Collections.unmodifiableList(result)</code>, and the mutable {@link EMFObjectIndividualReferenceObjectPropertyValueAsList} does not
+ * override it. The call therefore throws {@link UnsupportedOperationException} from
+ * <code>java.util.Collections$UnmodifiableCollection.add</code>.
+ * 
+ * <p>
+ * Measured on the BPMN 2.0 metamodel, <code>BaseElement.documentation</code>, with the target list both empty and non-empty. Neither
+ * emptiness nor containment is the criterion: the value simply is not the live list.
+ * 
+ * <p>
+ * Nothing caught this because the only in-tree uses of <code>container=</code> are drop schemes of the city-mapping
+ * <code>City2_View</code> viewpoint, which no test executes; the calls city-mapping's tests DO run
+ * (<code>Mapping.fml</code>) all omit <code>container</code>. Hence the <code>// TODO This needs strong testing</code> that has sat on the
+ * failing line.
+ * 
+ * <p>
+ * TODO fix: reach the live list rather than a copy - either have the container binding yield
+ * {@link EMFObjectIndividualReferenceObjectPropertyValueAsList} (whose own <code>add()</code> delegates to the EMF list) or add through the
+ * <code>EObject.eGet(reference)</code> list directly. Re-verify with the BPMN modeler
+ * (<code>modelers/bpmn-modeler</code>, <code>BaseElement.documentation</code> and the branch pinned in
+ * <code>AutomatedTests/T1_Federation.fmlscript</code>), then with city-mapping's drop schemes.
+ * 
  * @author gbesancon
  * 
  */
@@ -89,7 +115,9 @@ public interface AddEMFObjectIndividual
 
 	@Getter(value = CONTAINER_KEY)
 	@XMLAttribute
-	@FMLAttribute(value = CONTAINER_KEY, required = false, description = "<html>reference of the container</html>")
+	@FMLAttribute(value = CONTAINER_KEY, required = false, description = "<html>reference of the container."
+			+ "<br><b>Currently broken</b>: setting it makes the action throw UnsupportedOperationException "
+			+ "(see this class' documentation).</html>")
 	public DataBinding<List> getContainer();
 
 	@Setter(CONTAINER_KEY)
@@ -155,6 +183,9 @@ public interface AddEMFObjectIndividual
 					}
 					else {
 						// TODO This needs strong testing
+						// KNOWN DEFECT: throws UnsupportedOperationException - the binding yields an unmodifiable
+						// COPY of the EMF list (getValues() wraps it in Collections.unmodifiableList), never the
+						// live one. See the detailed note on this interface.
 						container.add(result);
 						result.setContainPropertyValue((EMFObjectIndividualReferenceObjectPropertyValueAsList) container);
 					}

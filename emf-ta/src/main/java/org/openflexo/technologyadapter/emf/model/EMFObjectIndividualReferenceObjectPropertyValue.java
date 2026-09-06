@@ -132,6 +132,12 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 * 
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue#getValue()
 	 */
+	/**
+	 * BEWARE: returns an unmodifiable <b>copy</b>, not the live EMF list - and
+	 * {@link EMFObjectIndividualReferenceObjectPropertyValueAsList} does not override it, so even that mutable wrapper answers a copy here.
+	 * Any caller adding to the result gets an {@link UnsupportedOperationException}: see the known defect documented on
+	 * {@link org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual}.
+	 */
 	@Override
 	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getValues() {
 		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = null;
