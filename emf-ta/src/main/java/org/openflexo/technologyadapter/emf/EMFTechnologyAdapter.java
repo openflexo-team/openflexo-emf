@@ -319,7 +319,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 		EMFMetaModelRepository<I> returned = resourceCenter.retrieveRepository(EMFMetaModelRepository.class, this);
 		if (returned == null) {
 			returned = EMFMetaModelRepository.instanciateNewRepository(this, resourceCenter);
-			resourceCenter.registerRepository(returned, EMFMetaModelRepository.class, this);
+			// Another thread may have registered one meanwhile: use the registered one (CORE-D-25)
+			returned = resourceCenter.registerRepository(returned, EMFMetaModelRepository.class, this);
 		}
 		return returned;
 	}
@@ -378,7 +379,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter<EMFTechnologyAdapter
 		EMFModelRepository<I> returned = resourceCenter.retrieveRepository(EMFModelRepository.class, this);
 		if (returned == null) {
 			returned = EMFModelRepository.instanciateNewRepository(this, resourceCenter);
-			resourceCenter.registerRepository(returned, EMFModelRepository.class, this);
+			// Another thread may have registered one meanwhile: use the registered one (CORE-D-25)
+			returned = resourceCenter.registerRepository(returned, EMFModelRepository.class, this);
 		}
 		return returned;
 	}
