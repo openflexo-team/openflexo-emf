@@ -100,7 +100,9 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 
 		assertNotNull(bpmnMMRes);
 
-		assertFalse(bpmnMMRes.isLoaded());
+		// The metamodel may already be loaded here: the resource center ships an FML VirtualModel
+		// (SimpleBPMNProcess.fml) that imports this metamodel, and resolving that import force-loads
+		// it during the resource center scan. We therefore only require that it loads and is usable.
 		metaModel = bpmnMMRes.getResourceData();
 		assertTrue(bpmnMMRes.isLoaded());
 		assertNotNull(metaModel);

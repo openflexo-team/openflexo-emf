@@ -78,9 +78,11 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
             .getResource("http://www.polarsys.org/capella/core/modeller/7.0.0", EMFMetaModel.class);
 
         assertNotNull("Le métamodèle Capella doit être trouvé", capellaMMRes);
-        assertFalse("Le métamodèle ne doit pas être encore chargé", capellaMMRes.isLoaded());
 
-        metaModel = capellaMMRes.getResourceData(); // loadResourceData est appelée ici 
+        // Le métamodèle peut déjà être chargé ici : le resource center embarque des VirtualModels FML
+        // qui importent ce métamodèle, et la résolution de ces imports le force-load lors du scan du
+        // resource center. On exige donc seulement qu'il soit chargé et exploitable ensuite.
+        metaModel = capellaMMRes.getResourceData(); // loadResourceData est appelée ici si besoin
 
 
         System.out.println("metaModel = " + metaModel);

@@ -78,13 +78,62 @@ public abstract class JarBasedMetaModelResourceImpl extends EMFMetaModelResource
 			return getMetaModelData();
 		}
 
+		// A given metamodel URI must be backed by a single class loader. The very same metamodel may be discovered twice
+		// (eg. when its resource center happens to be registered twice), in which case only the first resource is registered
+		// in the technology context manager. Loading the other one would build a second JarClassLoader, whose EPackage
+		// silently overrides the first one in the global EPackage.Registry: model objects would then be instantiated by a
+		// factory coming from a class loader, while their EMF Resource comes from another one, and every cross-class-loader
+		// access fails (ClassCastException, or UnsupportedOperationException on derived features). We thus delegate here to
+		// the resource which is registered for that URI.
+		EMFMetaModelResource registeredResource = getTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(getURI());
+		if (registeredResource != null && registeredResource != this) {
+			EMFMetaModel registeredMetaModel = registeredResource.getMetaModelData();
+			setPackage(registeredResource.getPackage());
+			if (registeredResource instanceof JarBasedMetaModelResource) {
+				setEMFResourceFactory(((JarBasedMetaModelResource) registeredResource).getEMFResourceFactory());
+			}
+			resourceData = registeredMetaModel;
+			return registeredMetaModel;
+		}
+
+		// Same invariant, but at JVM scope: the guard above only spans ONE EMFTechnologyContextManager, while
+		// EPackage.Registry.INSTANCE is static, and retrieveClassLoader() builds a brand new JarInDirClassLoader on every
+		// call. Two successive service managers in a single JVM (several test classes, or one service manager per
+		// .fmlscript) thus used to load the very same metamodel jar under distinct class loaders. From the 2nd load on, the
+		// generated <Xxx>FactoryImpl.init() found the previous session's factory in the global registry and failed its cast
+		// ("City1FactoryImpl cannot be cast to City1Factory", swallowed by init() but printed by EcorePlugin.INSTANCE.log),
+		// then <Xxx>PackageImpl.init() overrode the registry entry, leaving the last loaded EPackage to win JVM-wide and
+		// retaining every abandoned class loader. We therefore reuse the class loader which already owns that URI in the
+		// global registry, so that one metamodel URI maps to one single set of classes for the whole JVM.
+		// Beware: the registered EPackage may come from somewhere else than our jar (a dynamic EPackage built from an
+		// .ecore, for instance), in which case its class loader knows nothing of our generated classes: we check that it
+		// really does define the package class we are about to load, and fall back to a fresh class loader otherwise.
+		// Still open: nothing unregisters our EPackages when the service manager stops, so a metamodel jar modified on disk
+		// is not reloaded within a session, and the very first class loader is kept alive until the JVM exits.
+		ClassLoader alreadyUsedClassLoader = null;
+		EPackage alreadyRegisteredPackage = (getPackageClassName() != null ? EPackage.Registry.INSTANCE.getEPackage(getURI())
+				: null);
+		if (alreadyRegisteredPackage != null) {
+			ClassLoader registeredClassLoader = alreadyRegisteredPackage.getClass().getClassLoader();
+			if (registeredClassLoader != null) {
+				try {
+					if (registeredClassLoader.loadClass(getPackageClassName()).isInstance(alreadyRegisteredPackage)) {
+						alreadyUsedClassLoader = registeredClassLoader;
+					}
+				}
+				catch (ClassNotFoundException e) {
+					// That EPackage was not loaded from our jar: ignore it and build our own class loader
+				}
+			}
+		}
+
 		EMFMetaModel result = null;
 		Class<?> ePackageClass = null;
 		ClassLoader classLoader = null;
 
 		try {
 			// Retrieve class loader to be used
-			classLoader = getIODelegate().retrieveClassLoader();
+			classLoader = (alreadyUsedClassLoader != null ? alreadyUsedClassLoader : getIODelegate().retrieveClassLoader());
 
 			System.out.println("Reading EMF metamodel from " + getIODelegate());
 			System.out.println("ClassLoader=" + classLoader);
