@@ -6,8 +6,8 @@ dependencies {
   // external dep
   // Following dependency (xtext) has been replaced with new version of EMF
   //implementation 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.10.0'
-  implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.36.0'
-  implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.37.0'
+  implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore', version: '2.43.0'
+  implementation group: 'org.eclipse.emf', name: 'org.eclipse.emf.ecore.xmi', version: '2.41.0'
   implementation group: 'org.eclipse.uml2', name: 'uml-resources', version: '5.0.1'
   implementation group: 'org.eclipse.uml2', name: 'common', version: '2.0.1'
   implementation group: 'org.eclipse.uml2', name: 'uml', version: '5.0.1'
