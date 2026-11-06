@@ -50,13 +50,18 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
+import org.openflexo.localization.LocalizedDelegate;
 
 public class EMFObjectIndividualTypePathElement extends SimplePathElementImpl {
 
 	private static final Logger logger = Logger.getLogger(EMFObjectIndividualTypePathElement.class.getPackage().getName());
 
+	private final LocalizedDelegate locales;
+
 	public EMFObjectIndividualTypePathElement(IBindingPathElement parent, EMFClassClass type, Bindable bindable) {
 		super(parent, "type", EMFClassClass.class, bindable);
+		// The localizer of the technology adapter of the class, when it has one
+		locales = type != null ? type.getLocales() : FlexoLocalization.getMainLocalizer();
 	}
 
 	@Override
@@ -66,7 +71,7 @@ public class EMFObjectIndividualTypePathElement extends SimplePathElementImpl {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.getMainLocalizer().localizedForKey("type_of_emf_object_individual");
+		return locales.localizedForKey("type_of_emf_object_individual");
 	}
 
 	@Override

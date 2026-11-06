@@ -24,4 +24,5 @@ range=Range
 root_class=Root class
 strict_mode=Strict mode
 super_class=Super class
+type_of_emf_object_individual=Type of emf object individual
 upper=Upper
