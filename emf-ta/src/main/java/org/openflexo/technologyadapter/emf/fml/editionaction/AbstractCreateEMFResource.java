@@ -54,7 +54,6 @@ import org.openflexo.pamela.annotations.Getter;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -80,7 +79,6 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 	public static final String META_MODEL_URI_KEY = "metaModelURI";
 
 	@Getter(value = META_MODEL_URI_KEY)
-	@XMLAttribute
 	@FMLAttribute(value = META_MODEL_URI_KEY, required = false, description = "<html>URI of the metamodel</html>")
 	public String getMetaModelURI();
 

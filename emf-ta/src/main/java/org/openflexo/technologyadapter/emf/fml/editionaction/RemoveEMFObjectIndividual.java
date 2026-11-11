@@ -47,7 +47,6 @@ import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 /**
@@ -57,7 +56,6 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
  */
 @ModelEntity
 @ImplementationClass(RemoveEMFObjectIndividual.RemoveEMFObjectIndividualImpl.class)
-@XMLElement
 @FML("RemoveEMFObjectIndividual")
 public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 

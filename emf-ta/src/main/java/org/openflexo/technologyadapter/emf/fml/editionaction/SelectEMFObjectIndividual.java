@@ -44,7 +44,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
@@ -57,7 +56,6 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
  */
 @ModelEntity
 @ImplementationClass(SelectEMFObjectIndividual.AbstractSelectEMFObjectIndividualImpl.class)
-@XMLElement
 @FML("SelectEMFObject")
 public interface SelectEMFObjectIndividual
 		extends AbstractSelectEMFObjectIndividual<List<EMFObjectIndividual>>, FetchRequest<EMFModelSlot, EMFModel, EMFObjectIndividual> {

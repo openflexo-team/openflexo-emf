@@ -54,8 +54,6 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 
@@ -67,7 +65,6 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  */
 @ModelEntity
 @ImplementationClass(DuplicateEMFModel.DuplicateEMFModelImpl.class)
-@XMLElement
 @FML("DuplicateEMFModel")
 public interface DuplicateEMFModel extends AbstractCreateEMFResource {
 
@@ -75,7 +72,6 @@ public interface DuplicateEMFModel extends AbstractCreateEMFResource {
 	public static final String COPIED_EMF_MODEL_KEY = "copiedEMFModel";
 
 	@Getter(value = COPIED_EMF_MODEL_KEY)
-	@XMLAttribute
 	@FMLAttribute(value = COPIED_EMF_MODEL_KEY, required = false, description = "<html>The copied model</html>")
 	public DataBinding<EMFModel> getCopiedEMFModel();
 

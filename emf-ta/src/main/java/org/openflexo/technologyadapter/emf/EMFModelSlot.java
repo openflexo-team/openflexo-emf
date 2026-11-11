@@ -63,7 +63,6 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.pamela.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
@@ -92,7 +91,6 @@ import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 @DeclareActorReferences({ ConceptActorReference.class, FlexoOntologyModelSlotInstance.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
-@XMLElement
 @FML("EMFModelSlot")
 public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaModel, EMFModelResource, EMFTechnologyAdapter> {
 

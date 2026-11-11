@@ -43,13 +43,11 @@ import org.openflexo.foundation.ontology.fml.ClassRole;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 
 @ModelEntity
 @ImplementationClass(EMFClassClassRole.EMFClassClassRoleImpl.class)
-@XMLElement
 @FML("EMFClassRole")
 public interface EMFClassClassRole extends ClassRole<EMFClassClass> {
 

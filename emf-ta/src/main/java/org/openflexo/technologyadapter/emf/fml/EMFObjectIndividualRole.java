@@ -43,13 +43,11 @@ import org.openflexo.foundation.ontology.fml.IndividualRole;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 @ModelEntity
 @ImplementationClass(EMFObjectIndividualRole.EMFObjectIndividualRoleImpl.class)
-@XMLElement
 @FML("EMFObjectRole")
 public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndividual> {
 

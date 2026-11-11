@@ -45,7 +45,6 @@ import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
 
@@ -57,7 +56,6 @@ import org.openflexo.technologyadapter.emf.rm.JarBasedMetaModelResource;
  */
 @ModelEntity
 @ImplementationClass(CreateEMFModel.DuplicateEMFModelImpl.class)
-@XMLElement
 @FML("CreateEMFModel")
 public interface CreateEMFModel extends AbstractCreateEMFResource {
 

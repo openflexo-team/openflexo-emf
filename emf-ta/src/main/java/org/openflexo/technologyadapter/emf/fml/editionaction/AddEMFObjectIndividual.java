@@ -58,8 +58,6 @@ import org.openflexo.pamela.annotations.ImplementationClass;
 import org.openflexo.pamela.annotations.ModelEntity;
 import org.openflexo.pamela.annotations.PropertyIdentifier;
 import org.openflexo.pamela.annotations.Setter;
-import org.openflexo.pamela.annotations.XMLAttribute;
-import org.openflexo.pamela.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
@@ -105,7 +103,6 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
  */
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
-@XMLElement
 @FML("AddEMFObject")
 public interface AddEMFObjectIndividual
 		extends AddIndividual<EMFModelSlot, EMFModel, EMFObjectIndividual, EMFTechnologyAdapter>, EMFAction<EMFObjectIndividual> {
@@ -114,7 +111,6 @@ public interface AddEMFObjectIndividual
 	public static final String CONTAINER_KEY = "container";
 
 	@Getter(value = CONTAINER_KEY)
-	@XMLAttribute
 	@FMLAttribute(value = CONTAINER_KEY, required = false, description = "<html>reference of the container."
 			+ "<br><b>Currently broken</b>: setting it makes the action throw UnsupportedOperationException "
 			+ "(see this class' documentation).</html>")
