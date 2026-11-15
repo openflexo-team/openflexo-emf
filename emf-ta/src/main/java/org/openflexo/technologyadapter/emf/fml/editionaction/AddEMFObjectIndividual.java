@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -147,7 +148,7 @@ public interface AddEMFObjectIndividual
 		}
 
 		@Override
-		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
+		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 			EMFObjectIndividual result = null;
 			List<EMFObjectIndividual> container = null;
 

@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
@@ -78,7 +79,7 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 		}
 
 		@Override
-		public List<EMFObjectIndividual> performExecute(RunTimeEvaluationContext evaluationContext) {
+		public List<EMFObjectIndividual> performExecute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 			EMFModel emfModel = getReceiver(evaluationContext);
 
 			if (emfModel == null) {
