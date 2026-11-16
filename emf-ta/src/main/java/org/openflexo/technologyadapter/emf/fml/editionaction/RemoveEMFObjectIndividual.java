@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
@@ -70,7 +71,7 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndivid
 		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(RunTimeEvaluationContext)
 		 */
 		@Override
-		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
+		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EObject object = objectIndividual.getObject();
 			// EObject container = object.eContainer();

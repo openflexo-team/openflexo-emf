@@ -40,12 +40,19 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.io.File;
 import java.lang.reflect.Type;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.pamela.exceptions.ModelDefinitionException;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.fml.rt.error.FMLCancellation;
+import org.openflexo.foundation.fml.rt.error.FMLInternalError;
+import org.openflexo.foundation.fml.rt.error.FMLTechnologyError;
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -162,8 +169,7 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 		public EMFModel execute(RunTimeEvaluationContext evaluationContext) throws FMLExecutionException {
 
 			if (getMetaModelResource() == null) {
-				logger.warning("No metamodel resource, cannot proceed");
-				throw new FMLExecutionException("No metamodel resource, cannot proceed");
+				throw new FMLNullReferenceError("No metamodel resource, cannot proceed");
 			}
 
 			FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
@@ -171,18 +177,22 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 				rc = ((FlexoProject) rc).getDelegateResourceCenter();
 			}
 			if (!(rc instanceof FileSystemBasedResourceCenter)) {
-				logger.warning("Cannot create an EMFModel elsewhere than in a FileSystemBaseResourceCenter");
-				throw new FMLExecutionException("Cannot create an EMFModel elsewhere than in a FileSystemBaseResourceCenter");
+				throw new FMLTechnologyError("Cannot create an EMFModel elsewhere than in a FileSystemBaseResourceCenter");
 			}
 
-			logger.info("Create new EMFModel with metamodel " + getMetaModelResource());
+			if (logger.isLoggable(Level.FINE)) {
+				logger.fine("Create new EMFModel with metamodel " + getMetaModelResource());
+			}
 
 			EMFModel generatedEMFModel = null;
 
 			try {
 
 				EMFModelResource initialResource = getInitialResource(evaluationContext);
-				logger.info("InitialResource=" + initialResource);
+				if (initialResource == null) {
+					// Checked before the new resource is created: it would stay registered, empty
+					throw new FMLTechnologyError("No initial EMF model to create the new one from (metamodel " + getMetaModelResource() + ")");
+				}
 
 				EMFModelResource generatedResource = null;
 
@@ -198,24 +208,31 @@ public interface AbstractCreateEMFResource extends AbstractCreateResource<EMFMod
 							EMFModelResource.XMI_EXTENSION, false);
 				}
 				generatedResource.setMetaModelResource(getMetaModelResource());
-				System.out.println("Return new EMF resource: " + generatedResource);
 
 				// Now copy file
 				File destinationFile = (File) generatedResource.getIODelegate().getSerializationArtefact();
-				System.out.println("destinationFile=" + destinationFile);
 				generatedResource.getIODelegate().willWriteOnDisk();
 				FileUtils.copyResourceToFile(initialResource.getIODelegate().getSerializationArtefactAsResource(), destinationFile);
 				generatedResource.getIODelegate().hasWrittenOnDisk(null);
 
 				// And load the new model
 				generatedEMFModel = generatedResource.getResourceData();
-				System.out.println("generatedEMFModel=" + generatedEMFModel);
 
+			} catch (FMLExecutionException e) {
+				// Already typed (a null name or resource center...): rethrown unchanged (CORE-F-11)
+				throw e;
+			} catch (RuntimeException e) {
+				// A defect, not a failure of the creation
+				throw e;
 			}
-
+			catch (ModelDefinitionException e) {
+				throw new FMLInternalError(e);
+			}
+			catch (ResourceLoadingCancelledException e) {
+				throw new FMLCancellation("Loading of the new EMF model was cancelled", e);
+			}
 			catch (Exception e) {
-				e.printStackTrace();
-				throw new FMLExecutionException(e);
+				throw new FMLTechnologyError("Cannot create the EMF model: " + e.getMessage(), e);
 			}
 
 			return generatedEMFModel;

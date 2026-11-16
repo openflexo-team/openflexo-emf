@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -83,8 +84,8 @@ public interface AbstractSelectEMFObjectIndividual<AT> extends AbstractSelectInd
 			EMFModel emfModel = getReceiver(evaluationContext);
 
 			if (emfModel == null) {
-				logger.warning("Cannot retrieve receiver " + getReceiver());
-				return null;
+				// A null source (CORE-F-11)
+				throw new FMLNullReferenceError(getStringRepresentation() + ": no EMF model to select from");
 			}
 
 			List<EMFObjectIndividual> selectedIndividuals;

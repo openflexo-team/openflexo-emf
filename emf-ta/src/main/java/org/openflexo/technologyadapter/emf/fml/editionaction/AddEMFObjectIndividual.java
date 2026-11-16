@@ -38,15 +38,17 @@
 
 package org.openflexo.technologyadapter.emf.fml.editionaction;
 
+import org.openflexo.foundation.fml.rt.error.FMLTechnologyError;
+import org.openflexo.foundation.fml.rt.error.FMLNullReferenceError;
+import org.openflexo.foundation.fml.rt.error.FMLEvaluation;
 import org.openflexo.foundation.fml.rt.error.FMLExecutionException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.annotations.FMLAttribute;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -161,15 +163,7 @@ public interface AddEMFObjectIndividual
 					// Create EMF Object
 					EObject eObject = EcoreUtil.create(emfClassClass.getObject());
 					// put it in its container
-					try {
-						container = getContainer().getBindingValue(evaluationContext);
-					} catch (TypeMismatchException e) {
-						e.printStackTrace();
-					} catch (NullReferenceException e) {
-						e.printStackTrace();
-					} catch (ReflectiveOperationException e) {
-						e.printStackTrace();
-					}
+					container = FMLEvaluation.evaluate(getContainer(), evaluationContext, this);
 
 					// Instanciate Wrapper.
 					result = model.getConverter().convertObjectIndividual(model, eObject);
@@ -257,16 +251,16 @@ public interface AddEMFObjectIndividual
 						}
 					}
 					model.setIsModified();
-					logger.info("********* Added individual " + result.getName() + " as " + aClass.getName());
+					if (logger.isLoggable(Level.FINE)) {
+						logger.fine("Added individual " + result.getName() + " as " + aClass.getName());
+					}
 				}
 				else {
-					logger.warning("Not allowed to create new Enum values. getOntologyClass()=" + getOntologyClass());
-					return null;
+					throw new FMLTechnologyError("Cannot create a new value of the enumeration " + getOntologyClass());
 				}
 			}
 			else {
-				logger.warning("Model slot not correctly initialised : receiver is null");
-				return null;
+				throw new FMLNullReferenceError("Model slot not correctly initialised : receiver is null");
 			}
 
 			return result;
