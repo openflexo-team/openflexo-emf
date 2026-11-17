@@ -16,7 +16,7 @@ public model SimpleBPMNProcess {
 	EMFModel process with EMFModelSlot(metaModel=BPMN);
 
 	create(Resource<EMFModel> aProcessResource) {
-		process = parameters.aProcessResource.resourceData;
+		process = aProcessResource.resourceData;
 		log "Process: " + process;
 	}
 

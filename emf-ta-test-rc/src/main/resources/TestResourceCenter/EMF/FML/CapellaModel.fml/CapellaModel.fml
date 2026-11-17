@@ -38,7 +38,7 @@ public model CapellaModel {
 
    @CreationScheme
    create(Resource<EMFModel> aCapellaResource) {
-        capellaModel = parameters.aCapellaResource.resourceData;
+        capellaModel = aCapellaResource.resourceData;
         log "Capella Model Loaded: " + capellaModel;
     }
 
