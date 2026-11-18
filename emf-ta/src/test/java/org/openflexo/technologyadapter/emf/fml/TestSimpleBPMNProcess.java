@@ -52,7 +52,7 @@ import org.openflexo.connie.exception.InvalidBindingException;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -93,7 +93,7 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 
 	@Test
 	@TestOrder(1)
-	public void testLoadViewPoint() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testLoadViewPoint() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
 		EMFTechnologyAdapter emfTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
@@ -182,7 +182,7 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(4)
 	public void testListAllEMFObjectIndividuals() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 		System.err.println("testListAllEMFObjectIndividuals()");
 		List<EMFObjectIndividual> allObjects = vmi.execute("this.listAllEMFIndividuals()");
 		assertEquals(34, allObjects.size());
@@ -191,7 +191,7 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(5)
 	public void testListAllProcesses() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 		System.err.println("testListAllProcesses()");
 		List<EMFObjectIndividual> allProcesses = vmi.execute("this.listAllProcesses()");
 		assertEquals(1, allProcesses.size());
@@ -200,7 +200,7 @@ public class TestSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(6)
 	public void testListAllTasks() throws TypeMismatchException, NullReferenceException, ReflectiveOperationException,
-			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			InvalidBindingException, FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 		System.err.println("testListAllTasks()");
 		List<EMFObjectIndividual> allTasks = vmi.execute("this.listAllTasks()");
 		assertEquals(2, allTasks.size());

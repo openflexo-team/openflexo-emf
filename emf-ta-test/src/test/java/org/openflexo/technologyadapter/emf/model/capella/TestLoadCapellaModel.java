@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
@@ -71,7 +71,7 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
     
     @Test
     @TestOrder(3)
-    public void lookupCapellaMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+    public void lookupCapellaMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
         log("lookupCapellaMetaModel()");
 
         capellaMMRes = (EMFMetaModelResource) serviceManager.getResourceManager()
@@ -155,7 +155,7 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
     
     @Test
     @TestOrder(6)
-    public void loadCapellaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+    public void loadCapellaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
         log("loadCapellaModel()");
         
         assertNotNull("La ressource du modèle Capella ne doit pas être null", capellaModelRes);
@@ -177,7 +177,7 @@ public class TestLoadCapellaModel extends OpenflexoTestCase {
     
     @Test
     @TestOrder(7)
-    public void performSomeTests() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+    public void performSomeTests() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
     	log("performSomeTests");
     	
     	IFlexoOntologyClass<EMFTechnologyAdapter> systemEngineeringClass = metaModel

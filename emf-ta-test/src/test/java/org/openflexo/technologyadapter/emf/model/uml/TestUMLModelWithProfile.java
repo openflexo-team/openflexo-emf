@@ -182,7 +182,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	 * catch (FileNotFoundException e) { 
 	 * e.printStackTrace(); } catch (ResourceLoadingCancelledException e) { 
 	 *  e.printStackTrace(); } catch
-	 * (FlexoException e) { 
+	 * (OpenflexoRuntimeException e) { 
 	 * e.printStackTrace(); } return result; }
 	 */
 

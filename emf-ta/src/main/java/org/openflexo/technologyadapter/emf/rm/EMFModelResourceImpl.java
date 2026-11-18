@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.InnerResourceData;
@@ -81,10 +81,10 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @throws ResourceLoadingCancelledException
 	 * @throws ResourceDependencyLoopException
 	 * @throws FileNotFoundException
-	 * @throws FlexoException
+	 * @throws OpenflexoRuntimeException
 	 */
 	@Override
-	public EMFModel loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public EMFModel loadResourceData() throws ResourceLoadingCancelledException, FileNotFoundException, OpenflexoRuntimeException {
 
 		EMFModelConverter converter = new EMFModelConverter();
 		EMFModel resourceData;
@@ -118,7 +118,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getIODelegate());
 		}
@@ -152,7 +152,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -200,7 +200,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 					} catch (ResourceLoadingCancelledException e) {
 						logger.warning("Cannot load EMF MetaModel");
 						return null;
-					} catch (FlexoException e) {
+					} catch (OpenflexoRuntimeException e) {
 						logger.warning("Cannot load EMF MetaModel");
 						return null;
 					}

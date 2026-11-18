@@ -54,7 +54,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -122,7 +122,7 @@ public class TestLoadCity1 extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void loadCity1Model() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void loadCity1Model() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		assertFalse(city1Res.isLoaded());
 		assertFalse(city1MMRes.isLoaded());

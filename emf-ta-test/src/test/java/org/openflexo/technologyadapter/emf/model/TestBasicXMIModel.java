@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -95,7 +95,7 @@ public class TestBasicXMIModel extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void lookupSOAMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void lookupSOAMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		soamlMetaModelResource = (ECoreMetaModelResource) serviceManager.getResourceManager()
 				.getResource("http://www.example.org/metamodelProject/Metamodel/SOAMLmetaModel", EMFMetaModel.class);
@@ -126,7 +126,7 @@ public class TestBasicXMIModel extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void loadXMIModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void loadXMIModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		modelResource.loadResourceData();
 

@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -106,7 +106,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 			 * (FileNotFoundException e) { 
 			 * e.printStackTrace(); } catch (ResourceLoadingCancelledException
 			 * e) {  e.printStackTrace(); }
-			 * catch (FlexoException e) { 
+			 * catch (OpenflexoRuntimeException e) { 
 			 * e.printStackTrace(); }
 			 */
 
@@ -124,7 +124,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(3)
-	public void testCity1MetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testCity1MetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		EMFMetaModelResource city1MMRes = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
 				.getResource("http://www.thalesgroup.com/openflexo/emf/model/city1");
@@ -158,7 +158,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void testCity2MetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testCity2MetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		EMFMetaModelResource city2MMRes = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
 				.getResource("http://www.thalesgroup.com/openflexo/emf/model/city2");
@@ -195,7 +195,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(6)
-	public void testArchiMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testArchiMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		EMFMetaModelResource archiMMRes = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
 				.getResource("http://www.bolton.ac.uk/archimate");
@@ -214,7 +214,7 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(7)
-	public void testParametersMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testParametersMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		EMFMetaModelResource parametersMMRes = technologicalAdapter.getEMFMetaModelRepository(emfResourceCenter)
 				.getResource("http://www.thalesgroup.com/parameters/1.0");

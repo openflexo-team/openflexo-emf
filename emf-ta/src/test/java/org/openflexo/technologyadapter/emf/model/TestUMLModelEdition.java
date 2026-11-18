@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.InvalidNameException;
 import org.openflexo.foundation.fml.CreationScheme;
@@ -292,7 +292,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			umlModelResource.save();
 
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		}
 

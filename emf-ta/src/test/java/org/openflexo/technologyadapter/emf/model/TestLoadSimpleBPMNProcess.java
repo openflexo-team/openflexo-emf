@@ -45,7 +45,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -73,7 +73,7 @@ public class TestLoadSimpleBPMNProcess extends OpenflexoProjectAtRunTimeTestCase
 
 	@Test
 	@TestOrder(1)
-	public void testLoadEMFModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testLoadEMFModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
 		EMFTechnologyAdapter emfTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);

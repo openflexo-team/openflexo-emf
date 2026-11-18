@@ -246,7 +246,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	
 			umlModelResource.save();
 	
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		}
 	

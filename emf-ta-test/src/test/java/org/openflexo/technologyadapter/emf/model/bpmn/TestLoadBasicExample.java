@@ -51,7 +51,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -93,7 +93,7 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(2)
-	public void lookupBPMNMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void lookupBPMNMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		bpmnMMRes = (EMFMetaModelResource) serviceManager.getResourceManager()
 				.getResource("http://www.omg.org/spec/BPMN/20100524/MODEL-XMI", EMFMetaModel.class);
@@ -134,7 +134,7 @@ public class TestLoadBasicExample extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void loadBasicModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void loadBasicModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		assertFalse(basicModelRes.isLoaded());
 

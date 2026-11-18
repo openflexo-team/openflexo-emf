@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -105,7 +105,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(3)
-	public void testECoreMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testECoreMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		// EMFMetaModelResource eCoreRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
 		// .getResource("http://www.eclipse.org/emf/2002/Ecore");
@@ -128,7 +128,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void testUMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testUMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		// EMFMetaModelResource eCoreRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
 		// .getResource("http://www.eclipse.org/emf/2002/Ecore");
@@ -150,7 +150,7 @@ public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(8)
-	public void testSysMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testSysMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		EMFMetaModelResource sysMLMMRes = technologicalAdapter.getTechnologyContextManager()
 				.getProfileResourceByURI("http://www.eclipse.org/papyrus/0.7.0/SysML");

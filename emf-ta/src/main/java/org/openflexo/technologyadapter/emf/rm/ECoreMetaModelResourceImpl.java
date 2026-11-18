@@ -62,7 +62,7 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -194,7 +194,7 @@ public abstract class ECoreMetaModelResourceImpl extends EMFMetaModelResourceImp
 			if(!dep.isLoaded()) {
 				try {
 					dep.loadResourceData();
-				} catch (FileNotFoundException | ResourceLoadingCancelledException | FlexoException e) {
+				} catch (FileNotFoundException | ResourceLoadingCancelledException | OpenflexoRuntimeException e) {
 					e.printStackTrace();
 				}
 			}

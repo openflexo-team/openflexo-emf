@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.OpenflexoRuntimeException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -102,7 +102,7 @@ public class TestBasicECoreMetaModel extends OpenflexoTestCase {
 
 	@Test
 	@TestOrder(3)
-	public void loadSOAMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void loadSOAMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException {
 
 		soamlMetaModelResource.loadResourceData();
 

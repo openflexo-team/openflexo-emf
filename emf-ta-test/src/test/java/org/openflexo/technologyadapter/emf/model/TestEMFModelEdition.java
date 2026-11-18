@@ -273,7 +273,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	
 			emfModelResource.save();
 	
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		}
 	
@@ -303,7 +303,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-		} catch (FlexoException e) {
+		} catch (OpenflexoRuntimeException e) {
 			e.printStackTrace();
 		} catch (ReturnException e) {
 			e.printStackTrace();
@@ -312,7 +312,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}*/
 
 	/*protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
-			FMLModelFactory factory) throws FlexoException {
+			FMLModelFactory factory) throws OpenflexoRuntimeException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
 		// removeObject.setModelSlot(newModelSlot);
@@ -335,7 +335,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * addEMFObjectIndividualAttributeDataPropertyValue( EMFMetaModelResource
 	 * emfMetaModelResource, EMFObjectIndividual objectIndividual, String
 	 * propertyURI, Object value, FMLModelFactory factory) throws
-	 * FileNotFoundException, ResourceLoadingCancelledException, FlexoException
+	 * FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException
 	 * { EMFObjectIndividualAttributeDataPropertyValue result = null;
 	 * 
 	 * CreateEditionAction createEditionAction1 =
@@ -364,7 +364,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * removeEMFObjectIndividualAttributeDataPropertyValue( EMFMetaModelResource
 	 * emfMetaModelResource, EMFObjectIndividual objectIndividual, String
 	 * propertyURI, Object value, FMLModelFactory factory) throws
-	 * FileNotFoundException, ResourceLoadingCancelledException, FlexoException
+	 * FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException
 	 * { EMFObjectIndividualAttributeDataPropertyValue result = null;
 	 * RemoveEMFObjectIndividualAttributeDataPropertyValue removeProperty =
 	 * factory
@@ -382,7 +382,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * addEMFObjectIndividualAttributeObjectPropertyValue( EMFMetaModelResource
 	 * emfMetaModelResource, EMFObjectIndividual objectIndividual, String
 	 * propertyURI, Object value, FMLModelFactory factory) throws
-	 * FileNotFoundException, ResourceLoadingCancelledException, FlexoException
+	 * FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException
 	 * { EMFObjectIndividualAttributeObjectPropertyValue result = null;
 	 * AddEMFObjectIndividualAttributeObjectPropertyValue addPropValue = factory
 	 * .newInstance(AddEMFObjectIndividualAttributeObjectPropertyValue.class);
@@ -400,7 +400,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual
 	 * objectIndividual, String propertyURI, Object value, FMLModelFactory
 	 * factory) throws FileNotFoundException, ResourceLoadingCancelledException,
-	 * FlexoException { EMFObjectIndividualAttributeObjectPropertyValue result =
+	 * OpenflexoRuntimeException { EMFObjectIndividualAttributeObjectPropertyValue result =
 	 * null; RemoveEMFObjectIndividualAttributeObjectPropertyValue removePropVal
 	 * = factory
 	 * .newInstance(RemoveEMFObjectIndividualAttributeObjectPropertyValue.class)
@@ -419,7 +419,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * addEMFObjectIndividualReferenceObjectPropertyValue( EMFMetaModelResource
 	 * emfMetaModelResource, EMFObjectIndividual objectIndividual, String
 	 * propertyURI, Object value, FMLModelFactory factory) throws
-	 * FileNotFoundException, ResourceLoadingCancelledException, FlexoException
+	 * FileNotFoundException, ResourceLoadingCancelledException, OpenflexoRuntimeException
 	 * { EMFObjectIndividualReferenceObjectPropertyValue result = null;
 	 * AddEMFObjectIndividualReferenceObjectPropertyValue addRefPropVal =
 	 * factory
@@ -438,7 +438,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual
 	 * objectIndividual, String propertyURI, Object value, FMLModelFactory
 	 * factory) throws FileNotFoundException, ResourceLoadingCancelledException,
-	 * FlexoException { EMFObjectIndividualReferenceObjectPropertyValue result =
+	 * OpenflexoRuntimeException { EMFObjectIndividualReferenceObjectPropertyValue result =
 	 * null; RemoveEMFObjectIndividualReferenceObjectPropertyValue
 	 * removeRefPropVal = factory
 	 * .newInstance(RemoveEMFObjectIndividualReferenceObjectPropertyValue.class)
@@ -457,7 +457,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * emfModelResource, EMFMetaModelResource emfMetaModelResource, String name,
 	 * List<EMFObjectIndividual> ownedParameters, FMLModelFactory factory)
 	 * throws FileNotFoundException, ResourceLoadingCancelledException,
-	 * FlexoException { EMFObjectIndividual result = null; // ParameterSet
+	 * OpenflexoRuntimeException { EMFObjectIndividual result = null; // ParameterSet
 	 * object result = addEMFObjectIndividual(emfModelResource,
 	 * "http://www.thalesgroup.com/parameters/1.0/ParameterSet", factory); //
 	 * Name parameter
@@ -473,7 +473,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * protected EMFObjectIndividual createIntParameter(EMFModelResource
 	 * emfModelResource, EMFMetaModelResource emfMetaModelResource, String name,
 	 * Integer value, FMLModelFactory factory) throws FileNotFoundException,
-	 * ResourceLoadingCancelledException, FlexoException { EMFObjectIndividual
+	 * ResourceLoadingCancelledException, OpenflexoRuntimeException { EMFObjectIndividual
 	 * result = null; // IntParameter object result =
 	 * addEMFObjectIndividual(emfModelResource,
 	 * "http://www.thalesgroup.com/parameters/1.0/IntParameterValue", factory);
@@ -501,7 +501,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * protected EMFObjectIndividual createDoubleParameter(EMFModelResource
 	 * emfModelResource, EMFMetaModelResource emfMetaModelResource, String name,
 	 * Double value, FMLModelFactory factory) throws FileNotFoundException,
-	 * ResourceLoadingCancelledException, FlexoException { EMFObjectIndividual
+	 * ResourceLoadingCancelledException, OpenflexoRuntimeException { EMFObjectIndividual
 	 * result = null; // DoubleParameter object result =
 	 * addEMFObjectIndividual(emfModelResource,
 	 * "http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue",
@@ -534,7 +534,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * protected EMFObjectIndividual createBoolParameter(EMFModelResource
 	 * emfModelResource, EMFMetaModelResource emfMetaModelResource, String name,
 	 * Boolean value, FMLModelFactory factory) throws FileNotFoundException,
-	 * ResourceLoadingCancelledException, FlexoException { EMFObjectIndividual
+	 * ResourceLoadingCancelledException, OpenflexoRuntimeException { EMFObjectIndividual
 	 * result = null; // BoolParameter object result =
 	 * addEMFObjectIndividual(emfModelResource,
 	 * "http://www.thalesgroup.com/parameters/1.0/BoolParameterValue", factory);
@@ -551,7 +551,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	 * protected EMFObjectIndividual createStringParameter(EMFModelResource
 	 * emfModelResource, EMFMetaModelResource emfMetaModelResource, String name,
 	 * String value, FMLModelFactory factory) throws FileNotFoundException,
-	 * ResourceLoadingCancelledException, FlexoException { EMFObjectIndividual
+	 * ResourceLoadingCancelledException, OpenflexoRuntimeException { EMFObjectIndividual
 	 * result = null; // StringParameter object result =
 	 * addEMFObjectIndividual(emfModelResource,
 	 * "http://www.thalesgroup.com/parameters/1.0/StringParameterValue",
